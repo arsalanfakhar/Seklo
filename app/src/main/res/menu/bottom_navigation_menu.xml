@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home_bottomnav"
+        android:title="Home"
+        />
+    <item
+        android:id="@+id/perTestFragment"
+        android:icon="@drawable/ic_message_bottomnav"
+        android:title="Personality Test"
+        />
+    <item
+        android:id="@+id/blank"
+        android:icon="@android:color/transparent"
+        android:title="Blank"
+        />
+    <item
+        android:id="@+id/notificationFragment"
+        android:icon="@drawable/ic_notification_bottomnav"
+        android:title="Notification"
+        />
+
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile_bottomnav"
+        android:title="Profile"
+        />
+</menu>
