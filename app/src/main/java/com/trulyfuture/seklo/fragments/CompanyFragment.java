@@ -4,23 +4,20 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.CompaniesAdapter;
 import com.trulyfuture.seklo.databinding.FragmentCompanyBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CompanyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CompanyFragment extends Fragment {
+public class CompanyFragment extends Fragment implements CompaniesAdapter.OnCompanyClickListener {
 
     private FragmentCompanyBinding binding;
     private CompaniesAdapter companiesAdapter;
@@ -36,10 +33,16 @@ public class CompanyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        companiesAdapter=new CompaniesAdapter(getContext());
+        companiesAdapter=new CompaniesAdapter(getContext(),this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),4);
         gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         binding.companiesRV.setLayoutManager(gridLayoutManager);
         binding.companiesRV.setAdapter(companiesAdapter);
+
+    }
+
+    @Override
+    public void onCompanyClick() {
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_companyFragment_to_companyDetailFragment);
     }
 }

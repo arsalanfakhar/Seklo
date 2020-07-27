@@ -19,5 +19,14 @@
         android:id="@+id/companyFragment"
         android:name="com.trulyfuture.seklo.fragments.CompanyFragment"
         android:label="fragment_company"
-        tools:layout="@layout/fragment_company" />
+        tools:layout="@layout/fragment_company" >
+        <action
+            android:id="@+id/action_companyFragment_to_companyDetailFragment"
+            app:destination="@id/companyDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/companyDetailFragment"
+        android:name="com.trulyfuture.seklo.CompanyDetailFragment"
+        android:label="fragment_company_detail"
+        tools:layout="@layout/fragment_company_detail" />
 </navigation>
