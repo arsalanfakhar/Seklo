@@ -15,4 +15,9 @@
         android:name="com.trulyfuture.seklo.fragments.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/companyFragment"
+        android:name="com.trulyfuture.seklo.fragments.CompanyFragment"
+        android:label="fragment_company"
+        tools:layout="@layout/fragment_company" />
 </navigation>

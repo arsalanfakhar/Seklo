@@ -68,7 +68,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
-            tools:listitem="@layout/jobsRV_item_layout" />
+            tools:listitem="@layout/jobs_rv_item_layout" />
 
         <TextView
             android:id="@+id/textView7"
@@ -83,14 +83,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hrRV"
             android:layout_width="0dp"
-            android:layout_height="180dp"
+            android:layout_height="190dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/jobsRV"
             app:layout_constraintStart_toStartOf="@+id/jobsRV"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
-            tools:listitem="@layout/hrRV_item_layout" />
+            tools:listitem="@layout/hr_rv_item_layout" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/loginBtn"

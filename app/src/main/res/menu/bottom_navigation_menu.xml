@@ -6,9 +6,9 @@
         android:title="Home"
         />
     <item
-        android:id="@+id/perTestFragment"
+        android:id="@+id/companyFragment"
         android:icon="@drawable/ic_message_bottomnav"
-        android:title="Personality Test"
+        android:title="Companies"
         />
     <item
         android:id="@+id/blank"
