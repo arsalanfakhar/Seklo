@@ -26,7 +26,29 @@
     </fragment>
     <fragment
         android:id="@+id/companyDetailFragment"
-        android:name="com.trulyfuture.seklo.CompanyDetailFragment"
+        android:name="com.trulyfuture.seklo.fragments.CompanyDetailFragment"
         android:label="fragment_company_detail"
         tools:layout="@layout/fragment_company_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.trulyfuture.seklo.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_uploadCVFragment"
+            app:destination="@id/uploadCVFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/uploadCVFragment"
+        android:name="com.trulyfuture.seklo.fragments.UploadCVFragment"
+        android:label="fragment_upload_c_v"
+        tools:layout="@layout/fragment_upload_c_v" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.trulyfuture.seklo.fragments.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

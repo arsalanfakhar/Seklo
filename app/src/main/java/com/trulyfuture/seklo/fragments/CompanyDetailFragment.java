@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo;
+package com.trulyfuture.seklo.fragments;
 
 import android.os.Bundle;
 
