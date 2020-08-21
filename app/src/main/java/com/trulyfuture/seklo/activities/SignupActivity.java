@@ -3,13 +3,12 @@ package com.trulyfuture.seklo.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.trulyfuture.seklo.databinding.ActivitySignupBinding;
-import com.trulyfuture.seklo.models.UsersShort;
+import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.viewmodels.LoginViewModel;
 
 public class SignupActivity extends AppCompatActivity {
@@ -26,7 +25,7 @@ public class SignupActivity extends AppCompatActivity {
 
         signupBinding.signupBtn.setOnClickListener(view -> {
 
-            UsersShort users = new UsersShort();
+            Users users = new Users();
             users.setFname("abc");
             users.setLname("abc");
             users.setEmail("abc@abc.com");
@@ -37,9 +36,10 @@ public class SignupActivity extends AppCompatActivity {
             viewModel.createUser(users).observe(this, results -> {
                 if (results != null) {
                     if (results.getCode() == 1) {
+
                         Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

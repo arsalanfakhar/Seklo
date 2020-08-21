@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
+import com.trulyfuture.seklo.models.ResultSeklo;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.Users;
-import com.trulyfuture.seklo.models.UsersShort;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,21 +24,20 @@ public class SeekloRepository {
         apiInterface = RetrofitService.getInterface();
     }
 
-    public MutableLiveData<Results> createUser(UsersShort user) {
+    public MutableLiveData<Results> createUser(Users user) {
         MutableLiveData<Results> data = new MutableLiveData<>();
 
-        Call<Results> resultsCall = apiInterface.createUser(user);
+        Call<ResultSeklo> resultsCall = apiInterface.createUser(user);
 
-        resultsCall.enqueue(new Callback<Results>() {
+        resultsCall.enqueue(new Callback<ResultSeklo>() {
             @Override
-            public void onResponse(Call<Results> call, Response<Results> response) {
-                Results result = response.body();
+            public void onResponse(Call<ResultSeklo> call, Response<ResultSeklo> response) {
 
-                data.postValue(result);
+                data.postValue(response.body().getResults());
             }
 
             @Override
-            public void onFailure(Call<Results> call, Throwable t) {
+            public void onFailure(Call<ResultSeklo> call, Throwable t) {
                 Results result = new Results();
                 result.setCode(-1);
                 result.setMessage(t.getMessage());
