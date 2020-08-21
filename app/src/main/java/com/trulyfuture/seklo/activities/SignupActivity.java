@@ -9,61 +9,42 @@ import android.widget.Toast;
 
 import com.trulyfuture.seklo.databinding.ActivitySignupBinding;
 import com.trulyfuture.seklo.models.Users;
-import com.trulyfuture.seklo.viewmodels.LoginViewModel;
+import com.trulyfuture.seklo.viewmodels.LoginSignupViewModel;
 
 public class SignupActivity extends AppCompatActivity {
 
     private ActivitySignupBinding signupBinding;
-    private LoginViewModel viewModel;
+    private LoginSignupViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         signupBinding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(signupBinding.getRoot());
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(LoginSignupViewModel.class);
 
         signupBinding.signupBtn.setOnClickListener(view -> {
+            if(!isFieldsEmpty()){
+                Users users=new Users();
+                users.setFname(signupBinding.fullName.getText().toString());
+                users.setLname(signupBinding.fullName.getText().toString());
+                users.setEmail(signupBinding.email.getText().toString());
+                users.setPassword(signupBinding.password.getText().toString());
+                users.setNumber(signupBinding.number.getText().toString());
 
-            Users users = new Users();
-            users.setFname("abc");
-            users.setLname("abc");
-            users.setEmail("abc@abc.com");
-            users.setPassword("123456");
-            users.setNumber("324234");
 
-
-            viewModel.createUser(users).observe(this, results -> {
-                if (results != null) {
-                    if (results.getCode() == 1) {
-
-                        Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
+                viewModel.createUser(users).observe(this,results -> {
+                    if(results.getCode()==1){
+                        Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
+                        //            startActivity(new Intent(SignupActivity.this,MainActivity.class));
                     }
-                }
-            });
+                    else {
+                        Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-//            if(!isFieldsEmpty()){
-//                Users users=new Users();
-//                users.setFname(signupBinding.fullName.getText().toString());
-//                users.setLname(signupBinding.fullName.getText().toString());
-//                users.setEmail(signupBinding.email.getText().toString());
-//                users.setPassword(signupBinding.password.getText().toString());
-//                users.setNumber(signupBinding.number.getText().toString());
-//
-//
-//                viewModel.createUser(users).observe(this,results -> {
-//                    if(results.getCode()==1){
-//                        Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
-//                    }
-//                    else {
-//                        Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//            }
-//            startActivity(new Intent(SignupActivity.this,MainActivity.class));
+            }
+
         });
 
         signupBinding.signinHintTxt.setOnClickListener(view -> {

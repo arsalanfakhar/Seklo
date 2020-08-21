@@ -11,17 +11,21 @@ import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.repository.SeekloRepository;
 
-public class LoginViewModel extends AndroidViewModel {
+public class LoginSignupViewModel extends AndroidViewModel {
 
     private SeekloRepository seekloRepository;
 
-    public LoginViewModel(@NonNull Application application) {
+    public LoginSignupViewModel(@NonNull Application application) {
         super(application);
         seekloRepository=new SeekloRepository(application);
     }
 
     public LiveData<Results> createUser(Users user){
         return seekloRepository.createUser(user);
+    }
+
+    public LiveData<Results> authenticateUser(Users user){
+        return seekloRepository.loginUser(user);
     }
 
 }

@@ -12,7 +12,8 @@ public interface SeekloApiInterface {
     @POST("users")
     Call<ResultSeklo> createUser(@Body Users user);
 
-
+    @POST("users/login")
+    Call<ResultSeklo> loginUser(@Body Users user);
 
 
 }

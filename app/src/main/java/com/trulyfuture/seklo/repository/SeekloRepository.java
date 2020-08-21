@@ -48,5 +48,29 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<Results> loginUser(Users user) {
+        MutableLiveData<Results> data = new MutableLiveData<>();
+
+        Call<ResultSeklo> resultsCall = apiInterface.loginUser(user);
+
+        resultsCall.enqueue(new Callback<ResultSeklo>() {
+            @Override
+            public void onResponse(Call<ResultSeklo> call, Response<ResultSeklo> response) {
+
+                data.postValue(response.body().getResults());
+            }
+
+            @Override
+            public void onFailure(Call<ResultSeklo> call, Throwable t) {
+                Results result = new Results();
+                result.setCode(-1);
+                result.setMessage(t.getMessage());
+                data.postValue(result);
+            }
+        });
+
+        return data;
+    }
+
 
 }
