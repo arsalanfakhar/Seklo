@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.models.UsersShort;
 import com.trulyfuture.seklo.repository.SeekloRepository;
 
 public class LoginViewModel extends AndroidViewModel {
@@ -20,7 +21,7 @@ public class LoginViewModel extends AndroidViewModel {
         seekloRepository=new SeekloRepository(application);
     }
 
-    public LiveData<Results> createUser(Users user){
+    public LiveData<Results> createUser(UsersShort user){
         return seekloRepository.createUser(user);
     }
 

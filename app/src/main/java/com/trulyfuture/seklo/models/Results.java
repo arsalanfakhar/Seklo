@@ -10,7 +10,7 @@ public class Results {
 
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private int code;
 
     @SerializedName("message")
     @Expose
