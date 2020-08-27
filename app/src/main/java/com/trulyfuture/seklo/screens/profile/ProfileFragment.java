@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments;
+package com.trulyfuture.seklo.screens.profile;
 
 import android.os.Bundle;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -14,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.ProfileViewPagerAdapter;
 import com.trulyfuture.seklo.databinding.FragmentProfileBinding;
+import com.trulyfuture.seklo.models.Users;
 
 
 public class ProfileFragment extends Fragment {
@@ -31,6 +34,9 @@ public class ProfileFragment extends Fragment {
         }
     };
 
+    private MainActivityViewModel activityViewModel;
+    private Users currentUser;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +48,20 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        activityViewModel.userResults.observe(this,userResults -> {
+
+            if(userResults.getCode()==1){
+                currentUser=userResults.getUserResultList().get(0);
+                loadUserdata();
+            }
+            else {
+                //TODO Handle error on user
+            }
+
+        });
 
         viewPagerAdapter = new ProfileViewPagerAdapter(getActivity());
         binding.profileViewpager.setAdapter(viewPagerAdapter);
@@ -93,9 +113,16 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void loadUserdata(){
+        binding.userName.setText(currentUser.getFullName());
+        binding.userOverview.setText(currentUser.getOverview());
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding.profileViewpager.unregisterOnPageChangeCallback(viewpagerCallback);
     }
+
+
 }

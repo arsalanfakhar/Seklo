@@ -1,7 +1,8 @@
-package com.trulyfuture.seklo.activities;
+package com.trulyfuture.seklo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -16,12 +17,15 @@ import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.databinding.ActivityMainBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
+import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private BottomSheetBehavior bottomSheetBehavior;
     private HrAdapter hrAdapter;
     private HrServicesBottomSheetBinding hrServicesBottomSheetBinding;
+
+    private MainActivityViewModel activityViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
+
+        activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        //Get user id
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        int userId= sharedPreferenceClass.getInteger("userId");
+
+        activityViewModel.setUserId(userId);
+
+        activityViewModel.userResults.observe(this,userResults -> {
+
+        });
+
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);
 
@@ -62,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         hrServicesBottomSheetBinding.hrBookframeLayout.setOnClickListener(view -> {
             Toast.makeText(this,"clicked",Toast.LENGTH_SHORT).show();
         });
+
     }
 
 

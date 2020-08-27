@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.activities;
+package com.trulyfuture.seklo.screens.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.trulyfuture.seklo.R;
+import com.trulyfuture.seklo.screens.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish();
         },SPLASH_TIMEOUT);
     }

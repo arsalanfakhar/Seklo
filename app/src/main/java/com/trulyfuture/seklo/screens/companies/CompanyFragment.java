@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments;
+package com.trulyfuture.seklo.screens.companies;
 
 import android.os.Bundle;
 

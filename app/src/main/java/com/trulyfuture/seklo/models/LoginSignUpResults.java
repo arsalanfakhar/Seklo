@@ -3,11 +3,13 @@ package com.trulyfuture.seklo.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResultSeklo {
+public class LoginSignUpResults {
 
     @SerializedName("results")
     @Expose
     private Results results;
+
+
 
     public Results getResults() {
         return results;

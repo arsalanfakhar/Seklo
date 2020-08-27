@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments;
+package com.trulyfuture.seklo.screens.companyDetail;
 
 import android.os.Bundle;
 
@@ -11,42 +11,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.adapters.JobsAdapter;
-import com.trulyfuture.seklo.databinding.FragmentHomeBinding;
+import com.trulyfuture.seklo.adapters.TalentTeamAdapter;
+import com.trulyfuture.seklo.databinding.FragmentCompanyDetailBinding;
 
-public class HomeFragment extends Fragment {
-    private FragmentHomeBinding fragmentHomeBinding;
+
+public class CompanyDetailFragment extends Fragment {
+    private FragmentCompanyDetailBinding binding;
     private JobsAdapter jobsAdapter;
-    private HrAdapter hrAdapter;
+    private TalentTeamAdapter talentTeamAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentHomeBinding=FragmentHomeBinding.inflate(getLayoutInflater());
-        return fragmentHomeBinding.getRoot();
+        binding=FragmentCompanyDetailBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        init();
-    }
 
-    private void init(){
         jobsAdapter=new JobsAdapter(getContext());
-        GridLayoutManager hrGridLayoutManager=new GridLayoutManager(getContext(),2);
-        hrGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        fragmentHomeBinding.jobsRV.setLayoutManager(hrGridLayoutManager);
-        fragmentHomeBinding.jobsRV.setAdapter(jobsAdapter);
-
-        hrAdapter=new HrAdapter(getContext());
         GridLayoutManager jobsGridLayoutManager=new GridLayoutManager(getContext(),1);
         jobsGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        fragmentHomeBinding.hrRV.setLayoutManager(jobsGridLayoutManager);
-        fragmentHomeBinding.hrRV.setAdapter(hrAdapter);
+        binding.jobsRV.setLayoutManager(jobsGridLayoutManager);
+        binding.jobsRV.setAdapter(jobsAdapter);
 
-
-
+        talentTeamAdapter=new TalentTeamAdapter(getContext());
+        GridLayoutManager talentTeamGridLayoutManager=new GridLayoutManager(getContext(),1);
+        talentTeamGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.talentTeamRV.setLayoutManager(talentTeamGridLayoutManager);
+        binding.talentTeamRV.setAdapter(talentTeamAdapter);
     }
 }

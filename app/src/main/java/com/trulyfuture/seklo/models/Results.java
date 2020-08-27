@@ -3,6 +3,8 @@ package com.trulyfuture.seklo.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Results {
     @SerializedName("ID")
     @Expose
@@ -15,6 +17,9 @@ public class Results {
     @SerializedName("message")
     @Expose
     private String message;
+
+
+
 
 
     public Integer getCode() {
@@ -40,4 +45,8 @@ public class Results {
     public void setId(Integer id) {
         this.id = id;
     }
+
+
+
+
 }

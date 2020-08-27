@@ -42,6 +42,21 @@ public class Users {
     @Expose
     private String country;
 
+    //Only for login API
+    @SerializedName("str")
+    @Expose
+    private String str;
+
+    @SerializedName("overview")
+    @Expose
+    private String overview;
+
+    @SerializedName("userPic")
+    @Expose
+    private String userImage;
+
+
+
     public Integer getID() {
         return id;
     }
@@ -128,5 +143,37 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }

@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.viewmodels;
+package com.trulyfuture.seklo.screens.signup;
 
 import android.app.Application;
 

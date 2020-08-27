@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments;
+package com.trulyfuture.seklo.screens.notification;
 
 import android.os.Bundle;
 
@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.NotificationsAdapter;
 import com.trulyfuture.seklo.databinding.FragmentNotificationBinding;
 

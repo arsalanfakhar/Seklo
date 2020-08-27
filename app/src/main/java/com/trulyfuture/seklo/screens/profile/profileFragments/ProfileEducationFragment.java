@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments.profileFragments;
+package com.trulyfuture.seklo.screens.profile.profileFragments;
 
 import android.os.Bundle;
 
@@ -10,19 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.ProfileAdapter;
-import com.trulyfuture.seklo.databinding.FragmentProfileExperienceBinding;
+import com.trulyfuture.seklo.databinding.FragmentProfileEducationBinding;
 
 
-public class ProfileExperienceFragment extends Fragment {
-    private FragmentProfileExperienceBinding binding;
-    private ProfileAdapter experieceAdapter;
+public class ProfileEducationFragment extends Fragment {
+
+    private FragmentProfileEducationBinding binding;
+    private ProfileAdapter educationAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding=FragmentProfileExperienceBinding.inflate(getLayoutInflater());
+        binding=FragmentProfileEducationBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -30,8 +31,8 @@ public class ProfileExperienceFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        experieceAdapter=new ProfileAdapter(getContext());
-        binding.experienceRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.experienceRv.setAdapter(experieceAdapter);
+        educationAdapter=new ProfileAdapter(getContext());
+        binding.educationRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.educationRv.setAdapter(educationAdapter);
     }
 }

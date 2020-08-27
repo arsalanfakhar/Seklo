@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.activities;
+package com.trulyfuture.seklo.screens.signup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.trulyfuture.seklo.databinding.ActivitySignupBinding;
 import com.trulyfuture.seklo.models.Users;
-import com.trulyfuture.seklo.viewmodels.LoginSignupViewModel;
 
 public class SignupActivity extends AppCompatActivity {
 

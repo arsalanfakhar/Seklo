@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.trulyfuture.seklo.fragments.HomeFragment"
+        android:name="com.trulyfuture.seklo.screens.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.trulyfuture.seklo.fragments.NotificationFragment"
+        android:name="com.trulyfuture.seklo.screens.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/companyFragment"
-        android:name="com.trulyfuture.seklo.fragments.CompanyFragment"
+        android:name="com.trulyfuture.seklo.screens.companies.CompanyFragment"
         android:label="fragment_company"
         tools:layout="@layout/fragment_company" >
         <action
@@ -26,12 +26,12 @@
     </fragment>
     <fragment
         android:id="@+id/companyDetailFragment"
-        android:name="com.trulyfuture.seklo.fragments.CompanyDetailFragment"
+        android:name="com.trulyfuture.seklo.screens.companyDetail.CompanyDetailFragment"
         android:label="fragment_company_detail"
         tools:layout="@layout/fragment_company_detail" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.trulyfuture.seklo.fragments.ProfileFragment"
+        android:name="com.trulyfuture.seklo.screens.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -43,12 +43,12 @@
     </fragment>
     <fragment
         android:id="@+id/uploadCVFragment"
-        android:name="com.trulyfuture.seklo.fragments.UploadCVFragment"
+        android:name="com.trulyfuture.seklo.screens.uploadCV.UploadCVFragment"
         android:label="fragment_upload_c_v"
         tools:layout="@layout/fragment_upload_c_v" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.trulyfuture.seklo.fragments.EditProfileFragment"
+        android:name="com.trulyfuture.seklo.screens.editProfile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
 </navigation>

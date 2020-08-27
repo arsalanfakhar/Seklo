@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.trulyfuture.seklo.fragments.profileFragments.ProfileEducationFragment;
-import com.trulyfuture.seklo.fragments.profileFragments.ProfileExperienceFragment;
-import com.trulyfuture.seklo.fragments.profileFragments.ProfileOverviewFragment;
-import com.trulyfuture.seklo.fragments.profileFragments.ProfileSkillsFragment;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileEducationFragment;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileExperienceFragment;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileOverviewFragment;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileSkillsFragment;
 
 public class ProfileViewPagerAdapter extends FragmentStateAdapter {
 

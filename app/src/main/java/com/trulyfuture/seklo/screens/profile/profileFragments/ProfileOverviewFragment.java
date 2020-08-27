@@ -1,4 +1,4 @@
-package com.trulyfuture.seklo.fragments.profileFragments;
+package com.trulyfuture.seklo.screens.profile.profileFragments;
 
 import android.os.Bundle;
 
