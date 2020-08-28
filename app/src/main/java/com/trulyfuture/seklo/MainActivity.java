@@ -40,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        //Get user id
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
-        int userId= sharedPreferenceClass.getInteger("userId");
-
-        activityViewModel.setUserId(userId);
-
-        activityViewModel.userResults.observe(this,userResults -> {
-
-        });
+//        //Get user id
+//        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+//        int userId= sharedPreferenceClass.getInteger("userId");
+//
+//        activityViewModel.setUserId(userId);
+//
+//        activityViewModel.userResults.observe(this,userResults -> {
+//
+//        });
 
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);

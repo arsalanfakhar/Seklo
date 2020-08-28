@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.database.retrofit;
 
+import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.LoginSignUpResults;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.UserResults;
@@ -7,10 +8,13 @@ import com.trulyfuture.seklo.models.Users;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface SeekloApiInterface {
+
+
 
     @POST("users")
     Call<LoginSignUpResults> createUser(@Body Users user);
@@ -21,4 +25,6 @@ public interface SeekloApiInterface {
     @POST("users/{id}")
     Call<UserResults> getUserById(@Path("id") int userId);
 
+    @GET("hr")
+    Call<HrResults> getAllHr();
 }

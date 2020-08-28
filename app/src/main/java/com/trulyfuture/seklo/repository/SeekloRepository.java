@@ -1,11 +1,13 @@
 package com.trulyfuture.seklo.repository;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
+import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.LoginSignUpResults;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.UserResults;
@@ -23,6 +25,7 @@ public class SeekloRepository {
     public SeekloRepository(Application application) {
         this.application = application;
         apiInterface = RetrofitService.getInterface();
+
     }
 
     public MutableLiveData<Results> createUser(Users user) {
@@ -33,10 +36,11 @@ public class SeekloRepository {
         resultsCall.enqueue(new Callback<LoginSignUpResults>() {
             @Override
             public void onResponse(Call<LoginSignUpResults> call, Response<LoginSignUpResults> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful()&& response.body()!=null) {
                     data.postValue(response.body().getResults());
                 }
-
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -59,9 +63,10 @@ public class SeekloRepository {
         resultsCall.enqueue(new Callback<LoginSignUpResults>() {
             @Override
             public void onResponse(Call<LoginSignUpResults> call, Response<LoginSignUpResults> response) {
-
-
-                data.postValue(response.body().getResults());
+                if(response.isSuccessful() && response.body()!=null)
+                    data.postValue(response.body().getResults());
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -85,9 +90,11 @@ public class SeekloRepository {
             @Override
             public void onResponse(Call<UserResults> call, Response<UserResults> response) {
 
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body()!=null) {
                     data.postValue(response.body());
                 }
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -100,4 +107,25 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<HrResults> getAllHr(){
+        MutableLiveData<HrResults> data=new MutableLiveData<>();
+        Call<HrResults> hrResultsCall=apiInterface.getAllHr();
+
+        hrResultsCall.enqueue(new Callback<HrResults>() {
+            @Override
+            public void onResponse(Call<HrResults> call, Response<HrResults> response) {
+                if(response.isSuccessful() && response.body()!=null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<HrResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 }
