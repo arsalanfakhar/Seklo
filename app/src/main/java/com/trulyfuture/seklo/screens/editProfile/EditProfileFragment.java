@@ -124,11 +124,14 @@ public class EditProfileFragment extends Fragment {
         }
         else {
 
+
             // Decode base64 string to image
             byte[] imageBytes = Base64.decode(currentUser.getUserImage(),Base64.DEFAULT);
             Bitmap imageBitmap=BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
 
             binding.userImage.setImageBitmap(imageBitmap);
+
+
 
 
         }
@@ -165,11 +168,10 @@ public class EditProfileFragment extends Fragment {
 
             //Convert image to base64
             try {
-//                final InputStream imageStream = getActivity().getContentResolver().openInputStream(mFileUri);
-//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
-                String encodedImage = encodeImage(bitmap);
-
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(mFileUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
+                String encodedImage = encodeImage(selectedImage);
 
 
                 Log.v(TAG,encodedImage);

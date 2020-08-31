@@ -47,7 +47,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:boxBackgroundColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintEnd_toStartOf="@+id/browseBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5">
 
@@ -57,7 +57,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button4"
+        android:id="@+id/browseBtn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="@+id/textInputLayout3" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/uploadCVBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

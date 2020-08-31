@@ -38,14 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -55,29 +48,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadCvBtn" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/uploadCvBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Upload CV"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/profileBtnColor"
-        app:cornerRadius="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadCvBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Upload CV"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/profileBtnColor"
+            app:cornerRadius="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/editProfileBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Edit Profile"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/profileBtnColor"
-        app:cornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editProfileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Edit Profile"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/profileBtnColor"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/uploadCvBtn" />
 
     <TextView
         android:id="@+id/userName"

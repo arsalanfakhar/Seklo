@@ -1,5 +1,7 @@
 package com.trulyfuture.seklo.screens.profile;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,6 +119,19 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserdata(){
+        if(TextUtils.isEmpty(currentUser.getUserImage())){
+            //TODO Load dummy image
+        }
+        else {
+            // Decode base64 string to image
+            byte[] imageBytes = Base64.decode(currentUser.getUserImage(),Base64.DEFAULT);
+            Bitmap imageBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
+
+            binding.userImage.setImageBitmap(imageBitmap);
+
+        }
+
+
         binding.userName.setText(currentUser.getFullName());
         binding.userOverview.setText(currentUser.getOverview());
     }
