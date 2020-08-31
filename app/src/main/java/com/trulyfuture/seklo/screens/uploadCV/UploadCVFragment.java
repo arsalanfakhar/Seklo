@@ -81,6 +81,8 @@ public class UploadCVFragment extends Fragment {
                 displayName = myFile.getName();
             }
 
+            binding.fileName.setText(displayName);
+
 
 
         }
