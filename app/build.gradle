@@ -60,8 +60,12 @@ dependencies {
     //Circular Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Logging interceptor
     implementation "com.squareup.okhttp3:logging-interceptor:4.8.1"
 
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+
 }

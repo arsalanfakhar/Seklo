@@ -1,22 +1,41 @@
 package com.trulyfuture.seklo.screens.editProfile;
 
+import android.content.Intent;
+import android.gesture.GestureLibraries;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
 import com.trulyfuture.seklo.models.Users;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class EditProfileFragment extends Fragment {
@@ -25,7 +44,12 @@ public class EditProfileFragment extends Fragment {
 
     private MainActivityViewModel activityViewModel;
     private Users currentUser;
+    private EditProfileViewModel viewModel;
 
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri mFileUri = null;
+
+    private static final String TAG = "EditProfileFragment";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +63,12 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupViews();
+    }
+
+    private void setupViews() {
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
 
         activityViewModel.userResults.observe(getViewLifecycleOwner(), userResults -> {
 
@@ -50,8 +79,36 @@ public class EditProfileFragment extends Fragment {
         });
 
 
+        //On click listeners
+
+        binding.changeProfilePicBtn.setOnClickListener(view -> {
+            Intent mediaChooser = new Intent(Intent.ACTION_GET_CONTENT);
+            mediaChooser.setType("image/*");
+            startActivityForResult(Intent.createChooser(mediaChooser, "Select Picture"), PICK_IMAGE_REQUEST);
+
+        });
+
+
         binding.saveBtn.setOnClickListener(view1 -> {
-            if(!isFieldEmpty()){
+            if (!isFieldEmpty()) {
+                Users user = new Users();
+                user.setFname(binding.firstName.getText().toString());
+                user.setLname(binding.lastName.getText().toString());
+                user.setEmail(binding.email.getText().toString());
+                user.setNumber(binding.mobileNumber.getText().toString());
+
+                viewModel.updateUserDetails(user, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        Toast.makeText(getContext(), "Details updated sucessfully", Toast.LENGTH_SHORT).show();
+
+
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_editProfileFragment_to_profileFragment);
+
+
+                    } else {
+                        Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
 
@@ -60,6 +117,23 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void loadUserData() {
+
+        if(TextUtils.isEmpty(currentUser.getUserImage())){
+
+            //Load dummy image
+        }
+        else {
+
+            // Decode base64 string to image
+            byte[] imageBytes = Base64.decode(currentUser.getUserImage(),Base64.DEFAULT);
+            Bitmap imageBitmap=BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
+
+            binding.userImage.setImageBitmap(imageBitmap);
+
+
+        }
+
+
         binding.firstName.setText(currentUser.getFname());
         binding.lastName.setText(currentUser.getLname());
         binding.email.setText(currentUser.getEmail());
@@ -71,9 +145,61 @@ public class EditProfileFragment extends Fragment {
                 || TextUtils.isEmpty(binding.lastName.getText())
                 || TextUtils.isEmpty(binding.email.getText())
                 || TextUtils.isEmpty(binding.mobileNumber.getText())) {
-            Toast.makeText(getContext(),"Please fill all fields to continue",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please fill all fields to continue", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mFileUri = data.getData();
+
+            Glide.with(this).load(mFileUri).into(binding.userImage);
+
+//            binding.userImage.setImageURI(mFileUri);
+
+            //Convert image to base64
+            try {
+//                final InputStream imageStream = getActivity().getContentResolver().openInputStream(mFileUri);
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
+                String encodedImage = encodeImage(bitmap);
+
+
+
+                Log.v(TAG,encodedImage);
+
+                Map<String, String> userMap = new HashMap<>();
+                userMap.put("userPic",encodedImage);
+
+                viewModel.updateUserImage(userMap, activityViewModel.getUserId()).observe(getViewLifecycleOwner(),sekloResults -> {
+                    Toast.makeText(getContext(),sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //Open updating spinner
+
+            //After its updated load the image
+        } else {
+            Toast.makeText(getContext(), "Error chosing image", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        return encImage;
     }
 }

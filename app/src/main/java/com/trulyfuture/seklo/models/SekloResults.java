@@ -3,7 +3,7 @@ package com.trulyfuture.seklo.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginSignUpResults {
+public class SekloResults {
 
     @SerializedName("results")
     @Expose

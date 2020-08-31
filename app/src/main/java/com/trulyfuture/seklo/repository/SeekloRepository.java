@@ -8,10 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.models.HrResults;
-import com.trulyfuture.seklo.models.LoginSignUpResults;
+import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,11 +33,11 @@ public class SeekloRepository {
     public MutableLiveData<Results> createUser(Users user) {
         MutableLiveData<Results> data = new MutableLiveData<>();
 
-        Call<LoginSignUpResults> resultsCall = apiInterface.createUser(user);
+        Call<SekloResults> resultsCall = apiInterface.createUser(user);
 
-        resultsCall.enqueue(new Callback<LoginSignUpResults>() {
+        resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
-            public void onResponse(Call<LoginSignUpResults> call, Response<LoginSignUpResults> response) {
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
                 if (response.isSuccessful()&& response.body()!=null) {
                     data.postValue(response.body().getResults());
                 }
@@ -44,7 +46,7 @@ public class SeekloRepository {
             }
 
             @Override
-            public void onFailure(Call<LoginSignUpResults> call, Throwable t) {
+            public void onFailure(Call<SekloResults> call, Throwable t) {
                 Results result = new Results();
                 result.setCode(-1);
                 result.setMessage(t.getMessage());
@@ -58,11 +60,11 @@ public class SeekloRepository {
     public MutableLiveData<Results> loginUser(Users user) {
         MutableLiveData<Results> data = new MutableLiveData<>();
 
-        Call<LoginSignUpResults> resultsCall = apiInterface.loginUser(user);
+        Call<SekloResults> resultsCall = apiInterface.loginUser(user);
 
-        resultsCall.enqueue(new Callback<LoginSignUpResults>() {
+        resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
-            public void onResponse(Call<LoginSignUpResults> call, Response<LoginSignUpResults> response) {
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
                 if(response.isSuccessful() && response.body()!=null)
                     data.postValue(response.body().getResults());
                 else
@@ -70,7 +72,7 @@ public class SeekloRepository {
             }
 
             @Override
-            public void onFailure(Call<LoginSignUpResults> call, Throwable t) {
+            public void onFailure(Call<SekloResults> call, Throwable t) {
                 Results result = new Results();
                 result.setCode(-1);
                 result.setMessage(t.getMessage());
@@ -107,6 +109,56 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> updateUserDetails(Users users,int userId){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall=apiInterface.updateUserDetails(users,userId);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body()!=null) {
+                    data.postValue(response.body());
+                }
+                else {
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> updateUserImage(Map<String,String> userMap,int userId){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall=apiInterface.updateUserImage(userMap,userId);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body()!=null) {
+                    data.postValue(response.body());
+                }
+                else {
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
     public MutableLiveData<HrResults> getAllHr(){
         MutableLiveData<HrResults> data=new MutableLiveData<>();
         Call<HrResults> hrResultsCall=apiInterface.getAllHr();
@@ -128,4 +180,8 @@ public class SeekloRepository {
 
         return data;
     }
+
+
+
+
 }

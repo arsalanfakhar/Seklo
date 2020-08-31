@@ -26,10 +26,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         seekloRepository = new SeekloRepository(application);
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(application.getApplicationContext(), SharedPreferenceClass.UserDetails);
-        userId=sharedPreferenceClass.getInteger("userId");
+//        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(application.getApplicationContext(), SharedPreferenceClass.UserDetails);
+//        userId=sharedPreferenceClass.getInteger("userId");
+        userId=9;
         initialize();
-
     }
 
     private void initialize(){
