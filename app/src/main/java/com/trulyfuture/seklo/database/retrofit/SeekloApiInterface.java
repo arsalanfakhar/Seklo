@@ -22,7 +22,7 @@ public interface SeekloApiInterface {
     @POST("users/login")
     Call<LoginSignUpResults> loginUser(@Body Users user);
 
-    @POST("users/{id}")
+    @GET("users/{id}")
     Call<UserResults> getUserById(@Path("id") int userId);
 
     @GET("hr")

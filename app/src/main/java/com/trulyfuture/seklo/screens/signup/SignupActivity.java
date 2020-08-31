@@ -3,12 +3,15 @@ package com.trulyfuture.seklo.screens.signup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.trulyfuture.seklo.MainActivity;
 import com.trulyfuture.seklo.databinding.ActivitySignupBinding;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -26,7 +29,7 @@ public class SignupActivity extends AppCompatActivity {
             if(!isFieldsEmpty()){
                 Users users=new Users();
                 users.setFname(signupBinding.fullName.getText().toString());
-                users.setLname(signupBinding.fullName.getText().toString());
+                users.setLname(signupBinding.lastName.getText().toString());
                 users.setEmail(signupBinding.email.getText().toString());
                 users.setPassword(signupBinding.password.getText().toString());
                 users.setNumber(signupBinding.number.getText().toString());
@@ -34,8 +37,9 @@ public class SignupActivity extends AppCompatActivity {
 
                 viewModel.createUser(users).observe(this,results -> {
                     if(results.getCode()==1){
+                        addToSharedPrefs(results.getId());
                         Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
-                        //            startActivity(new Intent(SignupActivity.this,MainActivity.class));
+                        startActivity(new Intent(SignupActivity.this, MainActivity.class));
                     }
                     else {
                         Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();
@@ -64,5 +68,10 @@ public class SignupActivity extends AppCompatActivity {
         return false;
     }
 
+    private void addToSharedPrefs(int userId){
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this,SharedPreferenceClass.UserDetails);
+        sharedPreferenceClass.SetIntegerEditor("userId",userId);
+        sharedPreferenceClass.DoCommit();
+    }
 
 }

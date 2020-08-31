@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -17,6 +18,7 @@ import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.databinding.ActivityMainBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
+import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private HrServicesBottomSheetBinding hrServicesBottomSheetBinding;
 
     private MainActivityViewModel activityViewModel;
+
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-//        //Get user id
-//        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
-//        int userId= sharedPreferenceClass.getInteger("userId");
-//
-//        activityViewModel.setUserId(userId);
-//
-//        activityViewModel.userResults.observe(this,userResults -> {
-//
-//        });
+
+        activityViewModel.userResults.observe(this,userResults -> {
+            Log.v(TAG,String.valueOf(userResults.getUserResultList().get(0).getFullName()));
+        });
+
 
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);

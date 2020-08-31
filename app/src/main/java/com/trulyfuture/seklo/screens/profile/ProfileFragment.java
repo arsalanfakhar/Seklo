@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class ProfileFragment extends Fragment {
     private MainActivityViewModel activityViewModel;
     private Users currentUser;
 
+    private static final String TAG = "ProfileFragment";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,8 +53,7 @@ public class ProfileFragment extends Fragment {
 
         activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        activityViewModel.userResults.observe(this,userResults -> {
-
+        activityViewModel.userResults.observe(getViewLifecycleOwner(),userResults -> {
             if(userResults.getCode()==1){
                 currentUser=userResults.getUserResultList().get(0);
                 loadUserdata();
