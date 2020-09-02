@@ -7,9 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
+import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
+import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
 
@@ -177,6 +179,55 @@ public class SeekloRepository {
                 Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
+
+        return data;
+    }
+
+    public MutableLiveData<DegreeResults> getAllDegrees(){
+        MutableLiveData<DegreeResults> data=new MutableLiveData<>();
+
+        Call<DegreeResults> degreeResultsCall=apiInterface.getAllDegreesList();
+
+        degreeResultsCall.enqueue(new Callback<DegreeResults>() {
+            @Override
+            public void onResponse(Call<DegreeResults> call, Response<DegreeResults> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    data.postValue(response.body());
+                }
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<DegreeResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<StudyFieldsResults> getAllStudyFields(){
+        MutableLiveData<StudyFieldsResults> data=new MutableLiveData<>();
+
+        Call<StudyFieldsResults> studyFieldsResultsCall=apiInterface.getAllStudyFieldsList();
+
+        studyFieldsResultsCall.enqueue(new Callback<StudyFieldsResults>() {
+            @Override
+            public void onResponse(Call<StudyFieldsResults> call, Response<StudyFieldsResults> response) {
+                if(response.isSuccessful() && response.body()!=null ){
+                    data.postValue(response.body());
+                }
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<StudyFieldsResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         return data;
     }

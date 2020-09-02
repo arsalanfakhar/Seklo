@@ -44,7 +44,7 @@
         android:id="@+id/userImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/profile_pic"
+        tools:src="@drawable/profile_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5" />

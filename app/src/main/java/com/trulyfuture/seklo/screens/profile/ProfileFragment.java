@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.ProfileViewPagerAdapter;
@@ -129,6 +130,7 @@ public class ProfileFragment extends Fragment {
 
             binding.userImage.setImageBitmap(imageBitmap);
 
+//            Glide.with(this).load(imageBitmap).into(binding.userImage);
         }
 
 

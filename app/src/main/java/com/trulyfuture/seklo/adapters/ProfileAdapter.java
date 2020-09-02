@@ -35,7 +35,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
         return 4;
     }
 
-    class ProfileViewHolder extends RecyclerView.ViewHolder{
+    public class ProfileViewHolder extends RecyclerView.ViewHolder{
 
         public ProfileViewHolder(@NonNull View itemView) {
             super(itemView);

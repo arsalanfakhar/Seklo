@@ -1,5 +1,7 @@
 package com.trulyfuture.seklo.screens.editProfile;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.gesture.GestureLibraries;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -30,6 +33,7 @@ import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
 import com.trulyfuture.seklo.models.Users;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -162,7 +166,7 @@ public class EditProfileFragment extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mFileUri = data.getData();
 
-            Glide.with(this).load(mFileUri).into(binding.userImage);
+//            Glide.with(this).load(mFileUri).into(binding.userImage);
 
 //            binding.userImage.setImageURI(mFileUri);
 
@@ -173,6 +177,7 @@ public class EditProfileFragment extends Fragment {
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
                 String encodedImage = encodeImage(selectedImage);
 
+                encodedImage="data:image/"+getMimeType(getContext(),mFileUri)+";base64,"+encodedImage;
 
                 Log.v(TAG,encodedImage);
 
@@ -198,10 +203,25 @@ public class EditProfileFragment extends Fragment {
 
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
 
         return encImage;
     }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+        }
+        return extension;
+    }
+
 }
