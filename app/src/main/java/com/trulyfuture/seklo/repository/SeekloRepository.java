@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.models.DegreeResults;
+import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
@@ -232,7 +233,53 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> addUserEducation(Map<String,Object> educationMap){
+
+        MutableLiveData<SekloResults> data=new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall=apiInterface.addUserEducation(educationMap);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if(response.isSuccessful() && response.body()!=null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
 
+    public MutableLiveData<EducationResults> getUserEducation(int userId){
+
+        MutableLiveData<EducationResults> data=new MutableLiveData<>();
+
+        Call<EducationResults> resultsCall=apiInterface.getUserEducation(userId);
+
+        resultsCall.enqueue(new Callback<EducationResults>() {
+            @Override
+            public void onResponse(Call<EducationResults> call, Response<EducationResults> response) {
+                if(response.isSuccessful() && response.body()!=null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<EducationResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
 }

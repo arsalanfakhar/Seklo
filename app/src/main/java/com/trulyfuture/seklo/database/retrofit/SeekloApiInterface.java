@@ -1,6 +1,7 @@
 package com.trulyfuture.seklo.database.retrofit;
 
 import com.trulyfuture.seklo.models.DegreeResults;
+import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
@@ -47,6 +48,13 @@ public interface SeekloApiInterface {
 
     @GET("list-study")
     Call<StudyFieldsResults> getAllStudyFieldsList();
+
+    @GET("user-ed/{id}")
+    Call<EducationResults> getUserEducation(@Path("id") int userId);
+
+    @POST("user-ed")
+    Call<SekloResults> addUserEducation(@Body Map<String,Object> educationMap);
+
 
 
 }

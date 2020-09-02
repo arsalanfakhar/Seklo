@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.models.DegreeResults;
+import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
@@ -26,7 +27,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<HrResults> hrResults = new MutableLiveData<>();
     public LiveData<DegreeResults> degreeResults=new MutableLiveData<>();
     public LiveData<StudyFieldsResults> studyFieldsResults=new MutableLiveData<>();
-
+    public LiveData<EducationResults> educationResults=new MutableLiveData<>();
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -42,6 +43,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         getAllHr();
         getAllDegrees();
         getAllStudyFields();
+        getAllUserEducation(userId);
     }
 
     public int getUserId() {
@@ -62,4 +64,5 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private void getAllStudyFields(){studyFieldsResults=seekloRepository.getAllStudyFields();}
 
+    private void getAllUserEducation(int id){educationResults=seekloRepository.getUserEducation(id); }
 }

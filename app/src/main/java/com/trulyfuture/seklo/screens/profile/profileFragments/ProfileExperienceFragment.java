@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trulyfuture.seklo.adapters.ProfileAdapter;
+import com.trulyfuture.seklo.adapters.EducationAdapter;
 import com.trulyfuture.seklo.databinding.FragmentProfileExperienceBinding;
 
 
 public class ProfileExperienceFragment extends Fragment {
     private FragmentProfileExperienceBinding binding;
-    private ProfileAdapter experieceAdapter;
+    private EducationAdapter experieceAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,8 +30,6 @@ public class ProfileExperienceFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        experieceAdapter=new ProfileAdapter(getContext());
-        binding.experienceRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.experienceRv.setAdapter(experieceAdapter);
+//
     }
 }

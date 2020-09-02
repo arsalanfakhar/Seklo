@@ -42,6 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,6 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,8 +80,8 @@
         <AutoCompleteTextView
             android:id="@+id/degreeName"
             android:layout_width="match_parent"
-            android:enabled="false"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="Select Degree"
             android:padding="13dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -99,6 +101,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,9 +109,9 @@
 
         <AutoCompleteTextView
             android:id="@+id/fieldOfStudy"
-            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="Select field of study"
             android:padding="13dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -128,9 +131,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout14"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,8 +162,8 @@
         <AutoCompleteTextView
             android:id="@+id/endYear"
             android:layout_width="match_parent"
-            android:enabled="false"
             android:layout_height="match_parent"
+            android:enabled="false"
             android:hint="Select year"
             android:padding="13dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -213,4 +215,17 @@
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
         app:layout_constraintTop_toTopOf="@+id/textInputLayout14"
         app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <Button
+        android:id="@+id/addEducationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Add"
+        app:backgroundTint="@color/profileBtnColor"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
 </androidx.constraintlayout.widget.ConstraintLayout>

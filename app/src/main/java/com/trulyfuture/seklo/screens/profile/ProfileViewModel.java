@@ -11,6 +11,8 @@ import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.repository.SeekloRepository;
 
+import java.util.Map;
+
 public class ProfileViewModel extends AndroidViewModel {
 
     private SeekloRepository seekloRepository;
@@ -23,5 +25,13 @@ public class ProfileViewModel extends AndroidViewModel {
     public LiveData<SekloResults> updateUserOverView(Users users, int userId){
         return seekloRepository.updateUserDetails(users,userId);
     }
+
+
+    public LiveData<SekloResults> addUserEducation(Map<String,Object> educationMap){
+        return seekloRepository.addUserEducation(educationMap);
+    }
+
+
+
 
 }
