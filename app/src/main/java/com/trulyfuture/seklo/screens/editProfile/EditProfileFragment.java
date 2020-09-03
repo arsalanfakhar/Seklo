@@ -54,6 +54,7 @@ public class EditProfileFragment extends Fragment {
     private Uri mFileUri = null;
 
     private static final String TAG = "EditProfileFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -122,20 +123,15 @@ public class EditProfileFragment extends Fragment {
 
     private void loadUserData() {
 
-        if(TextUtils.isEmpty(currentUser.getUserImage())){
-
+        if (TextUtils.isEmpty(currentUser.getUserImage())) {
             //Load dummy image
-        }
-        else {
 
+        } else {
 
             // Decode base64 string to image
-            byte[] imageBytes = Base64.decode(currentUser.getUserImage(),Base64.DEFAULT);
-            Bitmap imageBitmap=BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
-
-            binding.userImage.setImageBitmap(imageBitmap);
-
-
+            byte[] decodedString = Base64.decode(currentUser.getUserImage(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            binding.userImage.setImageBitmap(decodedByte);
 
 
         }
@@ -177,15 +173,22 @@ public class EditProfileFragment extends Fragment {
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
                 String encodedImage = encodeImage(selectedImage);
 
-                encodedImage="data:image/"+getMimeType(getContext(),mFileUri)+";base64,"+encodedImage;
+                //Set encoded image
+                byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                binding.userImage.setImageBitmap(decodedByte);
 
-                Log.v(TAG,encodedImage);
+
+                encodedImage = "data:image/png;base64," + encodedImage;
+
+                Log.v(TAG, encodedImage);
+
 
                 Map<String, String> userMap = new HashMap<>();
-                userMap.put("userPic",encodedImage);
+                userMap.put("userPic", encodedImage);
 
-                viewModel.updateUserImage(userMap, activityViewModel.getUserId()).observe(getViewLifecycleOwner(),sekloResults -> {
-                    Toast.makeText(getContext(),sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+                viewModel.updateUserImage(userMap, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
+                    Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
             } catch (Exception e) {
@@ -203,7 +206,7 @@ public class EditProfileFragment extends Fragment {
 
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
 

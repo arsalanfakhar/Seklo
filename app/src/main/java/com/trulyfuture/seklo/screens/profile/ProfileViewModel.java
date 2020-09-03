@@ -31,7 +31,9 @@ public class ProfileViewModel extends AndroidViewModel {
         return seekloRepository.addUserEducation(educationMap);
     }
 
-
+    public LiveData<SekloResults> addUserExperience(Map<String,Object> experienceMap){
+        return seekloRepository.addUserExperience(experienceMap);
+    }
 
 
 }

@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.OpenableColumns;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,12 @@ import android.view.ViewGroup;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentUploadCVBinding;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -26,14 +33,13 @@ public class UploadCVFragment extends Fragment {
 
     private FragmentUploadCVBinding binding;
     private static final int UPLOAD_CV_REQUEST = 1;
-
-
+    private static final String TAG = "UploadCVFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding=FragmentUploadCVBinding.inflate(getLayoutInflater());
+        binding = FragmentUploadCVBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -46,10 +52,9 @@ public class UploadCVFragment extends Fragment {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("application/pdf");
-            startActivityForResult(intent,UPLOAD_CV_REQUEST);
+            startActivityForResult(intent, UPLOAD_CV_REQUEST);
 
         });
-
 
 
     }
@@ -83,8 +88,29 @@ public class UploadCVFragment extends Fragment {
 
             binding.fileName.setText(displayName);
 
-
+            String encodedFile=encodeFileToBase64Binary(new File(uri.toString()));
+            Log.v(TAG,encodedFile);
 
         }
     }
+
+    private String encodeFileToBase64Binary(File yourFile) {
+        int size = (int) yourFile.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(yourFile));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
+        return encoded;
+    }
+
 }

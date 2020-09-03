@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Add Experience"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/textView20"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Job Title"
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout10"
+        style="@style/PopupInputRounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+        <EditText
+            android:id="@+id/jobTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Enter Job title"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Employment Type"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout10"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout10" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout11"
+        style="@style/PopupInputRounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21">
+
+        <AutoCompleteTextView
+            android:id="@+id/employmentType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:hint="Select Employment Type"
+            android:padding="13dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Company"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout11"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout11" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout12"
+        style="@style/PopupInputRounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22">
+
+        <EditText
+            android:id="@+id/companyName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:hint="Select Company Name"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Start year"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout13"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout12" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout13"
+        style="@style/PopupInputRounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/textInputLayout14"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView34">
+
+        <AutoCompleteTextView
+            android:id="@+id/startYear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:hint="Select year"
+            android:padding="13dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout14"
+        style="@style/PopupInputRounded"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textInputLayout13"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout13">
+
+        <AutoCompleteTextView
+            android:id="@+id/endYear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:hint="Select year"
+            android:padding="13dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End year"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout14"
+        app:layout_constraintTop_toTopOf="@+id/textView34" />
+
+    <ImageView
+        android:id="@+id/employmentTypeDropBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout11"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout11"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout11"
+        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <ImageView
+        android:id="@+id/startYearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout13"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout13"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout13"
+        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <ImageView
+        android:id="@+id/endYearBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout14"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout14"
+        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <Button
+        android:id="@+id/addExperienceBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Add"
+        app:backgroundTint="@color/profileBtnColor"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
+</androidx.constraintlayout.widget.ConstraintLayout>

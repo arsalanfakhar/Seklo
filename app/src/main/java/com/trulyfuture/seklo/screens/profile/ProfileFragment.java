@@ -125,12 +125,15 @@ public class ProfileFragment extends Fragment {
         }
         else {
             // Decode base64 string to image
-            byte[] imageBytes = Base64.decode(currentUser.getUserImage(),Base64.DEFAULT);
-            Bitmap imageBitmap= BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
-
-            binding.userImage.setImageBitmap(imageBitmap);
-
-//            Glide.with(this).load(imageBitmap).into(binding.userImage);
+//            String removeAdditionalText=currentUser.getUserImage().substring(22);
+//
+//            byte[] decodedString = Base64.decode(removeAdditionalText, Base64.DEFAULT);
+//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//            binding.userImage.setImageBitmap(decodedByte);
+//
+            Glide.with(this).asBitmap()
+                    .load(currentUser.getUserImage())
+                    .into(binding.userImage);
         }
 
 

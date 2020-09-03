@@ -9,9 +9,12 @@ import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
+import com.trulyfuture.seklo.models.EmploymentResults;
+import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
+import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
@@ -41,11 +44,10 @@ public class SeekloRepository {
         resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
             public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
-                if (response.isSuccessful()&& response.body()!=null) {
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body().getResults());
-                }
-                else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -68,10 +70,10 @@ public class SeekloRepository {
         resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
             public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
-                if(response.isSuccessful() && response.body()!=null)
+                if (response.isSuccessful() && response.body() != null)
                     data.postValue(response.body().getResults());
                 else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -95,11 +97,10 @@ public class SeekloRepository {
             @Override
             public void onResponse(Call<UserResults> call, Response<UserResults> response) {
 
-                if (response.isSuccessful() && response.body()!=null) {
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body());
-                }
-                else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -112,120 +113,116 @@ public class SeekloRepository {
         return data;
     }
 
-    public MutableLiveData<SekloResults> updateUserDetails(Users users,int userId){
+    public MutableLiveData<SekloResults> updateUserDetails(Users users, int userId) {
         MutableLiveData<SekloResults> data = new MutableLiveData<>();
 
-        Call<SekloResults> resultsCall=apiInterface.updateUserDetails(users,userId);
+        Call<SekloResults> resultsCall = apiInterface.updateUserDetails(users, userId);
 
         resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
             public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
-                if (response.isSuccessful() && response.body()!=null) {
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body());
-                }
-                else {
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SekloResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         return data;
     }
 
-    public MutableLiveData<SekloResults> updateUserImage(Map<String,String> userMap,int userId){
+    public MutableLiveData<SekloResults> updateUserImage(Map<String, String> userMap, int userId) {
         MutableLiveData<SekloResults> data = new MutableLiveData<>();
 
-        Call<SekloResults> resultsCall=apiInterface.updateUserImage(userMap,userId);
+        Call<SekloResults> resultsCall = apiInterface.updateUserImage(userMap, userId);
 
         resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
             public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
-                if (response.isSuccessful() && response.body()!=null) {
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body());
-                }
-                else {
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SekloResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         return data;
     }
 
-    public MutableLiveData<HrResults> getAllHr(){
-        MutableLiveData<HrResults> data=new MutableLiveData<>();
-        Call<HrResults> hrResultsCall=apiInterface.getAllHr();
+    public MutableLiveData<HrResults> getAllHr() {
+        MutableLiveData<HrResults> data = new MutableLiveData<>();
+        Call<HrResults> hrResultsCall = apiInterface.getAllHr();
 
         hrResultsCall.enqueue(new Callback<HrResults>() {
             @Override
             public void onResponse(Call<HrResults> call, Response<HrResults> response) {
-                if(response.isSuccessful() && response.body()!=null)
+                if (response.isSuccessful() && response.body() != null)
                     data.postValue(response.body());
                 else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<HrResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         return data;
     }
 
-    public MutableLiveData<DegreeResults> getAllDegrees(){
-        MutableLiveData<DegreeResults> data=new MutableLiveData<>();
+    public MutableLiveData<DegreeResults> getAllDegrees() {
+        MutableLiveData<DegreeResults> data = new MutableLiveData<>();
 
-        Call<DegreeResults> degreeResultsCall=apiInterface.getAllDegreesList();
+        Call<DegreeResults> degreeResultsCall = apiInterface.getAllDegreesList();
 
         degreeResultsCall.enqueue(new Callback<DegreeResults>() {
             @Override
             public void onResponse(Call<DegreeResults> call, Response<DegreeResults> response) {
-                if(response.isSuccessful() && response.body()!=null){
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body());
-                }
-                else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<DegreeResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         return data;
     }
 
-    public MutableLiveData<StudyFieldsResults> getAllStudyFields(){
-        MutableLiveData<StudyFieldsResults> data=new MutableLiveData<>();
+    public MutableLiveData<StudyFieldsResults> getAllStudyFields() {
+        MutableLiveData<StudyFieldsResults> data = new MutableLiveData<>();
 
-        Call<StudyFieldsResults> studyFieldsResultsCall=apiInterface.getAllStudyFieldsList();
+        Call<StudyFieldsResults> studyFieldsResultsCall = apiInterface.getAllStudyFieldsList();
 
         studyFieldsResultsCall.enqueue(new Callback<StudyFieldsResults>() {
             @Override
             public void onResponse(Call<StudyFieldsResults> call, Response<StudyFieldsResults> response) {
-                if(response.isSuccessful() && response.body()!=null ){
+                if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body());
-                }
-                else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<StudyFieldsResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -233,24 +230,24 @@ public class SeekloRepository {
         return data;
     }
 
-    public MutableLiveData<SekloResults> addUserEducation(Map<String,Object> educationMap){
+    public MutableLiveData<SekloResults> addUserEducation(Map<String, Object> educationMap) {
 
-        MutableLiveData<SekloResults> data=new MutableLiveData<>();
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
 
-        Call<SekloResults> resultsCall=apiInterface.addUserEducation(educationMap);
+        Call<SekloResults> resultsCall = apiInterface.addUserEducation(educationMap);
 
         resultsCall.enqueue(new Callback<SekloResults>() {
             @Override
             public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
-                if(response.isSuccessful() && response.body()!=null)
+                if (response.isSuccessful() && response.body() != null)
                     data.postValue(response.body());
                 else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<SekloResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -258,28 +255,124 @@ public class SeekloRepository {
     }
 
 
-    public MutableLiveData<EducationResults> getUserEducation(int userId){
+    public MutableLiveData<EducationResults> getUserEducation(int userId) {
 
-        MutableLiveData<EducationResults> data=new MutableLiveData<>();
+        MutableLiveData<EducationResults> data = new MutableLiveData<>();
 
-        Call<EducationResults> resultsCall=apiInterface.getUserEducation(userId);
+        Call<EducationResults> resultsCall = apiInterface.getUserEducation(userId);
 
         resultsCall.enqueue(new Callback<EducationResults>() {
             @Override
             public void onResponse(Call<EducationResults> call, Response<EducationResults> response) {
-                if(response.isSuccessful() && response.body()!=null)
+                if (response.isSuccessful() && response.body() != null)
                     data.postValue(response.body());
                 else
-                    Toast.makeText(application.getApplicationContext(),response.message(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<EducationResults> call, Throwable t) {
-                Toast.makeText(application.getApplicationContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         return data;
     }
+
+    public MutableLiveData<EmploymentResults> getAllEmploymentType() {
+
+        MutableLiveData<EmploymentResults> data = new MutableLiveData<>();
+
+        Call<EmploymentResults> employmentTypeCall = apiInterface.getAllEmploymentType();
+
+        employmentTypeCall.enqueue(new Callback<EmploymentResults>() {
+            @Override
+            public void onResponse(Call<EmploymentResults> call, Response<EmploymentResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<EmploymentResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> addUserExperience(Map<String, Object> experienceMap) {
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall = apiInterface.addUserExperience(experienceMap);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<ExperienceResults> getUserExperience(int userId) {
+        MutableLiveData<ExperienceResults> data = new MutableLiveData<>();
+
+        Call<ExperienceResults> resultsCall = apiInterface.getUserExperience(userId);
+
+        resultsCall.enqueue(new Callback<ExperienceResults>() {
+            @Override
+            public void onResponse(Call<ExperienceResults> call, Response<ExperienceResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ExperienceResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SkillResults> getAllSkillResults() {
+
+        MutableLiveData<SkillResults> data = new MutableLiveData<>();
+
+        Call<SkillResults> skillResults = apiInterface.getSkillResults();
+
+        skillResults.enqueue(new Callback<SkillResults>() {
+            @Override
+            public void onResponse(Call<SkillResults> call, Response<SkillResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SkillResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+
 
 }

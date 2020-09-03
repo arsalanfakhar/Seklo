@@ -59,7 +59,13 @@ public class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.Educ
         }
 
         public void bind(EducationResults.EducationModel educationModel) {
-            profileItemBinding.title.setText(educationModel.getDegreeName());
+            profileItemBinding.title.setText(educationModel.getUniName());
+
+            String subtitle= educationModel.getStudyName()+" , "+educationModel.getDegreeName();
+            profileItemBinding.subtitle.setText(subtitle);
+
+            String duration=educationModel.getStartYear()+" - "+educationModel.getEndYear();
+            profileItemBinding.duration.setText(duration);
         }
 
     }

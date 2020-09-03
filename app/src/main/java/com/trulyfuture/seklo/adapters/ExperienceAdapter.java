@@ -11,17 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.ProfileItemBinding;
 import com.trulyfuture.seklo.models.EducationResults;
+import com.trulyfuture.seklo.models.EmploymentResults;
+import com.trulyfuture.seklo.models.ExperienceResults;
 
 import java.util.ArrayList;
 
 public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.ExperienceViewHolder> {
 
     private Context mContext;
+    private ArrayList<ExperienceResults.Experience> experienceArrayList;
+    private onExperienceClickListener onExperienceClickListener;
 
-
-    public ExperienceAdapter(Context mContext) {
+    public ExperienceAdapter(Context mContext, ArrayList<ExperienceResults.Experience> experienceArrayList, ExperienceAdapter.onExperienceClickListener onExperienceClickListener) {
         this.mContext = mContext;
+        this.experienceArrayList = experienceArrayList;
+        this.onExperienceClickListener = onExperienceClickListener;
     }
+
 
     @NonNull
     @Override
@@ -33,15 +39,20 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Ex
 
     @Override
     public void onBindViewHolder(@NonNull ExperienceViewHolder holder, int position) {
-
+        holder.bind(experienceArrayList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return experienceArrayList.size();
     }
 
-    public class ExperienceViewHolder extends RecyclerView.ViewHolder{
+    public void setExperienceArrayList(ArrayList<ExperienceResults.Experience> experienceArrayList) {
+        this.experienceArrayList = experienceArrayList;
+        notifyDataSetChanged();
+    }
+
+    public class ExperienceViewHolder extends RecyclerView.ViewHolder {
 
         private ProfileItemBinding profileItemBinding;
 
@@ -50,11 +61,24 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Ex
             this.profileItemBinding = profileItemBinding;
         }
 
-        public void bind(){
+        public void bind(ExperienceResults.Experience experience) {
 
+            profileItemBinding.getRoot().setOnClickListener(view -> {
+                onExperienceClickListener.onExperienceClick(experience);
+            });
+
+            profileItemBinding.title.setText(experience.getTitle());
+            String subtitle=experience.getCompany()+" - "+experience.getEmpDes();
+            profileItemBinding.subtitle.setText(subtitle);
+
+            String duration=experience.getStartDate()+" - "+experience.getEndDate();
+            profileItemBinding.duration.setText(duration);
         }
 
     }
 
+    public interface onExperienceClickListener {
+        void onExperienceClick(ExperienceResults.Experience experience);
+    }
 
 }
