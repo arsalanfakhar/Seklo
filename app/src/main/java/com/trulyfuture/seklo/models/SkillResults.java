@@ -1,5 +1,7 @@
 package com.trulyfuture.seklo.models;
 
+import android.content.Intent;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,20 +23,33 @@ public class SkillResults {
 
 
     public static class Skills{
-        @SerializedName("skillId")
+        @SerializedName("userSkillId")
         @Expose
-        private Integer skillId;
-
+        private Integer userSkillId;
+        @SerializedName("userId")
+        @Expose
+        private Integer userId;
         @SerializedName("skillName")
         @Expose
         private String skillName;
 
-        public Integer getSkillId() {
-            return skillId;
+        @SerializedName("skillId")
+        private Integer skillId;
+
+        public Integer getUserSkillId() {
+            return userSkillId;
         }
 
-        public void setSkillId(Integer skillId) {
-            this.skillId = skillId;
+        public void setUserSkillId(Integer userSkillId) {
+            this.userSkillId = userSkillId;
+        }
+
+        public Integer getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Integer userId) {
+            this.userId = userId;
         }
 
         public String getSkillName() {
@@ -45,5 +60,12 @@ public class SkillResults {
             this.skillName = skillName;
         }
 
+        public Integer getSkillId() {
+            return skillId;
+        }
+
+        public void setSkillId(Integer skillId) {
+            this.skillId = skillId;
+        }
     }
 }

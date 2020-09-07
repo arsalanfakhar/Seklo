@@ -353,7 +353,7 @@ public class SeekloRepository {
 
         MutableLiveData<SkillResults> data = new MutableLiveData<>();
 
-        Call<SkillResults> skillResults = apiInterface.getSkillResults();
+        Call<SkillResults> skillResults = apiInterface.getAllSkills();
 
         skillResults.enqueue(new Callback<SkillResults>() {
             @Override
@@ -373,6 +373,55 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SkillResults> getUserSkillsList(int userId){
+
+        MutableLiveData<SkillResults> data=new MutableLiveData<>();
+
+        Call<SkillResults> skillResults=apiInterface.getUserSkills(userId);
+
+        skillResults.enqueue(new Callback<SkillResults>() {
+            @Override
+            public void onResponse(Call<SkillResults> call, Response<SkillResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SkillResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+
+    }
+
+    public MutableLiveData<SekloResults> addUserSkills(Map<String,Object> skillMap){
+
+        MutableLiveData<SekloResults> data=new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall=apiInterface.addUserSkill(skillMap);
+
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
 
 }

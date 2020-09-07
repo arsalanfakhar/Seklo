@@ -68,7 +68,13 @@ public interface SeekloApiInterface {
     Call<ExperienceResults> getUserExperience(@Path("id") int userId);
 
 
-    @GET("list-skill")
-    Call<SkillResults> getSkillResults();
+    @GET("list-skills")
+    Call<SkillResults> getAllSkills();
+
+    @GET("user-skill/user/{id}")
+    Call<SkillResults> getUserSkills(@Path("id") int userId);
+
+    @POST("user-skill")
+    Call<SekloResults> addUserSkill(@Body Map<String,Object> skillMap);
 
 }
