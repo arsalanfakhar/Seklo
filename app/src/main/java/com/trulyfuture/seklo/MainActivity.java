@@ -18,8 +18,11 @@ import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.databinding.ActivityMainBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
+import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -44,12 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
         activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-
-        activityViewModel.userResults.observe(this,userResults -> {
-            Log.v(TAG,String.valueOf(userResults.getUserResultList().get(0).getFullName()));
-        });
+        setupViews();
+        setupObservers();
 
 
+
+
+    }
+
+    private void setupViews(){
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);
 
@@ -79,8 +85,18 @@ public class MainActivity extends AppCompatActivity {
         hrServicesBottomSheetBinding.hrBookframeLayout.setOnClickListener(view -> {
             Toast.makeText(this,"clicked",Toast.LENGTH_SHORT).show();
         });
-
     }
 
+    private void setupObservers(){
+        activityViewModel.userResults.observe(this,userResults -> {
+            Log.v(TAG,String.valueOf(userResults.getUserResultList().get(0).getFullName()));
+        });
+
+        activityViewModel.hrResults.observe(this,hrResults -> {
+            if(hrResults.getHrList()!=null)
+                hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
+        });
+
+    }
 
 }
