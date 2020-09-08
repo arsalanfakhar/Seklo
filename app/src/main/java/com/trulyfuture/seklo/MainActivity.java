@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
-        //Setup adapter
+        //Setup adaptergi
         hrAdapter=new HrAdapter(this);
         GridLayoutManager jobsGridLayoutManager=new GridLayoutManager(this,1);
         jobsGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

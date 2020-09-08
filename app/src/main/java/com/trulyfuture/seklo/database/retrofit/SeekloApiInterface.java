@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.database.retrofit;
 
+import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
@@ -11,6 +12,7 @@ import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -32,6 +34,10 @@ public interface SeekloApiInterface {
 
     @GET("users/{id}")
     Call<UserResults> getUserById(@Path("id") int userId);
+
+    @GET("company")
+    Call<CompanyResults> getAllCompanies();
+
 
     @GET("hr")
     Call<HrResults> getAllHr();
