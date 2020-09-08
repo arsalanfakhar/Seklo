@@ -20,6 +20,7 @@ import com.trulyfuture.seklo.databinding.FragmentCompanyBinding;
 public class CompanyFragment extends Fragment implements CompaniesAdapter.OnCompanyClickListener {
 
     private FragmentCompanyBinding binding;
+
     private CompaniesAdapter companiesAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,4 +46,5 @@ public class CompanyFragment extends Fragment implements CompaniesAdapter.OnComp
     public void onCompanyClick() {
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_companyFragment_to_companyDetailFragment);
     }
+
 }

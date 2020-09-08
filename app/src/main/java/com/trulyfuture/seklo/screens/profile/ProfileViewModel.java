@@ -19,21 +19,24 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
-        seekloRepository=new SeekloRepository(application);
+        seekloRepository = new SeekloRepository(application);
     }
 
-    public LiveData<SekloResults> updateUserOverView(Users users, int userId){
-        return seekloRepository.updateUserDetails(users,userId);
+    public LiveData<SekloResults> updateUserOverView(Users users, int userId) {
+        return seekloRepository.updateUserDetails(users, userId);
     }
 
 
-    public LiveData<SekloResults> addUserEducation(Map<String,Object> educationMap){
+    public LiveData<SekloResults> addUserEducation(Map<String, Object> educationMap) {
         return seekloRepository.addUserEducation(educationMap);
     }
 
-    public LiveData<SekloResults> addUserExperience(Map<String,Object> experienceMap){
+    public LiveData<SekloResults> addUserExperience(Map<String, Object> experienceMap) {
         return seekloRepository.addUserExperience(experienceMap);
     }
 
+    public LiveData<SekloResults> addUserSkill(Map<String, Object> skillMap) {
+        return seekloRepository.addUserSkills(skillMap);
+    }
 
 }

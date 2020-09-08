@@ -33,8 +33,10 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<EducationResults> educationResults=new MutableLiveData<>();
     public LiveData<EmploymentResults> employmentResults=new MutableLiveData<>();
     public LiveData<ExperienceResults> experienceResults=new MutableLiveData<>();
+
     public LiveData<SkillResults> skillResults=new MutableLiveData<>();
 
+    public LiveData<SkillResults> userSkills=new MutableLiveData<>();
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -53,6 +55,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         getAllUserEducation(userId);
         getAllEmploymentType();
         getAllUserExperience(userId);
+        getUserSkills(userId);
+        getAllSkills();
     }
 
     public int getUserId() {
@@ -80,4 +84,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private void getAllUserExperience(int id){experienceResults=seekloRepository.getUserExperience(id);}
 
     private void getAllSkills(){skillResults=seekloRepository.getAllSkillResults();}
+
+    private void getUserSkills(int userId){userSkills=seekloRepository.getUserSkillsList(userId);}
+
 }
