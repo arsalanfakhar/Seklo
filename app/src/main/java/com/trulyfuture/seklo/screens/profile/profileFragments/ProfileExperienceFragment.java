@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
-import com.trulyfuture.seklo.adapters.EducationAdapter;
 import com.trulyfuture.seklo.adapters.ExperienceAdapter;
 import com.trulyfuture.seklo.databinding.AddExperiencePopupBinding;
 import com.trulyfuture.seklo.databinding.FragmentProfileExperienceBinding;

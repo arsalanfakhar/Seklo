@@ -38,6 +38,8 @@ public interface SeekloApiInterface {
     @GET("company")
     Call<CompanyResults> getAllCompanies();
 
+    @GET("company/{companyid}")
+    Call<CompanyResults> getCompanyById(@Path("companyid") int companyid);
 
     @GET("hr")
     Call<HrResults> getAllHr();

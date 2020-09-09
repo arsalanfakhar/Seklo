@@ -25,37 +25,33 @@ public class CompanyResults {
 
 
     public static class Company {
-
         @SerializedName("ID")
         @Expose
         private Integer iD;
+        @SerializedName("Name")
+        @Expose
+        private String name;
         @SerializedName("Email")
         @Expose
         private String email;
-        @SerializedName("Fname")
+        @SerializedName("Website")
         @Expose
-        private String fname;
-        @SerializedName("Lname")
-        @Expose
-        private String lname;
-        @SerializedName("Full_Name")
-        @Expose
-        private String fullName;
+        private String website;
         @SerializedName("Number")
         @Expose
         private String number;
-        @SerializedName("DateTime")
+        @SerializedName("Overview")
         @Expose
-        private String dateTime;
-        @SerializedName("Online")
+        private String overview;
+        @SerializedName("Founded")
         @Expose
-        private Integer online;
-        @SerializedName("Last_Online")
+        private String founded;
+        @SerializedName("profilePic")
         @Expose
-        private String lastOnline;
-        @SerializedName("Country")
+        private String profilePic;
+        @SerializedName("numOfEmlpyees")
         @Expose
-        private String country;
+        private String numOfEmlpyees;
 
         public Integer getID() {
             return iD;
@@ -63,6 +59,14 @@ public class CompanyResults {
 
         public void setID(Integer iD) {
             this.iD = iD;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public String getEmail() {
@@ -73,28 +77,12 @@ public class CompanyResults {
             this.email = email;
         }
 
-        public String getFname() {
-            return fname;
+        public String getWebsite() {
+            return website;
         }
 
-        public void setFname(String fname) {
-            this.fname = fname;
-        }
-
-        public String getLname() {
-            return lname;
-        }
-
-        public void setLname(String lname) {
-            this.lname = lname;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
+        public void setWebsite(String website) {
+            this.website = website;
         }
 
         public String getNumber() {
@@ -105,37 +93,36 @@ public class CompanyResults {
             this.number = number;
         }
 
-        public String getDateTime() {
-            return dateTime;
+        public String getOverview() {
+            return overview;
         }
 
-        public void setDateTime(String dateTime) {
-            this.dateTime = dateTime;
+        public void setOverview(String overview) {
+            this.overview = overview;
         }
 
-        public Integer getOnline() {
-            return online;
+        public String getFounded() {
+            return founded;
         }
 
-        public void setOnline(Integer online) {
-            this.online = online;
+        public void setFounded(String founded) {
+            this.founded = founded;
         }
 
-        public String getLastOnline() {
-            return lastOnline;
+        public String getProfilePic() {
+            return profilePic;
         }
 
-        public void setLastOnline(String lastOnline) {
-            this.lastOnline = lastOnline;
+        public void setProfilePic(String profilePic) {
+            this.profilePic = profilePic;
         }
 
-        public String getCountry() {
-            return country;
+        public String getNumOfEmlpyees() {
+            return numOfEmlpyees;
         }
 
-        public void setCountry(String country) {
-            this.country = country;
-        }
+        public void setNumOfEmlpyees(String numOfEmlpyees) {
+            this.numOfEmlpyees = numOfEmlpyees;}
 
     }
 }

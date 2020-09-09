@@ -33,7 +33,6 @@ public class SeekloRepository {
     public SeekloRepository(Application application) {
         this.application = application;
         apiInterface = RetrofitService.getInterface();
-
     }
 
     public MutableLiveData<Results> createUser(Users user) {
