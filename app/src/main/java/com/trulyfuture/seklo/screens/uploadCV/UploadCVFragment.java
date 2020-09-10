@@ -90,12 +90,15 @@ public class UploadCVFragment extends Fragment {
 
             binding.fileName.setText(displayName);
 
-            String encodedFile=encodeFileToBase64Binary(new File(myFile.getPath()));
+//            String encodedFile=encodeFileToBase64Binary(new File(myFile.getPath()));
 //            Log.v(TAG,encodedFile);
 
-            String realPath=getRealPathFromURI(getContext(),uri);
-            Log.v(TAG, realPath);
+//            String realPath=getRealPathFromURI(getContext(),uri);
+//            Log.v(TAG, realPath);
 
+            //Load pdf
+            binding.pdfView.fromUri(uri).load();
+            binding.pdfView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -133,4 +136,5 @@ public class UploadCVFragment extends Fragment {
         }
 
     }
+
 }
