@@ -7,11 +7,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
+import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.SkillResults;
@@ -19,6 +21,7 @@ import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -372,11 +375,11 @@ public class SeekloRepository {
         return data;
     }
 
-    public MutableLiveData<SkillResults> getUserSkillsList(int userId){
+    public MutableLiveData<SkillResults> getUserSkillsList(int userId) {
 
-        MutableLiveData<SkillResults> data=new MutableLiveData<>();
+        MutableLiveData<SkillResults> data = new MutableLiveData<>();
 
-        Call<SkillResults> skillResults=apiInterface.getUserSkills(userId);
+        Call<SkillResults> skillResults = apiInterface.getUserSkills(userId);
 
         skillResults.enqueue(new Callback<SkillResults>() {
             @Override
@@ -397,11 +400,11 @@ public class SeekloRepository {
 
     }
 
-    public MutableLiveData<SekloResults> addUserSkills(Map<String,Object> skillMap){
+    public MutableLiveData<SekloResults> addUserSkills(Map<String, Object> skillMap) {
 
-        MutableLiveData<SekloResults> data=new MutableLiveData<>();
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
 
-        Call<SekloResults> resultsCall=apiInterface.addUserSkill(skillMap);
+        Call<SekloResults> resultsCall = apiInterface.addUserSkill(skillMap);
 
 
         resultsCall.enqueue(new Callback<SekloResults>() {
@@ -423,4 +426,74 @@ public class SeekloRepository {
     }
 
 
+    public MutableLiveData<CompanyResults> getAllCompanies() {
+
+        MutableLiveData<CompanyResults> data = new MutableLiveData<>();
+        Call<CompanyResults> companyResultsCall = apiInterface.getAllCompanies();
+
+        companyResultsCall.enqueue(new Callback<CompanyResults>() {
+            @Override
+            public void onResponse(Call<CompanyResults> call, Response<CompanyResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CompanyResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<CompanyResults> getCompanyById(int companyId) {
+
+        MutableLiveData<CompanyResults> data = new MutableLiveData<>();
+        Call<CompanyResults> companyByIdCall = apiInterface.getCompanyById(companyId);
+
+        companyByIdCall.enqueue(new Callback<CompanyResults>() {
+            @Override
+            public void onResponse(Call<CompanyResults> call, Response<CompanyResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<CompanyResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<JobsResults> getAllJobs(int userId) {
+        MutableLiveData<JobsResults> data = new MutableLiveData<>();
+
+        Call<JobsResults> jobsResultsCall = apiInterface.getAllJobs(userId);
+
+        jobsResultsCall.enqueue(new Callback<JobsResults>() {
+            @Override
+            public void onResponse(Call<JobsResults> call, Response<JobsResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<JobsResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return data;
+    }
+
 }
+

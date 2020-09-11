@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,54 +19,65 @@ import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.adapters.JobsAdapter;
 import com.trulyfuture.seklo.databinding.FragmentHomeBinding;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.JobsResults;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickListerner {
     private FragmentHomeBinding fragmentHomeBinding;
     private JobsAdapter jobsAdapter;
     private HrAdapter hrAdapter;
 
     private MainActivityViewModel activityViewModel;
+
+    private static final String TAG = "HomeFragment";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentHomeBinding=FragmentHomeBinding.inflate(getLayoutInflater());
+        fragmentHomeBinding = FragmentHomeBinding.inflate(getLayoutInflater());
         return fragmentHomeBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        activityViewModel= new ViewModelProvider(this).get(MainActivityViewModel.class);
+        activityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        init();
-
-        loadData();
-    }
-
-    private void loadData() {
-
-        activityViewModel.hrResults.observe(getViewLifecycleOwner(),hrResults -> {
-            if(hrResults.getHrList()!=null)
-                hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
-        });
+        setupViews();
+        setupObservers();
 
     }
 
-    private void init(){
-        jobsAdapter=new JobsAdapter(getContext());
-        GridLayoutManager hrGridLayoutManager=new GridLayoutManager(getContext(),2);
+    private void setupViews() {
+        jobsAdapter = new JobsAdapter(this);
+        GridLayoutManager hrGridLayoutManager = new GridLayoutManager(getContext(), 2);
         hrGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         fragmentHomeBinding.jobsRV.setLayoutManager(hrGridLayoutManager);
         fragmentHomeBinding.jobsRV.setAdapter(jobsAdapter);
 
-        hrAdapter=new HrAdapter(getContext());
-        fragmentHomeBinding.hrRV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,false));
+        hrAdapter = new HrAdapter(getContext());
+        fragmentHomeBinding.hrRV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         fragmentHomeBinding.hrRV.setAdapter(hrAdapter);
+    }
+
+    private void setupObservers() {
+        activityViewModel.hrResults.observe(getViewLifecycleOwner(), hrResults -> {
+            if (hrResults.getHrList() != null)
+                hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
+        });
 
 
+        activityViewModel.allJobs.observe(getViewLifecycleOwner(),jobsResults -> {
+            jobsAdapter.submitList(jobsResults.getResults());
+        });
+
+
+    }
+
+
+    @Override
+    public void onJobClick(JobsResults.Jobs job) {
 
     }
 }

@@ -6,13 +6,13 @@ import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -84,5 +84,9 @@ public interface SeekloApiInterface {
 
     @POST("user-skill")
     Call<SekloResults> addUserSkill(@Body Map<String,Object> skillMap);
+
+    @GET("jobs/all-jobs/{userId}")
+    Call<JobsResults> getAllJobs(@Path("userId") int userId);
+
 
 }

@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupObservers(){
         activityViewModel.userResults.observe(this,userResults -> {
-            Log.v(TAG,String.valueOf(userResults.getUserResultList().get(0).getFullName()));
+
         });
 
         activityViewModel.hrResults.observe(this,hrResults -> {

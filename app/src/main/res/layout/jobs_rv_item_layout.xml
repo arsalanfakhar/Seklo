@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="150dp"
-    android:layout_width="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="130dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="25dp"
+    app:cardCornerRadius="10dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="100dp"
-        android:layout_height="130dp"
-        app:cardCornerRadius="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="40dp"
-        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/jobImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/profile_pic" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#B1ACAC"
-            android:layout_gravity="bottom">
+            android:layout_alignParentBottom="true"
+            android:background="#99B1ACAC">
+
+            <TextView
+                android:id="@+id/jobName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                tools:text="Android Dev" />
+
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
 
 
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

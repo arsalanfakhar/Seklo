@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -46,7 +46,7 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/uploadCvBtn"
-            tools:src="@drawable/profile_pic" />
+            android:src="@drawable/nouser" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/uploadCvBtn"

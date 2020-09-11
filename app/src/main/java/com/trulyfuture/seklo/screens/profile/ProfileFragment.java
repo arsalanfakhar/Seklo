@@ -82,6 +82,22 @@ public class ProfileFragment extends Fragment {
             Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_uploadCVFragment);
         });
 
+        binding.overviewBtn.setOnClickListener(view -> {
+            binding.profileViewpager.setCurrentItem(0);
+        });
+
+        binding.educationBtn.setOnClickListener(view -> {
+            binding.profileViewpager.setCurrentItem(1);
+        });
+
+        binding.experienceBtn.setOnClickListener(view -> {
+            binding.profileViewpager.setCurrentItem(2);
+        });
+
+        binding.skillsBtn.setOnClickListener(view -> {
+            binding.profileViewpager.setCurrentItem(3);
+        });
+
     }
 
     private void changeViewPagerTabsSelection(int selected) {
@@ -122,6 +138,9 @@ public class ProfileFragment extends Fragment {
     private void loadUserdata(){
         if(TextUtils.isEmpty(currentUser.getUserImage())){
             //TODO Load dummy image
+            Glide.with(this)
+                    .load(R.drawable.nouser)
+                    .into(binding.userImage);
         }
         else {
             // Decode base64 string to image
@@ -131,9 +150,9 @@ public class ProfileFragment extends Fragment {
 //            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 //            binding.userImage.setImageBitmap(decodedByte);
 //
-            Glide.with(this).asBitmap()
-                    .load(currentUser.getUserImage())
-                    .into(binding.userImage);
+//            Glide.with(this).asBitmap()
+//                    .load(currentUser.getUserImage())
+//                    .into(binding.userImage);
         }
 
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Users;
@@ -38,5 +39,7 @@ public class ProfileViewModel extends AndroidViewModel {
     public LiveData<SekloResults> addUserSkill(Map<String, Object> skillMap) {
         return seekloRepository.addUserSkills(skillMap);
     }
+
+
 
 }

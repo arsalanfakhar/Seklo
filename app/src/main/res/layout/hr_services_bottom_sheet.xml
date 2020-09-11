@@ -70,9 +70,7 @@
                 android:id="@+id/servicesHrRV"
                 android:layout_width="0dp"
                 android:layout_height="190dp"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView7"
@@ -86,7 +84,7 @@
                 android:background="#0A0A0A"
                 app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/servicesHrRV"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/servicesHrRV">
 
                 <ImageView
@@ -102,7 +100,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="#343434"
-                app:layout_constraintEnd_toEndOf="@+id/servicesHrRV"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/hrBookframeLayout"
                 app:layout_constraintTop_toTopOf="@+id/hrBookframeLayout">
@@ -123,7 +121,7 @@
                 android:background="#343434"
                 app:layout_constraintEnd_toStartOf="@+id/frameLayout"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/servicesHrRV"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/hrBookframeLayout">
 
                 <ImageView
@@ -139,7 +137,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:background="#0A0A0A"
-                app:layout_constraintEnd_toEndOf="@+id/servicesHrRV"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/frameLayout3"
                 app:layout_constraintTop_toTopOf="@+id/frameLayout3">
@@ -161,8 +159,8 @@
                 android:textAllCaps="false"
                 app:backgroundTint="#343434"
                 app:cornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="@+id/servicesHrRV"
-                app:layout_constraintStart_toStartOf="@+id/servicesHrRV"
+                app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
+                app:layout_constraintStart_toStartOf="@+id/frameLayout3"
                 app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
 
             <com.google.android.material.button.MaterialButton
