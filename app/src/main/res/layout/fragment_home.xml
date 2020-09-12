@@ -89,17 +89,28 @@
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             tools:listitem="@layout/hr_rv_item_layout" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/loginBtn"
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/loginBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:clickable="true"-->
+<!--            app:backgroundTint="@color/white"-->
+<!--            app:fabSize="mini"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:srcCompat="@drawable/ic_next_arrow" />-->
+
+        <TextView
+            android:id="@+id/viewAllJobsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:clickable="true"
-            app:backgroundTint="@color/white"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="24dp"
+            android:text="View All"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_next_arrow" />
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

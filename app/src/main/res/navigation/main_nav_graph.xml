@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/allJobsFragment"
-        android:name="com.trulyfuture.seklo.AllJobsFragment"
+        android:name="com.trulyfuture.seklo.screens.alljobs.AllJobsFragment"
         android:label="fragment_all_jobs"
         tools:layout="@layout/fragment_all_jobs" >
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/jobDetailFragment"
-        android:name="com.trulyfuture.seklo.JobDetailFragment"
+        android:name="com.trulyfuture.seklo.screens.jobDetail.JobDetailFragment"
         android:label="fragment_job_detail"
         tools:layout="@layout/fragment_job_detail" />
 </navigation>

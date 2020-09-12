@@ -34,4 +34,13 @@
     </style>
 
 
+    <style name="JobDetailHeading">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="JobDetailText">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    </style>
+
 </resources>

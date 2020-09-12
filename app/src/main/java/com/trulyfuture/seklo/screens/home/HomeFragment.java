@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.trulyfuture.seklo.MainActivityViewModel;
+import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.adapters.JobsAdapter;
 import com.trulyfuture.seklo.databinding.FragmentHomeBinding;
@@ -59,6 +61,11 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
         hrAdapter = new HrAdapter(getContext());
         fragmentHomeBinding.hrRV.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         fragmentHomeBinding.hrRV.setAdapter(hrAdapter);
+
+        fragmentHomeBinding.viewAllJobsBtn.setOnClickListener(view -> {
+            Navigation.findNavController(fragmentHomeBinding.getRoot()).navigate(R.id.action_homeFragment_to_allJobsFragment);
+        });
+
     }
 
     private void setupObservers() {

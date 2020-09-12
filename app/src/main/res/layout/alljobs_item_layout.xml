@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,36 +8,37 @@
     android:background="@color/colorPrimary">
 
 
-    <ImageView
-        android:id="@+id/imageView5"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/allJobImage"
         android:layout_width="100dp"
+        app:riv_corner_radius="10dp"
         android:layout_height="100dp"
+        android:scaleType="centerCrop"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/allJobTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="HR Executive"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+        app:layout_constraintStart_toEndOf="@+id/allJobImage"
+        app:layout_constraintTop_toTopOf="@+id/allJobImage" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/allJobCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Habib Oils"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintStart_toStartOf="@+id/allJobTitle"
+        app:layout_constraintTop_toBottomOf="@+id/allJobTitle" />
 
     <TextView
         android:id="@+id/textView14"
@@ -44,11 +46,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Posted on :"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintStart_toStartOf="@+id/allJobCompany"
+        app:layout_constraintTop_toBottomOf="@+id/allJobCompany" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/allJobPostingDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

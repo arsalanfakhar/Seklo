@@ -3,6 +3,7 @@ package com.trulyfuture.seklo.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class JobsResults {
@@ -19,7 +20,7 @@ public class JobsResults {
         this.results = results;
     }
 
-    public static class Jobs{
+    public static class Jobs implements Serializable {
         @SerializedName("Job_ID")
         @Expose
         private Integer jobID;
