@@ -7,6 +7,7 @@ import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
+import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
@@ -23,8 +24,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface SeekloApiInterface {
-
-
 
     @POST("users")
     Call<SekloResults> createUser(@Body Users user);
@@ -90,5 +89,8 @@ public interface SeekloApiInterface {
 
     @GET("jobs/mobile-jobs")
     Call<JobsResults> getHomePageJobs();
+
+    @GET("resume-upload/{userId}")
+    Call<ResumeResults> getResumeById(@Path("userId") int userId);
 
 }

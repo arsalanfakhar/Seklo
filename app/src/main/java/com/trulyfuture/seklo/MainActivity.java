@@ -1,6 +1,7 @@
 package com.trulyfuture.seklo;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,21 +11,32 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.CarrierConfigManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.databinding.ActivityMainBinding;
+import com.trulyfuture.seklo.databinding.CareerCounselingPopupBinding;
+import com.trulyfuture.seklo.databinding.CoverLetterPopupBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
+import com.trulyfuture.seklo.databinding.ResumeReviewPopupBinding;
+import com.trulyfuture.seklo.databinding.ResumeWritingPopupBinding;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.UserResults;
+import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.payment.PaymentActivity;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -33,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private HrServicesBottomSheetBinding hrServicesBottomSheetBinding;
 
     private MainActivityViewModel activityViewModel;
+    private Users currentUser;
+    private ResumeResults.Resume userResume;
 
     private static final String TAG = "MainActivity";
 
@@ -40,44 +54,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding=ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         init();
     }
 
-    private void init(){
+    private void init() {
 
-        activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         setupViews();
         setupObservers();
 
 
-
-
     }
 
-    private void setupViews(){
+    private void setupViews() {
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);
 
         //setup bottom navigation
-        NavController navController= Navigation.findNavController(this,R.id.navHostfragment);
-        NavigationUI.setupWithNavController(binding.bottomNavigationView,navController);
+        NavController navController = Navigation.findNavController(this, R.id.navHostfragment);
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         //Bottom sheet binding
-        ConstraintLayout hrconstraintLayout=findViewById(R.id.hr_bottom_sheet);
-        hrServicesBottomSheetBinding=HrServicesBottomSheetBinding.bind(hrconstraintLayout);
+        ConstraintLayout hrconstraintLayout = findViewById(R.id.hr_bottom_sheet);
+        hrServicesBottomSheetBinding = HrServicesBottomSheetBinding.bind(hrconstraintLayout);
 
         //Setting bottom sheet default state
-        bottomSheetBehavior=BottomSheetBehavior.from(hrconstraintLayout);
+        bottomSheetBehavior = BottomSheetBehavior.from(hrconstraintLayout);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         //to disable the drag
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState==BottomSheetBehavior.STATE_DRAGGING){
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 }
             }
@@ -94,32 +106,177 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Setup adaptergi
-        hrAdapter=new HrAdapter(this);
-        GridLayoutManager jobsGridLayoutManager=new GridLayoutManager(this,1);
+        hrAdapter = new HrAdapter(this);
+        GridLayoutManager jobsGridLayoutManager = new GridLayoutManager(this, 1);
         jobsGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         hrServicesBottomSheetBinding.servicesHrRV.setLayoutManager(jobsGridLayoutManager);
         hrServicesBottomSheetBinding.servicesHrRV.setAdapter(hrAdapter);
 
-        hrServicesBottomSheetBinding.hrBookframeLayout.setOnClickListener(view -> {
-            Toast.makeText(this,"clicked",Toast.LENGTH_SHORT).show();
-        });
 
         hrServicesBottomSheetBinding.closeServicesBtn.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
-    }
-
-    private void setupObservers(){
-        activityViewModel.userResults.observe(this,userResults -> {
-
+        hrServicesBottomSheetBinding.resumeReview.setOnClickListener(v -> {
+            showResumeReviewPopup();
         });
 
-        activityViewModel.hrResults.observe(this,hrResults -> {
-            if(hrResults.getHrList()!=null)
+        hrServicesBottomSheetBinding.careerCounseling.setOnClickListener(v -> {
+            showCareerCounselingPopup();
+        });
+
+        hrServicesBottomSheetBinding.resumeWriting.setOnClickListener(v -> {
+            showResumeWritingPopup();
+        });
+
+        hrServicesBottomSheetBinding.coverLetter.setOnClickListener(v -> {
+            showCoverLetterPopup();
+        });
+
+    }
+
+    private void setupObservers() {
+        activityViewModel.userResults.observe(this, userResults -> {
+            currentUser=userResults.getUserResultList().get(0);
+        });
+
+        activityViewModel.hrResults.observe(this, hrResults -> {
+            if (hrResults.getHrList() != null)
                 hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
         });
 
+        activityViewModel.userResume.observe(this,resumeResults -> {
+            userResume=resumeResults.getResults().get(0);
+        });
+
     }
+
+    private void showResumeReviewPopup() {
+        ResumeReviewPopupBinding resumeReviewPopupBinding = ResumeReviewPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(resumeReviewPopupBinding.getRoot());
+
+
+        List<String> daysList=new ArrayList<>();
+        daysList.add("Days: 2");
+        daysList.add("Days: 4");
+        daysList.add("Days: 6");
+        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout,daysList );
+        resumeReviewPopupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        resumeReviewPopupBinding.timeSlotDropdown.setOnClickListener(v -> {
+            resumeReviewPopupBinding.timeSlot.showDropDown();
+        });
+        resumeReviewPopupBinding.email.setText(currentUser.getEmail());
+        resumeReviewPopupBinding.resumeName.setText(userResume.getResumeName());
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        resumeReviewPopupBinding.proceedBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, PaymentActivity.class));
+        });
+    }
+
+    private void showCareerCounselingPopup() {
+        CareerCounselingPopupBinding popupBinding = CareerCounselingPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(popupBinding.getRoot());
+
+        List<String> daysList=new ArrayList<>();
+        daysList.add("Days: 2");
+        daysList.add("Days: 4");
+        daysList.add("Days: 6");
+        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout,daysList );
+        popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        popupBinding.timeSlopDropdown.setOnClickListener(v -> {
+            popupBinding.timeSlot.showDropDown();
+        });
+
+        popupBinding.email.setText(currentUser.getEmail());
+        popupBinding.name.setText(currentUser.getFullName());
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+
+        popupBinding.proceedBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, PaymentActivity.class));
+        });
+    }
+
+    private void showResumeWritingPopup() {
+        ResumeWritingPopupBinding popupBinding = ResumeWritingPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(popupBinding.getRoot());
+
+        List<String> daysList=new ArrayList<>();
+        daysList.add("Days: 2");
+        daysList.add("Days: 4");
+        daysList.add("Days: 6");
+        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout,daysList );
+        popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        popupBinding.timeSlopDropdown.setOnClickListener(v -> {
+            popupBinding.timeSlot.showDropDown();
+        });
+
+
+        popupBinding.email.setText(currentUser.getEmail());
+
+        List<String> choiceList=new ArrayList<>();
+        choiceList.add("CV");
+        choiceList.add("Resume");
+        ArrayAdapter<String> choiceArrayAdapter=new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout,choiceList );
+        popupBinding.choiceTxt.setAdapter(choiceArrayAdapter);
+
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popupBinding.proceedBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, PaymentActivity.class));
+        });
+    }
+
+    private void showCoverLetterPopup() {
+        CoverLetterPopupBinding popupBinding = CoverLetterPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(popupBinding.getRoot());
+
+        List<String> daysList=new ArrayList<>();
+        daysList.add("Days: 2");
+        daysList.add("Days: 4");
+        daysList.add("Days: 6");
+        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout,daysList );
+        popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        popupBinding.timeSlotDropdown.setOnClickListener(v -> {
+            popupBinding.timeSlot.showDropDown();
+        });
+
+
+        popupBinding.email.setText(currentUser.getEmail());
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popupBinding.proceedBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, PaymentActivity.class));
+        });
+    }
+
 
 }

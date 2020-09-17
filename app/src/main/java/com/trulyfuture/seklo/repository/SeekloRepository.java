@@ -14,6 +14,7 @@ import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
+import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
 import com.trulyfuture.seklo.models.SkillResults;
@@ -495,7 +496,7 @@ public class SeekloRepository {
         return data;
     }
 
-    public MutableLiveData<JobsResults> getHomePageJobs(){
+    public MutableLiveData<JobsResults> getHomePageJobs() {
         MutableLiveData<JobsResults> data = new MutableLiveData<>();
 
         Call<JobsResults> jobsResultsCall = apiInterface.getHomePageJobs();
@@ -516,7 +517,29 @@ public class SeekloRepository {
         });
 
         return data;
+    }
 
+    public MutableLiveData<ResumeResults> getUserResume(int userId) {
+        MutableLiveData<ResumeResults> data = new MutableLiveData<>();
+
+        Call<ResumeResults> resumeResultsCall = apiInterface.getResumeById(userId);
+
+        resumeResultsCall.enqueue(new Callback<ResumeResults>() {
+            @Override
+            public void onResponse(Call<ResumeResults> call, Response<ResumeResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResumeResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
     }
 
 }
