@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tips_tricks"><![CDATA[Tips & Tricks]]></string>
     <string name="company_description">INTERWOOD is a BRAND and a lifestyle which is affordable, aesthetically pleasing, durable and comparable in quality and workmanship to the best in the world</string>
+    <string name="noteChanging">Note: If you wish to change email or resume then please change it from your profile settings</string>
+    <string name="noteChangingv1">Note: If you wish to change email then please change it from your profile settings</string>
 </resources>

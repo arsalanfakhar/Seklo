@@ -495,5 +495,29 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<JobsResults> getHomePageJobs(){
+        MutableLiveData<JobsResults> data = new MutableLiveData<>();
+
+        Call<JobsResults> jobsResultsCall = apiInterface.getHomePageJobs();
+
+        jobsResultsCall.enqueue(new Callback<JobsResults>() {
+            @Override
+            public void onResponse(Call<JobsResults> call, Response<JobsResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<JobsResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+
+    }
+
 }
 

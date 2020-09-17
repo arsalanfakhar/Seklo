@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -70,6 +72,22 @@ public class MainActivity extends AppCompatActivity {
         //Setting bottom sheet default state
         bottomSheetBehavior=BottomSheetBehavior.from(hrconstraintLayout);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        //to disable the drag
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if(newState==BottomSheetBehavior.STATE_DRAGGING){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
 
         binding.hrServiceBtn.setOnClickListener(view -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -85,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
         hrServicesBottomSheetBinding.hrBookframeLayout.setOnClickListener(view -> {
             Toast.makeText(this,"clicked",Toast.LENGTH_SHORT).show();
         });
+
+        hrServicesBottomSheetBinding.closeServicesBtn.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
+
     }
 
     private void setupObservers(){

@@ -88,5 +88,7 @@ public interface SeekloApiInterface {
     @GET("jobs/all-jobs/{userId}")
     Call<JobsResults> getAllJobs(@Path("userId") int userId);
 
+    @GET("jobs/mobile-jobs")
+    Call<JobsResults> getHomePageJobs();
 
 }

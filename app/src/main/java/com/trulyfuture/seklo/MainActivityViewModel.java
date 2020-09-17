@@ -43,12 +43,13 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<CompanyResults> allCompanies = new MutableLiveData<>();
     public LiveData<JobsResults> allJobs = new MutableLiveData<>();
+    public LiveData<JobsResults> homePageJobs = new MutableLiveData<>();
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         seekloRepository = new SeekloRepository(application);
         SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(application.getApplicationContext(), SharedPreferenceClass.UserDetails);
-        userId=sharedPreferenceClass.getInteger("userId");
+        userId = sharedPreferenceClass.getInteger("userId");
         initialize();
     }
 
@@ -64,6 +65,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         getAllSkills();
         getAllCompanies();
         getAllJobs(userId);
+        getHomeJobs();
     }
 
     public int getUserId() {
@@ -114,6 +116,10 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private void getAllJobs(int id) {
         allJobs = seekloRepository.getAllJobs(id);
+    }
+
+    private void getHomeJobs() {
+        homePageJobs = seekloRepository.getHomePageJobs();
     }
 
 

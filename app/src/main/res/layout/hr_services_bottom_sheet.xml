@@ -88,9 +88,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/servicesHrRV">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/resumeReview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/ic_hr_book" />
             </FrameLayout>
@@ -106,10 +107,11 @@
                 app:layout_constraintTop_toTopOf="@+id/hrBookframeLayout">
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/careerCounseling"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_hr_profile" />
             </FrameLayout>
 
@@ -125,10 +127,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/hrBookframeLayout">
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/resumeWriting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_hr_appoint" />
             </FrameLayout>
 
@@ -143,10 +146,11 @@
                 app:layout_constraintTop_toTopOf="@+id/frameLayout3">
 
                 <ImageView
-                    android:id="@+id/imageView8"
+                    android:id="@+id/coverLetter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:srcCompat="@drawable/ic_hr_num" />
             </FrameLayout>
 
@@ -179,4 +183,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/closeServicesBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

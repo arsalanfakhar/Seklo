@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
         });
 
 
-        activityViewModel.allJobs.observe(getViewLifecycleOwner(),jobsResults -> {
+        activityViewModel.homePageJobs.observe(getViewLifecycleOwner(),jobsResults -> {
             jobsAdapter.submitList(jobsResults.getResults());
         });
 
