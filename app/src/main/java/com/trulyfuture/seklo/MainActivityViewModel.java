@@ -15,6 +15,7 @@ import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
+import com.trulyfuture.seklo.models.ServicesResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
@@ -48,6 +49,9 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<ResumeResults> userResume = new MutableLiveData<>();
 
+    public LiveData<ServicesResults> allSevices = new MutableLiveData<>();
+
+
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         seekloRepository = new SeekloRepository(application);
@@ -70,6 +74,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         getAllJobs(userId);
         getHomeJobs();
         getUserResume(userId);
+        getAllServices();
     }
 
     public int getUserId() {
@@ -128,6 +133,14 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private void getUserResume(int id) {
         userResume = seekloRepository.getUserResume(id);
+    }
+
+    private void getAllServices() {
+        allSevices = seekloRepository.getAllServices();
+    }
+
+    private LiveData<ServicesResults> getServiceById(int serviceId) {
+        return seekloRepository.getServiceById(serviceId);
     }
 
 }

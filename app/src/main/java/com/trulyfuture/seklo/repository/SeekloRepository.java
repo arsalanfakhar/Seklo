@@ -17,6 +17,7 @@ import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
+import com.trulyfuture.seklo.models.ServicesResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
@@ -541,6 +542,55 @@ public class SeekloRepository {
 
         return data;
     }
+
+    public MutableLiveData<ServicesResults> getAllServices() {
+
+        MutableLiveData<ServicesResults> data = new MutableLiveData<>();
+
+        Call<ServicesResults> call = apiInterface.getAllServices();
+
+        call.enqueue(new Callback<ServicesResults>() {
+            @Override
+            public void onResponse(Call<ServicesResults> call, Response<ServicesResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ServicesResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<ServicesResults> getServiceById(int serviceId) {
+
+        MutableLiveData<ServicesResults> data = new MutableLiveData<>();
+
+        Call<ServicesResults> call = apiInterface.getServiceById(serviceId);
+
+        call.enqueue(new Callback<ServicesResults>() {
+            @Override
+            public void onResponse(Call<ServicesResults> call, Response<ServicesResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ServicesResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
 
 }
 

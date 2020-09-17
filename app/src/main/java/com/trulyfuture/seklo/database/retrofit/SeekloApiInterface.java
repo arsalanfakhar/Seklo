@@ -9,6 +9,7 @@ import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
+import com.trulyfuture.seklo.models.ServicesResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
 import com.trulyfuture.seklo.models.UserResults;
@@ -92,5 +93,11 @@ public interface SeekloApiInterface {
 
     @GET("resume-upload/{userId}")
     Call<ResumeResults> getResumeById(@Path("userId") int userId);
+
+    @GET("service-data")
+    Call<ServicesResults> getAllServices();
+
+    @GET("service-data/{id}")
+    Call<ServicesResults> getServiceById(@Path("id") int serviceId);
 
 }
