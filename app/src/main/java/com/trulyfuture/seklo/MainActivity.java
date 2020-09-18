@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.CarrierConfigManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,12 +23,14 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
+import com.trulyfuture.seklo.adapters.HrAdapterSelected;
 import com.trulyfuture.seklo.databinding.ActivityMainBinding;
 import com.trulyfuture.seklo.databinding.CareerCounselingPopupBinding;
 import com.trulyfuture.seklo.databinding.CoverLetterPopupBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
 import com.trulyfuture.seklo.databinding.ResumeReviewPopupBinding;
 import com.trulyfuture.seklo.databinding.ResumeWritingPopupBinding;
+import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.ServicesResults;
@@ -36,14 +39,16 @@ import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.payment.PaymentActivity;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
+import org.w3c.dom.Text;
+
 import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HrAdapterSelected.onHrAdapterSelected {
     private ActivityMainBinding binding;
     private BottomSheetBehavior bottomSheetBehavior;
-    private HrAdapter hrAdapter;
+    private HrAdapterSelected hrAdapter;
     private HrServicesBottomSheetBinding hrServicesBottomSheetBinding;
 
     private MainActivityViewModel activityViewModel;
@@ -51,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
     private ResumeResults.Resume userResume;
     private List<ServicesResults.Services> servicesList;
 
+    private int userId;
     private static final String TAG = "MainActivity";
+
+    private HrResults.Hr selectedHr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
         setupObservers();
 
+
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        userId = sharedPreferenceClass.getInteger("userId");
 
     }
 
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Setup adaptergi
-        hrAdapter = new HrAdapter(this);
+        hrAdapter = new HrAdapterSelected(this, this);
         GridLayoutManager jobsGridLayoutManager = new GridLayoutManager(this, 1);
         jobsGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         hrServicesBottomSheetBinding.servicesHrRV.setLayoutManager(jobsGridLayoutManager);
@@ -121,19 +132,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
         hrServicesBottomSheetBinding.resumeReview.setOnClickListener(v -> {
-            showResumeReviewPopup();
+
+            if (selectedHr == null) {
+                Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
+            } else {
+                showResumeReviewPopup();
+            }
+
         });
 
         hrServicesBottomSheetBinding.careerCounseling.setOnClickListener(v -> {
-            showCareerCounselingPopup();
+            if (selectedHr == null) {
+                Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
+            } else {
+                showCareerCounselingPopup();
+            }
+
+
         });
 
         hrServicesBottomSheetBinding.resumeWriting.setOnClickListener(v -> {
-            showResumeWritingPopup();
+            if (selectedHr == null) {
+                Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
+            } else {
+                showResumeWritingPopup();
+            }
+
+
         });
 
         hrServicesBottomSheetBinding.coverLetter.setOnClickListener(v -> {
-            showCoverLetterPopup();
+            if (selectedHr == null) {
+                Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
+            } else {
+                showCoverLetterPopup();
+            }
+
+
         });
 
     }
@@ -184,15 +219,14 @@ public class MainActivity extends AppCompatActivity {
         //To change cost on click
         resumeReviewPopupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day= resumeReviewPopupBinding.timeSlot.getText().toString().substring(6);
+            String day = resumeReviewPopupBinding.timeSlot.getText().toString().substring(6);
 
             for (ServicesResults.Services service : sublist) {
-             if(service.getDays().toString().equals(day)){
-                 resumeReviewPopupBinding.costTxt.setText("$ "+service.getTotalInPKR());
-                 break;
-             }
+                if (service.getDays().toString().equals(day)) {
+                    resumeReviewPopupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
+                    break;
+                }
             }
-
         });
 
 
@@ -207,7 +241,39 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
         resumeReviewPopupBinding.proceedBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, PaymentActivity.class));
+
+
+            if (TextUtils.isEmpty(resumeReviewPopupBinding.costTxt.getText())
+                    || TextUtils.isEmpty(resumeReviewPopupBinding.timeSlot.getText())
+                    || TextUtils.isEmpty(resumeReviewPopupBinding.resumeName.getText())) {
+
+                Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
+            } else {
+
+                HRServices hrServices = new HRServices();
+
+                HRServices.DBObj dbObj = new HRServices.DBObj();
+                dbObj.sethRID(selectedHr.getId());
+                dbObj.setUserID(userId);
+                dbObj.setPayment(Integer.valueOf(resumeReviewPopupBinding.costTxt.getText().toString()));
+                dbObj.setCurrency("PKR");
+                dbObj.setDays(Integer.valueOf(resumeReviewPopupBinding.timeSlot.getText().toString().substring(6)));
+
+                HRServices.EmailObj emailObj = new HRServices.EmailObj();
+                emailObj.setUserEmail(currentUser.getEmail());
+                emailObj.setUserName(currentUser.getFullName());
+                emailObj.sethREmail(selectedHr.getEmail());
+
+                activityViewModel.addResumeReview(hrServices).observe(this, sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        startActivity(new Intent(this, PaymentActivity.class));
+
+                    }
+                });
+
+            }
+
+
         });
 
 
@@ -235,11 +301,11 @@ public class MainActivity extends AppCompatActivity {
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day= popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString().substring(6);
 
             for (ServicesResults.Services service : sublist) {
-                if(service.getDays().toString().equals(day)){
-                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                if (service.getDays().toString().equals(day)) {
+                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -259,7 +325,37 @@ public class MainActivity extends AppCompatActivity {
 
 
         popupBinding.proceedBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, PaymentActivity.class));
+
+
+            if (TextUtils.isEmpty(popupBinding.costTxt.getText())
+                    || TextUtils.isEmpty(popupBinding.timeSlot.getText())) {
+
+                Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
+            } else {
+
+                HRServices hrServices = new HRServices();
+
+                HRServices.DBObj dbObj = new HRServices.DBObj();
+                dbObj.sethRID(selectedHr.getId());
+                dbObj.setUserID(userId);
+                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                dbObj.setCurrency("PKR");
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+
+                HRServices.EmailObj emailObj = new HRServices.EmailObj();
+                emailObj.setUserEmail(currentUser.getEmail());
+                emailObj.setUserName(currentUser.getFullName());
+                emailObj.sethREmail(selectedHr.getEmail());
+
+                activityViewModel.addCareerCounselling(hrServices).observe(this, sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        startActivity(new Intent(this, PaymentActivity.class));
+
+                    }
+                });
+
+            }
+
         });
     }
 
@@ -285,11 +381,11 @@ public class MainActivity extends AppCompatActivity {
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day= popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString().substring(6);
 
             for (ServicesResults.Services service : sublist) {
-                if(service.getDays().toString().equals(day)){
-                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                if (service.getDays().toString().equals(day)) {
+                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -315,7 +411,38 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
         popupBinding.proceedBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, PaymentActivity.class));
+            if (TextUtils.isEmpty(popupBinding.costTxt.getText())
+                    || TextUtils.isEmpty(popupBinding.timeSlot.getText())
+                    || TextUtils.isEmpty(popupBinding.choiceTxt.getText())) {
+
+                Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
+            } else {
+
+                HRServices hrServices = new HRServices();
+
+                HRServices.DBObj dbObj = new HRServices.DBObj();
+                dbObj.sethRID(selectedHr.getId());
+                dbObj.setUserID(userId);
+                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                dbObj.setCurrency("PKR");
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setResumeType(popupBinding.choiceTxt.getText().toString());
+
+
+                HRServices.EmailObj emailObj = new HRServices.EmailObj();
+                emailObj.setUserEmail(currentUser.getEmail());
+                emailObj.setUserName(currentUser.getFullName());
+                emailObj.sethREmail(selectedHr.getEmail());
+
+                activityViewModel.addResumeWriting(hrServices).observe(this, sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        startActivity(new Intent(this, PaymentActivity.class));
+
+                    }
+                });
+
+            }
+
         });
     }
 
@@ -341,11 +468,11 @@ public class MainActivity extends AppCompatActivity {
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day= popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString().substring(6);
 
             for (ServicesResults.Services service : sublist) {
-                if(service.getDays().toString().equals(day)){
-                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                if (service.getDays().toString().equals(day)) {
+                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -363,7 +490,42 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
         popupBinding.proceedBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, PaymentActivity.class));
+
+
+            if (TextUtils.isEmpty(popupBinding.costTxt.getText())
+                    || TextUtils.isEmpty(popupBinding.timeSlot.getText())
+                    || TextUtils.isEmpty(popupBinding.companyName.getText())
+                    || TextUtils.isEmpty(popupBinding.jobTitle.getText())) {
+
+                Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
+            } else {
+
+                HRServices hrServices = new HRServices();
+
+                HRServices.DBObj dbObj = new HRServices.DBObj();
+                dbObj.sethRID(selectedHr.getId());
+                dbObj.setUserID(userId);
+                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                dbObj.setCurrency("PKR");
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setCompanyName(popupBinding.companyName.getText().toString());
+                dbObj.setJobName(popupBinding.jobTitle.getText().toString());
+
+
+                HRServices.EmailObj emailObj = new HRServices.EmailObj();
+                emailObj.setUserEmail(currentUser.getEmail());
+                emailObj.setUserName(currentUser.getFullName());
+                emailObj.sethREmail(selectedHr.getEmail());
+
+                activityViewModel.addCoverLetter(hrServices).observe(this, sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        startActivity(new Intent(this, PaymentActivity.class));
+
+                    }
+                });
+
+            }
+
         });
     }
 
@@ -379,4 +541,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onHrSelected(HrResults.Hr selectedHr) {
+        selectedHr = selectedHr;
+    }
 }

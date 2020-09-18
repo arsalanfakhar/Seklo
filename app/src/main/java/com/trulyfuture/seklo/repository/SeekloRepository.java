@@ -12,6 +12,7 @@ import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
+import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
@@ -591,6 +592,102 @@ public class SeekloRepository {
         return data;
     }
 
+
+    public MutableLiveData<SekloResults> addResumeReview(HRServices hrServices) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> sekloResultsCall = apiInterface.addResumeReview(hrServices);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> addResumeWriting(HRServices hrServices) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> sekloResultsCall = apiInterface.addResumeWriting(hrServices);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> addCareerCounselling(HRServices hrServices) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> sekloResultsCall = apiInterface.addCareer(hrServices);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> addCoverLetter(HRServices hrServices) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> sekloResultsCall = apiInterface.addCoverLetter(hrServices);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
 }
 

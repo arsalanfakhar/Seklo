@@ -12,9 +12,11 @@ import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
+import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
+import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.ServicesResults;
 import com.trulyfuture.seklo.models.SkillResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
@@ -41,7 +43,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<SkillResults> skillResults = new MutableLiveData<>();
 
     public LiveData<SkillResults> userSkills = new MutableLiveData<>();
-
 
     public LiveData<CompanyResults> allCompanies = new MutableLiveData<>();
     public LiveData<JobsResults> allJobs = new MutableLiveData<>();
@@ -141,6 +142,22 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private LiveData<ServicesResults> getServiceById(int serviceId) {
         return seekloRepository.getServiceById(serviceId);
+    }
+
+    public LiveData<SekloResults> addResumeReview(HRServices hrServices) {
+        return seekloRepository.addResumeReview(hrServices);
+    }
+
+    public LiveData<SekloResults> addResumeWriting(HRServices hrServices) {
+        return seekloRepository.addResumeWriting(hrServices);
+    }
+
+    public LiveData<SekloResults> addCareerCounselling(HRServices hrServices) {
+        return seekloRepository.addCareerCounselling(hrServices);
+    }
+
+    public LiveData<SekloResults> addCoverLetter(HRServices hrServices) {
+        return seekloRepository.addCoverLetter(hrServices);
     }
 
 }

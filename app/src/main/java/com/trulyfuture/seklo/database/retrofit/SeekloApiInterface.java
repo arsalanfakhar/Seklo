@@ -5,6 +5,7 @@ import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
+import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
@@ -99,5 +100,17 @@ public interface SeekloApiInterface {
 
     @GET("service-data/{id}")
     Call<ServicesResults> getServiceById(@Path("id") int serviceId);
+
+    @POST("resume-review")
+    Call<SekloResults> addResumeReview(@Body HRServices hrService);
+
+    @POST("resume-writing")
+    Call<SekloResults> addResumeWriting(@Body HRServices hrService);
+
+    @POST("career")
+    Call<SekloResults> addCareer(@Body HRServices hrService);
+
+    @POST("cover-letter")
+    Call<SekloResults> addCoverLetter(@Body HRServices hrService);
 
 }
