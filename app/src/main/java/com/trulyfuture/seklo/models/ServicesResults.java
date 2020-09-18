@@ -41,7 +41,7 @@ public class ServicesResults {
         private Double totalInPKR;
         @SerializedName("Total_In_Dollar")
         @Expose
-        private Integer totalInDollar;
+        private Double totalInDollar;
 
         public Integer getOptionID() {
             return optionID;
@@ -91,11 +91,11 @@ public class ServicesResults {
             this.totalInPKR = totalInPKR;
         }
 
-        public Integer getTotalInDollar() {
+        public Double getTotalInDollar() {
             return totalInDollar;
         }
 
-        public void setTotalInDollar(Integer totalInDollar) {
+        public void setTotalInDollar(Double totalInDollar) {
             this.totalInDollar = totalInDollar;
         }
     }

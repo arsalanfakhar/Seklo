@@ -11,21 +11,32 @@ import android.util.Log;
 import com.trulyfuture.seklo.MainActivity;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.screens.login.LoginActivity;
+import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_TIMEOUT=2000;
+    private static final int SPLASH_TIMEOUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        int userId = sharedPreferenceClass.getInteger("userId");
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-            finish();
-        },SPLASH_TIMEOUT);
+
+            if (userId == -1) {
+                //not logged in
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+
+        }, SPLASH_TIMEOUT);
 
     }
 }

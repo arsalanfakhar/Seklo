@@ -30,11 +30,13 @@ import com.trulyfuture.seklo.databinding.ResumeReviewPopupBinding;
 import com.trulyfuture.seklo.databinding.ResumeWritingPopupBinding;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.ResumeResults;
+import com.trulyfuture.seklo.models.ServicesResults;
 import com.trulyfuture.seklo.models.UserResults;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.payment.PaymentActivity;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel activityViewModel;
     private Users currentUser;
     private ResumeResults.Resume userResume;
+    private List<ServicesResults.Services> servicesList;
 
     private static final String TAG = "MainActivity";
 
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupObservers() {
         activityViewModel.userResults.observe(this, userResults -> {
-            currentUser=userResults.getUserResultList().get(0);
+            currentUser = userResults.getUserResultList().get(0);
         });
 
         activityViewModel.hrResults.observe(this, hrResults -> {
@@ -145,8 +148,12 @@ public class MainActivity extends AppCompatActivity {
                 hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
         });
 
-        activityViewModel.userResume.observe(this,resumeResults -> {
-            userResume=resumeResults.getResults().get(0);
+        activityViewModel.userResume.observe(this, resumeResults -> {
+            userResume = resumeResults.getResults().get(0);
+        });
+
+        activityViewModel.allSevices.observe(this, servicesResults -> {
+            servicesList = servicesResults.getResults();
         });
 
     }
@@ -157,14 +164,37 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setView(resumeReviewPopupBinding.getRoot());
 
+        int serviceId = 1;
+        List<ServicesResults.Services> sublist = getServicesListById(serviceId);
 
-        List<String> daysList=new ArrayList<>();
-        daysList.add("Days: 2");
-        daysList.add("Days: 4");
-        daysList.add("Days: 6");
-        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
-                R.layout.spinner_item_layout,daysList );
+        List<String> daysList = new ArrayList<>();
+
+        for (ServicesResults.Services service : sublist) {
+            daysList.add("Days: " + service.getDays());
+        }
+//        daysList.add("Days: 2");
+//        daysList.add("Days: 4");
+//        daysList.add("Days: 6");
+
+
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout, daysList);
         resumeReviewPopupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        //To change cost on click
+        resumeReviewPopupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
+
+            String day= resumeReviewPopupBinding.timeSlot.getText().toString().substring(6);
+
+            for (ServicesResults.Services service : sublist) {
+             if(service.getDays().toString().equals(day)){
+                 resumeReviewPopupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                 break;
+             }
+            }
+
+        });
+
 
         resumeReviewPopupBinding.timeSlotDropdown.setOnClickListener(v -> {
             resumeReviewPopupBinding.timeSlot.showDropDown();
@@ -179,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
         resumeReviewPopupBinding.proceedBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, PaymentActivity.class));
         });
+
+
     }
 
     private void showCareerCounselingPopup() {
@@ -187,13 +219,33 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setView(popupBinding.getRoot());
 
-        List<String> daysList=new ArrayList<>();
-        daysList.add("Days: 2");
-        daysList.add("Days: 4");
-        daysList.add("Days: 6");
-        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
-                R.layout.spinner_item_layout,daysList );
+        int serviceId = 2;
+        List<ServicesResults.Services> sublist = getServicesListById(serviceId);
+
+        List<String> daysList = new ArrayList<>();
+
+        for (ServicesResults.Services service : sublist) {
+            daysList.add("Days: " + service.getDays());
+        }
+
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout, daysList);
         popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        //To change cost on click
+        popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
+
+            String day= popupBinding.timeSlot.getText().toString().substring(6);
+
+            for (ServicesResults.Services service : sublist) {
+                if(service.getDays().toString().equals(day)){
+                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                    break;
+                }
+            }
+
+        });
+
 
         popupBinding.timeSlopDropdown.setOnClickListener(v -> {
             popupBinding.timeSlot.showDropDown();
@@ -217,13 +269,32 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setView(popupBinding.getRoot());
 
-        List<String> daysList=new ArrayList<>();
-        daysList.add("Days: 2");
-        daysList.add("Days: 4");
-        daysList.add("Days: 6");
-        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
-                R.layout.spinner_item_layout,daysList );
+        int serviceId = 3;
+        List<ServicesResults.Services> sublist = getServicesListById(serviceId);
+
+        List<String> daysList = new ArrayList<>();
+
+        for (ServicesResults.Services service : sublist) {
+            daysList.add("Days: " + service.getDays());
+        }
+
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout, daysList);
         popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        //To change cost on click
+        popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
+
+            String day= popupBinding.timeSlot.getText().toString().substring(6);
+
+            for (ServicesResults.Services service : sublist) {
+                if(service.getDays().toString().equals(day)){
+                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                    break;
+                }
+            }
+
+        });
 
         popupBinding.timeSlopDropdown.setOnClickListener(v -> {
             popupBinding.timeSlot.showDropDown();
@@ -232,13 +303,12 @@ public class MainActivity extends AppCompatActivity {
 
         popupBinding.email.setText(currentUser.getEmail());
 
-        List<String> choiceList=new ArrayList<>();
+        List<String> choiceList = new ArrayList<>();
         choiceList.add("CV");
         choiceList.add("Resume");
-        ArrayAdapter<String> choiceArrayAdapter=new ArrayAdapter<>(this,
-                R.layout.spinner_item_layout,choiceList );
+        ArrayAdapter<String> choiceArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout, choiceList);
         popupBinding.choiceTxt.setAdapter(choiceArrayAdapter);
-
 
 
         AlertDialog dialog = alertBuilder.create();
@@ -255,13 +325,32 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setView(popupBinding.getRoot());
 
-        List<String> daysList=new ArrayList<>();
-        daysList.add("Days: 2");
-        daysList.add("Days: 4");
-        daysList.add("Days: 6");
-        ArrayAdapter<String> stringArrayAdapter=new ArrayAdapter<>(this,
-                R.layout.spinner_item_layout,daysList );
+        int serviceId = 4;
+        List<ServicesResults.Services> sublist = getServicesListById(serviceId);
+
+        List<String> daysList = new ArrayList<>();
+
+        for (ServicesResults.Services service : sublist) {
+            daysList.add("Days: " + service.getDays());
+        }
+
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item_layout, daysList);
         popupBinding.timeSlot.setAdapter(stringArrayAdapter);
+
+        //To change cost on click
+        popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
+
+            String day= popupBinding.timeSlot.getText().toString().substring(6);
+
+            for (ServicesResults.Services service : sublist) {
+                if(service.getDays().toString().equals(day)){
+                    popupBinding.costTxt.setText("$ "+service.getTotalInPKR());
+                    break;
+                }
+            }
+
+        });
 
         popupBinding.timeSlotDropdown.setOnClickListener(v -> {
             popupBinding.timeSlot.showDropDown();
@@ -276,6 +365,17 @@ public class MainActivity extends AppCompatActivity {
         popupBinding.proceedBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, PaymentActivity.class));
         });
+    }
+
+
+    private List<ServicesResults.Services> getServicesListById(int id) {
+        List<ServicesResults.Services> sublist = new ArrayList<>();
+        for (ServicesResults.Services service : servicesList) {
+            if (service.getServicesID().equals(id)) {
+                sublist.add(service);
+            }
+        }
+        return sublist;
     }
 
 
