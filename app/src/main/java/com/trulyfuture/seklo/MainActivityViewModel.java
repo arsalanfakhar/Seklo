@@ -30,19 +30,15 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     private int userId;
 
-
-    public LiveData<UserResults> userResults = new MutableLiveData<>();
-
     public LiveData<HrResults> hrResults = new MutableLiveData<>();
     public LiveData<DegreeResults> degreeResults = new MutableLiveData<>();
     public LiveData<StudyFieldsResults> studyFieldsResults = new MutableLiveData<>();
-    public LiveData<EducationResults> educationResults = new MutableLiveData<>();
+
     public LiveData<EmploymentResults> employmentResults = new MutableLiveData<>();
-    public LiveData<ExperienceResults> experienceResults = new MutableLiveData<>();
+
 
     public LiveData<SkillResults> skillResults = new MutableLiveData<>();
 
-    public LiveData<SkillResults> userSkills = new MutableLiveData<>();
 
     public LiveData<CompanyResults> allCompanies = new MutableLiveData<>();
     public LiveData<JobsResults> allJobs = new MutableLiveData<>();
@@ -62,7 +58,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     private void initialize() {
-        getCurrentUser(userId);
+        getCurrentUser();
         getAllHr();
         getAllDegrees();
         getAllStudyFields();
@@ -82,8 +78,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         return this.userId;
     }
 
-    private void getCurrentUser(int id) {
-        userResults = seekloRepository.getUserById(id);
+    public LiveData<UserResults> getCurrentUser() {
+        return seekloRepository.getUserById(this.userId);
 //
 //        return seekloRepository.getUserById(id);
     }
@@ -100,24 +96,24 @@ public class MainActivityViewModel extends AndroidViewModel {
         studyFieldsResults = seekloRepository.getAllStudyFields();
     }
 
-    private void getAllUserEducation(int id) {
-        educationResults = seekloRepository.getUserEducation(id);
+    public LiveData<EducationResults> getAllUserEducation(int id) {
+        return seekloRepository.getUserEducation(id);
     }
 
     private void getAllEmploymentType() {
         employmentResults = seekloRepository.getAllEmploymentType();
     }
 
-    private void getAllUserExperience(int id) {
-        experienceResults = seekloRepository.getUserExperience(id);
+    public LiveData<ExperienceResults> getAllUserExperience(int id) {
+        return seekloRepository.getUserExperience(id);
     }
 
     private void getAllSkills() {
         skillResults = seekloRepository.getAllSkillResults();
     }
 
-    private void getUserSkills(int userId) {
-        userSkills = seekloRepository.getUserSkillsList(userId);
+    public LiveData<SkillResults> getUserSkills(int userId) {
+        return seekloRepository.getUserSkillsList(userId);
     }
 
     private void getAllCompanies() {

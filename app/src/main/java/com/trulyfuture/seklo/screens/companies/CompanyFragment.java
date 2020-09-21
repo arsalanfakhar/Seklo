@@ -24,6 +24,7 @@ import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.databinding.FragmentCompanyBinding;
 import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.utils.ProgressDialog;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class CompanyFragment extends Fragment implements CompaniesAdapter.OnComp
 
         activityViewModel= new ViewModelProvider(this).get(MainActivityViewModel.class);
 
+        ProgressDialog.showLoader(getActivity());
         setupViews();
         setupObservers();
     }
@@ -69,13 +71,14 @@ public class CompanyFragment extends Fragment implements CompaniesAdapter.OnComp
     private void setupObservers() {
         activityViewModel.allCompanies.observe(getViewLifecycleOwner(),companyResults -> {
             companiesAdapter.setCompanyArrayList((ArrayList<CompanyResults.Company>) companyResults.getResults());
+            ProgressDialog.hideLoader();
         });
     }
 
     @Override
     public void onCompanyClick(CompanyResults.Company company) {
         Bundle args = new Bundle();
-        args.putInt("companyId", company.getID());
+        args.putSerializable("company",company);
 
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_companyFragment_to_companyDetailFragment, args);
     }

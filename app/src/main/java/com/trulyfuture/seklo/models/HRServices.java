@@ -94,6 +94,16 @@ public class HRServices {
         @SerializedName("Job")
         private String jobName;
 
+        @SerializedName("TimeHours")
+        private String timeHours;
+
+        public String getTimeHours() {
+            return timeHours;
+        }
+
+        public void setTimeHours(String timeHours) {
+            this.timeHours = timeHours;
+        }
 
         public String getCompanyName() {
             return companyName;

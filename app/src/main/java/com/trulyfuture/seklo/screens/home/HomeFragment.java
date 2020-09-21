@@ -22,6 +22,7 @@ import com.trulyfuture.seklo.adapters.JobsAdapter;
 import com.trulyfuture.seklo.databinding.FragmentHomeBinding;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobsResults;
+import com.trulyfuture.seklo.utils.ProgressDialog;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         activityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        ProgressDialog.showLoader(getActivity());
 
         setupViews();
         setupObservers();
@@ -77,6 +80,8 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
 
         activityViewModel.homePageJobs.observe(getViewLifecycleOwner(),jobsResults -> {
             jobsAdapter.submitList(jobsResults.getResults());
+
+            ProgressDialog.hideLoader();
         });
 
 
@@ -85,6 +90,9 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
 
     @Override
     public void onJobClick(JobsResults.Jobs job) {
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("jobDetails",job);
 
+        Navigation.findNavController(fragmentHomeBinding.getRoot()).navigate(R.id.action_homeFragment_to_jobDetailFragment,bundle);
     }
 }

@@ -22,11 +22,14 @@ public class HrAdapterSelected extends RecyclerView.Adapter<HrAdapterSelected.Hr
 
     private ArrayList<HrResults.Hr> hrArrayList;
     private onHrAdapterSelected onHrAdapterSelected;
+    private ArrayList<Boolean> selectedHrList;
 
-    public HrAdapterSelected(Context mContext, onHrAdapterSelected onHrAdapterSelected) {
+
+    public HrAdapterSelected(Context mContext, onHrAdapterSelected onHrAdapterSelected,ArrayList<Boolean> selectedHrList) {
         this.mContext = mContext;
         hrArrayList = new ArrayList<>();
         this.onHrAdapterSelected = onHrAdapterSelected;
+        this.selectedHrList=selectedHrList;
     }
 
     @NonNull
@@ -46,6 +49,12 @@ public class HrAdapterSelected extends RecyclerView.Adapter<HrAdapterSelected.Hr
                 .load(currentHr.getProfilePic())
                 .into(holder.image);
 
+        if(selectedHrList.get(position)){
+            holder.selectedImage.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.selectedImage.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -56,6 +65,14 @@ public class HrAdapterSelected extends RecyclerView.Adapter<HrAdapterSelected.Hr
 
     public void setHrArrayList(ArrayList<HrResults.Hr> hrArrayList) {
         this.hrArrayList = hrArrayList;
+
+        //Initialize selested List
+        ArrayList<Boolean> booleanArrayList=new ArrayList<>();
+        for(int i=0;i<hrArrayList.size();i++){
+            booleanArrayList.add(false);
+        }
+        this.selectedHrList=booleanArrayList;
+
         notifyDataSetChanged();
     }
 
@@ -74,13 +91,25 @@ public class HrAdapterSelected extends RecyclerView.Adapter<HrAdapterSelected.Hr
 
         @Override
         public void onClick(View view) {
-            selectedImage.setVisibility(View.VISIBLE);
             onHrAdapterSelected.onHrSelected(hrArrayList.get(getAdapterPosition()));
+            setSelectedHr(getAdapterPosition());
         }
     }
 
     public interface onHrAdapterSelected {
         void onHrSelected(HrResults.Hr selectedHr);
     }
+
+    private void setSelectedHr(int pos){
+        for(int i=0;i<selectedHrList.size();i++){
+
+            if(i==pos)
+                selectedHrList.set(i,true);
+            else
+                selectedHrList.set(i,false);
+        }
+        notifyDataSetChanged();
+    }
+
 
 }

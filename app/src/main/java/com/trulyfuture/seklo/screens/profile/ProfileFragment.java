@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.screens.profile;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,6 +27,9 @@ import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.ProfileViewPagerAdapter;
 import com.trulyfuture.seklo.databinding.FragmentProfileBinding;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.screens.login.LoginActivity;
+import com.trulyfuture.seklo.utils.ProgressDialog;
+import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 
 public class ProfileFragment extends Fragment {
@@ -58,10 +62,13 @@ public class ProfileFragment extends Fragment {
 
         activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        activityViewModel.userResults.observe(getViewLifecycleOwner(),userResults -> {
+        ProgressDialog.showLoader(getActivity());
+
+        activityViewModel.getCurrentUser().observe(getViewLifecycleOwner(),userResults -> {
             if(userResults.getCode()==1){
                 currentUser=userResults.getUserResultList().get(0);
                 loadUserdata();
+                ProgressDialog.hideLoader();
             }
             else {
                 //TODO Handle error on user
@@ -79,7 +86,10 @@ public class ProfileFragment extends Fragment {
         });
 
         binding.uploadCvBtn.setOnClickListener(view -> {
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_uploadCVFragment);
+
+            Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
+
+//            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_uploadCVFragment);
         });
 
         binding.overviewBtn.setOnClickListener(view -> {
@@ -98,10 +108,16 @@ public class ProfileFragment extends Fragment {
             binding.profileViewpager.setCurrentItem(3);
         });
 
+
+        binding.signoutBtn.setOnClickListener(view -> {
+            addToSharedPrefs(-1);
+
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        });
     }
 
     private void changeViewPagerTabsSelection(int selected) {
-        Toast.makeText(getContext(), selected + "", Toast.LENGTH_SHORT).show();
         switch (selected) {
             case 0: {
                 binding.overviewBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
@@ -143,6 +159,9 @@ public class ProfileFragment extends Fragment {
                     .into(binding.userImage);
         }
         else {
+            Glide.with(this).asBitmap()
+                    .load(currentUser.getUserImage())
+                    .into(binding.userImage);
             // Decode base64 string to image
 //            String removeAdditionalText=currentUser.getUserImage().substring(22);
 //
@@ -157,7 +176,7 @@ public class ProfileFragment extends Fragment {
 
 
         binding.userName.setText(currentUser.getFullName());
-        binding.userOverview.setText(currentUser.getOverview());
+//        binding.userOverview.setText(currentUser.getOverview());
     }
 
     @Override
@@ -166,6 +185,10 @@ public class ProfileFragment extends Fragment {
         binding.profileViewpager.unregisterOnPageChangeCallback(viewpagerCallback);
     }
 
-
+    private void addToSharedPrefs(int userId){
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(),SharedPreferenceClass.UserDetails);
+        sharedPreferenceClass.SetIntegerEditor("userId",userId);
+        sharedPreferenceClass.DoCommit();
+    }
 
 }

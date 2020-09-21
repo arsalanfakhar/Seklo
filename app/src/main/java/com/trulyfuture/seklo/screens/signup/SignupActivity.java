@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.trulyfuture.seklo.MainActivity;
 import com.trulyfuture.seklo.databinding.ActivitySignupBinding;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class SignupActivity extends AppCompatActivity {
@@ -27,6 +28,8 @@ public class SignupActivity extends AppCompatActivity {
 
         signupBinding.signupBtn.setOnClickListener(view -> {
             if(!isFieldsEmpty()){
+                ProgressDialog.showLoader(this);
+
                 Users users=new Users();
                 users.setFname(signupBinding.fullName.getText().toString());
                 users.setLname(signupBinding.lastName.getText().toString());
@@ -36,6 +39,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
                 viewModel.createUser(users).observe(this,results -> {
+                    ProgressDialog.hideLoader();
                     if(results.getCode()==1){
                         addToSharedPrefs(results.getId());
                         Toast.makeText(this,results.getMessage(),Toast.LENGTH_SHORT).show();

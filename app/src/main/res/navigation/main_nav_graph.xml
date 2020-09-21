@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_allJobsFragment"
             app:destination="@id/allJobsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_jobDetailFragment"
+            app:destination="@id/jobDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"

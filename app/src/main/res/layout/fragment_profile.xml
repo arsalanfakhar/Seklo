@@ -103,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_profile_overview"
             android:tint="@color/gray"
             app:layout_constraintEnd_toStartOf="@+id/educationBtn"
@@ -113,6 +114,7 @@
         <ImageView
             android:id="@+id/educationBtn"
             android:layout_width="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_profile_education"
             android:tint="@color/gray"
@@ -126,6 +128,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_profile_experience"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/gray"
             app:layout_constraintEnd_toStartOf="@+id/skillsBtn"
             app:layout_constraintHorizontal_bias="0.5"
@@ -137,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_profile_settings"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -195,7 +199,7 @@
         </androidx.viewpager2.widget.ViewPager2>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button5"
+            android:id="@+id/signoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

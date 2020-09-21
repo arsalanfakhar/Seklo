@@ -68,7 +68,7 @@ public class ProfileOverviewFragment extends Fragment {
     }
 
     private void setupObserver() {
-        activityViewModel.userResults.observe(getViewLifecycleOwner(), userResults -> {
+        activityViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResults -> {
             if (userResults.getCode() == 1) {
                 currentUser = userResults.getUserResultList().get(0);
                 loadUserdata();

@@ -100,8 +100,12 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
 
 
         });
+        getUserEducation();
+    }
 
-        activityViewModel.educationResults.observe(getViewLifecycleOwner(),educationResults -> {
+
+    private void getUserEducation(){
+        activityViewModel.getAllUserEducation(activityViewModel.getUserId()).observe(getViewLifecycleOwner(),educationResults -> {
             if(educationResults.getResults()!=null){
                 educationAdapter.setEducationModelArrayList((ArrayList<EducationResults.EducationModel>) educationResults.getResults());
             }
@@ -109,8 +113,6 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
 
 
     }
-
-
     private void showAddEducationPopup() {
         educationPopupBinding = AddEducationPopupBinding.inflate(getLayoutInflater());
 
@@ -195,6 +197,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
 
                 viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(),sekloResults -> {
                     if(sekloResults.getResults().getCode()==1){
+                        getUserEducation();
                         Toast.makeText(getContext(),sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }

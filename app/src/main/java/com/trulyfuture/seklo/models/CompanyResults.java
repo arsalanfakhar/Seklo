@@ -1,4 +1,5 @@
 package com.trulyfuture.seklo.models;
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -24,7 +25,7 @@ public class CompanyResults {
 
 
 
-    public static class Company {
+    public static class Company implements Serializable {
         @SerializedName("ID")
         @Expose
         private Integer iD;

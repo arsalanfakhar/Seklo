@@ -31,6 +31,7 @@ import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.utils.ProgressDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,6 +69,7 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ProgressDialog.showLoader(getActivity());
         setupViews();
     }
 
@@ -75,21 +77,18 @@ public class EditProfileFragment extends Fragment {
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
 
-        activityViewModel.userResults.observe(getViewLifecycleOwner(), userResults -> {
-
-            if (userResults.getCode() == 1) {
-                currentUser = userResults.getUserResultList().get(0);
-                loadUserData();
-            }
-        });
+        getUser();
 
 
         //On click listeners
 
         binding.changeProfilePicBtn.setOnClickListener(view -> {
-            Intent mediaChooser = new Intent(Intent.ACTION_GET_CONTENT);
-            mediaChooser.setType("image/*");
-            startActivityForResult(Intent.createChooser(mediaChooser, "Select Picture"), PICK_IMAGE_REQUEST);
+
+            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+
+//            Intent mediaChooser = new Intent(Intent.ACTION_GET_CONTENT);
+//            mediaChooser.setType("image/*");
+//            startActivityForResult(Intent.createChooser(mediaChooser, "Select Picture"), PICK_IMAGE_REQUEST);
 
         });
 
@@ -104,6 +103,8 @@ public class EditProfileFragment extends Fragment {
 
                 viewModel.updateUserDetails(user, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
+                        getUser();
+
                         Toast.makeText(getContext(), "Details updated sucessfully", Toast.LENGTH_SHORT).show();
 
 
@@ -121,20 +122,56 @@ public class EditProfileFragment extends Fragment {
 
     }
 
+    private void getUser() {
+        activityViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResults -> {
+
+            if (userResults.getCode() == 1) {
+                currentUser = userResults.getUserResultList().get(0);
+                loadUserData();
+
+                if (ProgressDialog.isShowing())
+                    ProgressDialog.hideLoader();
+
+            }
+        });
+
+    }
+
     private void loadUserData() {
 
         if (TextUtils.isEmpty(currentUser.getUserImage())) {
-            //Load dummy image
-
+            //TODO Load dummy image
+            Glide.with(this)
+                    .load(R.drawable.nouser)
+                    .into(binding.userImage);
         } else {
-
+            Glide.with(this).asBitmap()
+                    .load(currentUser.getUserImage())
+                    .into(binding.userImage);
             // Decode base64 string to image
-            byte[] decodedString = Base64.decode(currentUser.getUserImage(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            binding.userImage.setImageBitmap(decodedByte);
-
-
+//            String removeAdditionalText=currentUser.getUserImage().substring(22);
+//
+//            byte[] decodedString = Base64.decode(removeAdditionalText, Base64.DEFAULT);
+//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//            binding.userImage.setImageBitmap(decodedByte);
+//
+//            Glide.with(this).asBitmap()
+//                    .load(currentUser.getUserImage())
+//                    .into(binding.userImage);
         }
+
+//        if (TextUtils.isEmpty(currentUser.getUserImage())) {
+//            //Load dummy image
+//
+//        } else {
+//
+//            // Decode base64 string to image
+//            byte[] decodedString = Base64.decode(currentUser.getUserImage(), Base64.DEFAULT);
+//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//            binding.userImage.setImageBitmap(decodedByte);
+//
+//
+//        }
 
 
         binding.firstName.setText(currentUser.getFname());

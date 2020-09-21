@@ -78,7 +78,11 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
             employmentTypeList = employmentResults.getResults();
         });
 
-        activityViewModel.experienceResults.observe(getViewLifecycleOwner(), experienceResults -> {
+        getUserExperience();
+    }
+
+    private void getUserExperience() {
+        activityViewModel.getAllUserExperience(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), experienceResults -> {
             if (experienceResults.getResults() != null)
                 experieceAdapter.setExperienceArrayList((ArrayList<ExperienceResults.Experience>) experienceResults.getResults());
         });
@@ -154,6 +158,7 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
 
                 viewModel.addUserExperience(experienceMap).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
+                        getUserExperience();
                         Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }

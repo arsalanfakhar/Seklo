@@ -13,6 +13,7 @@ import com.trulyfuture.seklo.screens.signup.SignupActivity;
 import com.trulyfuture.seklo.databinding.ActivityLoginBinding;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.screens.signup.LoginSignupViewModel;
+import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,12 +33,15 @@ public class LoginActivity extends AppCompatActivity {
 
             if (!isFieldsEmpty()) {
 
+                ProgressDialog.showLoader(this);
+
                 Users user = new Users();
                 user.setStr(loginBinding.email.getText().toString());
                 user.setPassword(loginBinding.password.getText().toString());
                 viewModel.
                         authenticateUser(user)
                         .observe(this, results -> {
+                            ProgressDialog.hideLoader();
                             if (results.getCode() == 1) {
                                 addToSharedPrefs(results.getId());
                                 Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();

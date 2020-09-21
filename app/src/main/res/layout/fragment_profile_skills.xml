@@ -62,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="false"
+                android:dropDownHeight="150dp"
                 android:hint="Select a skill"
                 android:padding="13dp"
                 />

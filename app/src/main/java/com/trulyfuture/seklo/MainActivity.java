@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         //Bottom sheet binding
-        ConstraintLayout hrconstraintLayout = findViewById(R.id.hr_bottom_sheet);
+        ScrollView hrconstraintLayout = findViewById(R.id.hr_bottom_sheet);
         hrServicesBottomSheetBinding = HrServicesBottomSheetBinding.bind(hrconstraintLayout);
 
         //Setting bottom sheet default state
@@ -120,7 +121,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         //Setup adaptergi
-        hrAdapter = new HrAdapterSelected(this, this);
+        ArrayList<Boolean> selectedList = new ArrayList<>();
+
+
+        hrAdapter = new HrAdapterSelected(this, this, new ArrayList<>());
         GridLayoutManager jobsGridLayoutManager = new GridLayoutManager(this, 1);
         jobsGridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         hrServicesBottomSheetBinding.servicesHrRV.setLayoutManager(jobsGridLayoutManager);
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         hrServicesBottomSheetBinding.resumeReview.setOnClickListener(v -> {
 
+            getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
             } else {
@@ -142,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         hrServicesBottomSheetBinding.careerCounseling.setOnClickListener(v -> {
+            getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
             } else {
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         hrServicesBottomSheetBinding.resumeWriting.setOnClickListener(v -> {
+            getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
             } else {
@@ -162,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         hrServicesBottomSheetBinding.coverLetter.setOnClickListener(v -> {
+            getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
             } else {
@@ -171,13 +179,18 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         });
 
+        hrServicesBottomSheetBinding.personalityTestBtn.setOnClickListener(view -> {
+            Toast.makeText(this,"Coming Soon",Toast.LENGTH_SHORT).show();
+        });
+
+        hrServicesBottomSheetBinding.tipsTrickBtn.setOnClickListener(view -> {
+            Toast.makeText(this,"Coming Soon",Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void setupObservers() {
-        activityViewModel.userResults.observe(this, userResults -> {
-            currentUser = userResults.getUserResultList().get(0);
-        });
 
+        getUser();
         activityViewModel.hrResults.observe(this, hrResults -> {
             if (hrResults.getHrList() != null)
                 hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
@@ -193,6 +206,12 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
     }
 
+    private void getUser(){
+        activityViewModel.getCurrentUser().observe(this, userResults -> {
+            currentUser = userResults.getUserResultList().get(0);
+        });
+
+    }
     private void showResumeReviewPopup() {
         ResumeReviewPopupBinding resumeReviewPopupBinding = ResumeReviewPopupBinding.inflate(getLayoutInflater());
 
@@ -223,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
-                    resumeReviewPopupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
+                    resumeReviewPopupBinding.costTxt.setText("Rs " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -255,7 +274,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 HRServices.DBObj dbObj = new HRServices.DBObj();
                 dbObj.sethRID(selectedHr.getId());
                 dbObj.setUserID(userId);
-                dbObj.setPayment(Integer.valueOf(resumeReviewPopupBinding.costTxt.getText().toString()));
+
+                String costStr = resumeReviewPopupBinding.costTxt.getText().toString().substring(3);
+
+                dbObj.setPayment(Integer.valueOf(costStr));
                 dbObj.setCurrency("PKR");
                 dbObj.setDays(Integer.valueOf(resumeReviewPopupBinding.timeSlot.getText().toString().substring(6)));
 
@@ -263,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 emailObj.setUserEmail(currentUser.getEmail());
                 emailObj.setUserName(currentUser.getFullName());
                 emailObj.sethREmail(selectedHr.getEmail());
+
+                hrServices.setdBObj(dbObj);
+                hrServices.setEmailObj(emailObj);
 
                 activityViewModel.addResumeReview(hrServices).observe(this, sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
@@ -305,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
-                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
+                    popupBinding.costTxt.setText("Rs " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -338,14 +363,21 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 HRServices.DBObj dbObj = new HRServices.DBObj();
                 dbObj.sethRID(selectedHr.getId());
                 dbObj.setUserID(userId);
-                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                String costStr = popupBinding.costTxt.getText().toString().substring(3);
+
+                dbObj.setPayment(Integer.valueOf(costStr));
+
                 dbObj.setCurrency("PKR");
                 dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setTimeHours("45 minuts");
 
                 HRServices.EmailObj emailObj = new HRServices.EmailObj();
                 emailObj.setUserEmail(currentUser.getEmail());
                 emailObj.setUserName(currentUser.getFullName());
                 emailObj.sethREmail(selectedHr.getEmail());
+
+                hrServices.setdBObj(dbObj);
+                hrServices.setEmailObj(emailObj);
 
                 activityViewModel.addCareerCounselling(hrServices).observe(this, sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
@@ -385,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
-                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
+                    popupBinding.costTxt.setText("Rs " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -406,6 +438,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 R.layout.spinner_item_layout, choiceList);
         popupBinding.choiceTxt.setAdapter(choiceArrayAdapter);
 
+        popupBinding.choiceDropdown.setOnClickListener(view -> {
+            popupBinding.choiceTxt.showDropDown();
+        });
 
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
@@ -423,7 +458,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 HRServices.DBObj dbObj = new HRServices.DBObj();
                 dbObj.sethRID(selectedHr.getId());
                 dbObj.setUserID(userId);
-                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                String costStr = popupBinding.costTxt.getText().toString().substring(3);
+
+                dbObj.setPayment(Integer.valueOf(costStr));
+
                 dbObj.setCurrency("PKR");
                 dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
                 dbObj.setResumeType(popupBinding.choiceTxt.getText().toString());
@@ -434,10 +472,12 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 emailObj.setUserName(currentUser.getFullName());
                 emailObj.sethREmail(selectedHr.getEmail());
 
+                hrServices.setdBObj(dbObj);
+                hrServices.setEmailObj(emailObj);
+
                 activityViewModel.addResumeWriting(hrServices).observe(this, sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
                         startActivity(new Intent(this, PaymentActivity.class));
-
                     }
                 });
 
@@ -472,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
-                    popupBinding.costTxt.setText("$ " + service.getTotalInPKR().intValue());
+                    popupBinding.costTxt.setText("Rs " + service.getTotalInPKR().intValue());
                     break;
                 }
             }
@@ -505,7 +545,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 HRServices.DBObj dbObj = new HRServices.DBObj();
                 dbObj.sethRID(selectedHr.getId());
                 dbObj.setUserID(userId);
-                dbObj.setPayment(Integer.valueOf(popupBinding.costTxt.getText().toString()));
+                String costStr = popupBinding.costTxt.getText().toString().substring(3);
+
+                dbObj.setPayment(Integer.valueOf(costStr));
+
                 dbObj.setCurrency("PKR");
                 dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
                 dbObj.setCompanyName(popupBinding.companyName.getText().toString());
@@ -516,6 +559,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 emailObj.setUserEmail(currentUser.getEmail());
                 emailObj.setUserName(currentUser.getFullName());
                 emailObj.sethREmail(selectedHr.getEmail());
+
+                hrServices.setdBObj(dbObj);
+                hrServices.setEmailObj(emailObj);
 
                 activityViewModel.addCoverLetter(hrServices).observe(this, sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
@@ -543,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
     @Override
     public void onHrSelected(HrResults.Hr selectedHr) {
-        selectedHr = selectedHr;
+
+        this.selectedHr = selectedHr;
     }
 }

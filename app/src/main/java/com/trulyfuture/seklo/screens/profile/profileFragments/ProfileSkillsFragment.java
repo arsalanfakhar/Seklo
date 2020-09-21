@@ -71,7 +71,10 @@ public class ProfileSkillsFragment extends Fragment {
                     //Add a skill
                     viewModel.addUserSkill(skillMap).observe(getViewLifecycleOwner(),sekloResults -> {
                         if(sekloResults.getResults().getCode()==1){
+                            getUserSkills();
+
                             Toast.makeText(getContext(),sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+
 
                             binding.skillNameTxt.setText("");
                         }
@@ -89,11 +92,7 @@ public class ProfileSkillsFragment extends Fragment {
 
 
     private void setupObservers() {
-        //Add user skills
-        activityViewModel.userSkills.observe(getViewLifecycleOwner(), skillResults -> {
-            userSkills = skillResults.getResults();
-            addUserSkillChips();
-        });
+        getUserSkills();
 
         //Get list of all skills
         activityViewModel.skillResults.observe(getViewLifecycleOwner(), skillResults -> {
@@ -129,7 +128,19 @@ public class ProfileSkillsFragment extends Fragment {
         return 0;
     }
 
+    private void getUserSkills(){
+        //Add user skills
+        activityViewModel.getUserSkills(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), skillResults -> {
+            userSkills = skillResults.getResults();
+            addUserSkillChips();
+        });
+
+    }
+
     private void addUserSkillChips() {
+        //To clear data
+        binding.skillChipGroup.removeAllViewsInLayout();
+
         for (SkillResults.Skills skill : userSkills) {
             Chip chip = (Chip) this.getLayoutInflater().inflate(R.layout.skill_chips, null, false);
             chip.setText(skill.getSkillName());
