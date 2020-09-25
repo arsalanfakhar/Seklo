@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
+import com.trulyfuture.seklo.models.CompanyHrResults;
 import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
@@ -688,6 +689,55 @@ public class SeekloRepository {
 
         return data;
     }
+
+    public MutableLiveData<JobsResults> getCompanyJobs(int companyId) {
+        MutableLiveData<JobsResults> data = new MutableLiveData<>();
+
+        Call<JobsResults> jobsResultsCall = apiInterface.getCompanyJobs(companyId);
+
+        jobsResultsCall.enqueue(new Callback<JobsResults>() {
+            @Override
+            public void onResponse(Call<JobsResults> call, Response<JobsResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<JobsResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+
+    public MutableLiveData<CompanyHrResults> getCompanyHrs(int companyId) {
+
+        MutableLiveData<CompanyHrResults> data = new MutableLiveData<>();
+
+        Call<CompanyHrResults> call = apiInterface.getCompanyHr(companyId);
+
+        call.enqueue(new Callback<CompanyHrResults>() {
+            @Override
+            public void onResponse(Call<CompanyHrResults> call, Response<CompanyHrResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CompanyHrResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
 
 }
 

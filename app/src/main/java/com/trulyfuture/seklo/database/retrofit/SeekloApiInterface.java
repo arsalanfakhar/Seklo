@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.database.retrofit;
 
+import com.trulyfuture.seklo.models.CompanyHrResults;
 import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
@@ -86,6 +87,12 @@ public interface SeekloApiInterface {
     @POST("user-skill")
     Call<SekloResults> addUserSkill(@Body Map<String,Object> skillMap);
 
+    @GET("jobs/company-jobs/{id}")
+    Call<JobsResults> getCompanyJobs(@Path("id") int id);
+
+    @GET("company-hr/{id}")
+    Call<CompanyHrResults> getCompanyHr(@Path("id") int id);
+
     @GET("jobs/all-jobs/{userId}")
     Call<JobsResults> getAllJobs(@Path("userId") int userId);
 
@@ -112,5 +119,6 @@ public interface SeekloApiInterface {
 
     @POST("cover-letter")
     Call<SekloResults> addCoverLetter(@Body HRServices hrService);
+
 
 }

@@ -19,6 +19,7 @@ import com.trulyfuture.seklo.adapters.JobsAdapter;
 import com.trulyfuture.seklo.adapters.TalentTeamAdapter;
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.databinding.FragmentCompanyDetailBinding;
+import com.trulyfuture.seklo.models.CompanyHrResults;
 import com.trulyfuture.seklo.models.CompanyResults;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.utils.ProgressDialog;
@@ -47,6 +48,8 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        ProgressDialog.showLoader(getActivity());
 
         activityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
@@ -80,9 +83,19 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
 
     private void setupObservers() {
 
-        activityViewModel.allJobs.observe(getViewLifecycleOwner(), jobsResults -> {
+        //Get company Jobs
+        viewModel.getCompanyJobs(mCompany.getID()).observe(getViewLifecycleOwner(), jobsResults -> {
             jobsAdapter.submitList(jobsResults.getResults());
+
         });
+
+        //Get company HR
+        viewModel.getCompanyHr(mCompany.getID()).observe(getViewLifecycleOwner(), companyHrResults -> {
+            talentTeamAdapter.setHrResultsArrayList((ArrayList<CompanyHrResults.CompanyHr>) companyHrResults.getHrList());
+            if (ProgressDialog.isShowing())
+                ProgressDialog.hideLoader();
+        });
+
     }
 
 

@@ -23,9 +23,12 @@ public class HrAdapter extends RecyclerView.Adapter<HrAdapter.HrAdapterViewHolde
 
     private ArrayList<HrResults.Hr> hrArrayList;
 
-    public HrAdapter(Context mContext) {
+    private onHrClickListener mOnHrClickListener;
+
+    public HrAdapter(Context mContext, onHrClickListener onHrClickListener) {
         this.mContext = mContext;
         hrArrayList = new ArrayList<>();
+        this.mOnHrClickListener = onHrClickListener;
     }
 
     @NonNull
@@ -56,7 +59,7 @@ public class HrAdapter extends RecyclerView.Adapter<HrAdapter.HrAdapterViewHolde
         notifyDataSetChanged();
     }
 
-    class HrAdapterViewHolder extends RecyclerView.ViewHolder {
+    class HrAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView image;
         TextView name;
@@ -65,6 +68,19 @@ public class HrAdapter extends RecyclerView.Adapter<HrAdapter.HrAdapterViewHolde
             super(itemView);
             image = itemView.findViewById(R.id.hrImage);
             name = itemView.findViewById(R.id.hrName);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mOnHrClickListener.onHrClick(hrArrayList.get(getAdapterPosition()));
         }
     }
+
+    public interface onHrClickListener {
+        void onHrClick(HrResults.Hr hr);
+    }
+
+
 }

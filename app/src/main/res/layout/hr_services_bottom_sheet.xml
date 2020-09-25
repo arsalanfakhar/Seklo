@@ -87,6 +87,15 @@
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_hr_book" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resume Review"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
         </FrameLayout>
 
         <FrameLayout
@@ -106,6 +115,14 @@
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_hr_profile" />
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Career Counseling"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
         </FrameLayout>
 
         <FrameLayout
@@ -126,6 +143,14 @@
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_hr_appoint" />
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resume Writing"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
         </FrameLayout>
 
         <FrameLayout
@@ -145,6 +170,15 @@
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_hr_num" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cover Letter Writing"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
         </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -180,8 +214,8 @@
             android:id="@+id/closeServicesBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

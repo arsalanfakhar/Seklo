@@ -1,3 +1,4 @@
+
 package com.trulyfuture.seklo.models;
 
 import com.google.gson.annotations.Expose;

@@ -259,6 +259,11 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
+        resumeReviewPopupBinding.closePopup.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+
         resumeReviewPopupBinding.proceedBtn.setOnClickListener(v -> {
 
 
@@ -300,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
 
         });
+
 
 
     }
@@ -347,6 +353,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
+
+        popupBinding.closePopup.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
 
         popupBinding.proceedBtn.setOnClickListener(v -> {
@@ -445,6 +455,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
+        popupBinding.closePopup.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
         popupBinding.proceedBtn.setOnClickListener(v -> {
             if (TextUtils.isEmpty(popupBinding.costTxt.getText())
                     || TextUtils.isEmpty(popupBinding.timeSlot.getText())
@@ -528,6 +542,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
+
+        popupBinding.closePopup.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
         popupBinding.proceedBtn.setOnClickListener(v -> {
 

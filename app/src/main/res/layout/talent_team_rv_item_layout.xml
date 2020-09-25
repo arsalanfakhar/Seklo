@@ -26,7 +26,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/teamNameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -34,10 +34,10 @@
                 android:text="CEO Arsalan Fakhar Siddiqui"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="#707070"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                app:layout_constraintEnd_toStartOf="@+id/imageView12"
+                app:layout_constraintBottom_toBottomOf="@+id/teamImage"
+                app:layout_constraintEnd_toStartOf="@+id/teamImage"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView12" />
+                app:layout_constraintTop_toTopOf="@+id/teamImage" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -49,6 +49,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
+                    android:id="@+id/teamDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -57,11 +58,12 @@
                     android:text="Lorem lipsum, blah blah, my name is anas nadeem sadasasda asd asd asd asd asd " />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageView12"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/teamImage"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_marginEnd="16dp"
+                app:riv_corner_radius="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
