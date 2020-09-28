@@ -86,7 +86,13 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
         //Get company Jobs
         viewModel.getCompanyJobs(mCompany.getID()).observe(getViewLifecycleOwner(), jobsResults -> {
             jobsAdapter.submitList(jobsResults.getResults());
-
+            if (jobsResults.getResults().isEmpty()) {
+                binding.jobEmptyText.setVisibility(View.VISIBLE);
+                binding.jobsRV.setVisibility(View.INVISIBLE);
+            } else {
+                binding.jobEmptyText.setVisibility(View.INVISIBLE);
+                binding.jobsRV.setVisibility(View.VISIBLE);
+            }
         });
 
         //Get company HR
@@ -94,6 +100,14 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
             talentTeamAdapter.setHrResultsArrayList((ArrayList<CompanyHrResults.CompanyHr>) companyHrResults.getHrList());
             if (ProgressDialog.isShowing())
                 ProgressDialog.hideLoader();
+
+            if (companyHrResults.getHrList().isEmpty()) {
+                binding.talentTeamEmptyText.setVisibility(View.VISIBLE);
+                binding.talentTeamRV.setVisibility(View.INVISIBLE);
+            } else {
+                binding.talentTeamEmptyText.setVisibility(View.INVISIBLE);
+                binding.talentTeamRV.setVisibility(View.VISIBLE);
+            }
         });
 
     }

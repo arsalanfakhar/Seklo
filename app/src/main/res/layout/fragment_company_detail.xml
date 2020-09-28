@@ -47,8 +47,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5">
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,23 +61,23 @@
                 android:id="@+id/companyProfilePic"
                 android:layout_width="115dp"
                 android:layout_height="115dp"
-                tools:src="@drawable/profile_pic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/profile_pic" />
 
             <TextView
                 android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="Pizza Hut"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                 android:textColor="#707070"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="@+id/companyProfilePic"
                 app:layout_constraintStart_toStartOf="@+id/companyProfilePic"
-                app:layout_constraintTop_toBottomOf="@+id/companyProfilePic" />
+                app:layout_constraintTop_toBottomOf="@+id/companyProfilePic"
+                tools:text="Pizza Hut" />
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -144,12 +146,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                tools:text="@string/company_description"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                tools:text="@string/company_description" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -196,6 +198,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18"
                 tools:listitem="@layout/talent_team_rv_item_layout" />
+
+            <TextView
+                android:id="@+id/jobEmptyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No job posted yet"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/jobsRV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/jobsRV" />
+
+            <TextView
+                android:id="@+id/talentTeamEmptyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No talent team present"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/talent_teamRV"
+                app:layout_constraintEnd_toEndOf="@+id/talent_teamRV"
+                app:layout_constraintStart_toStartOf="@+id/talent_teamRV"
+                app:layout_constraintTop_toTopOf="@+id/talent_teamRV" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

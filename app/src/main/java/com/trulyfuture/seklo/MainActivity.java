@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -22,6 +23,8 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.HrAdapter;
 import com.trulyfuture.seklo.adapters.HrAdapterSelected;
@@ -85,6 +88,17 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     }
 
     private void setupViews() {
+
+        try {
+            FirebaseMessaging.getInstance().subscribeToTopic("general");
+            String TOKEN = FirebaseInstanceId.getInstance().getToken();
+
+
+        } catch (Exception e) {
+
+        }
+
+
         //no tint to bottom nav icons
         binding.bottomNavigationView.setItemIconTintList(null);
 
@@ -93,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
         //Bottom sheet binding
-        ScrollView hrconstraintLayout = findViewById(R.id.hr_bottom_sheet);
+        NestedScrollView hrconstraintLayout = findViewById(R.id.hr_bottom_sheet);
         hrServicesBottomSheetBinding = HrServicesBottomSheetBinding.bind(hrconstraintLayout);
 
         //Setting bottom sheet default state
@@ -180,11 +194,11 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         hrServicesBottomSheetBinding.personalityTestBtn.setOnClickListener(view -> {
-            Toast.makeText(this,"Coming Soon",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
         });
 
         hrServicesBottomSheetBinding.tipsTrickBtn.setOnClickListener(view -> {
-            Toast.makeText(this,"Coming Soon",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -206,12 +220,13 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
     }
 
-    private void getUser(){
+    private void getUser() {
         activityViewModel.getCurrentUser().observe(this, userResults -> {
             currentUser = userResults.getUserResultList().get(0);
         });
 
     }
+
     private void showResumeReviewPopup() {
         ResumeReviewPopupBinding resumeReviewPopupBinding = ResumeReviewPopupBinding.inflate(getLayoutInflater());
 
@@ -305,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
 
         });
-
 
 
     }

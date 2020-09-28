@@ -64,6 +64,7 @@
                 android:enabled="false"
                 android:dropDownHeight="150dp"
                 android:hint="Select a skill"
+                android:textColor="@color/black"
                 android:padding="13dp"
                 />
         </com.google.android.material.textfield.TextInputLayout>

@@ -181,6 +181,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         });
 
 
+
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
@@ -206,6 +207,9 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
             }
         });
 
+        educationPopupBinding.closeBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
     }
 

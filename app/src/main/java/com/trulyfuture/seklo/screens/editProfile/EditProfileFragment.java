@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.gesture.GestureLibraries;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -24,9 +27,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Gallery;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
@@ -54,6 +62,7 @@ public class EditProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mFileUri = null;
 
+    private FirebaseStorage mFirebaseStorage;
     private static final String TAG = "EditProfileFragment";
 
     @Override
@@ -77,6 +86,8 @@ public class EditProfileFragment extends Fragment {
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel = ViewModelProviders.of(this).get(EditProfileViewModel.class);
 
+        mFirebaseStorage = FirebaseStorage.getInstance();
+
         getUser();
 
 
@@ -84,11 +95,15 @@ public class EditProfileFragment extends Fragment {
 
         binding.changeProfilePicBtn.setOnClickListener(view -> {
 
-            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
 
-//            Intent mediaChooser = new Intent(Intent.ACTION_GET_CONTENT);
-//            mediaChooser.setType("image/*");
-//            startActivityForResult(Intent.createChooser(mediaChooser, "Select Picture"), PICK_IMAGE_REQUEST);
+            if (isInternetAvailable()) {
+                Intent mediaChooser = new Intent(Intent.ACTION_GET_CONTENT);
+                mediaChooser.setType("image/*");
+                startActivityForResult(Intent.createChooser(mediaChooser, "Select Picture"), PICK_IMAGE_REQUEST);
+            } else
+                Toast.makeText(getContext(), "Check your internet connection to update profile image", Toast.LENGTH_SHORT).show();
+
 
         });
 
@@ -148,31 +163,7 @@ public class EditProfileFragment extends Fragment {
             Glide.with(this).asBitmap()
                     .load(currentUser.getUserImage())
                     .into(binding.userImage);
-            // Decode base64 string to image
-//            String removeAdditionalText=currentUser.getUserImage().substring(22);
-//
-//            byte[] decodedString = Base64.decode(removeAdditionalText, Base64.DEFAULT);
-//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//            binding.userImage.setImageBitmap(decodedByte);
-//
-//            Glide.with(this).asBitmap()
-//                    .load(currentUser.getUserImage())
-//                    .into(binding.userImage);
         }
-
-//        if (TextUtils.isEmpty(currentUser.getUserImage())) {
-//            //Load dummy image
-//
-//        } else {
-//
-//            // Decode base64 string to image
-//            byte[] decodedString = Base64.decode(currentUser.getUserImage(), Base64.DEFAULT);
-//            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//            binding.userImage.setImageBitmap(decodedByte);
-//
-//
-//        }
-
 
         binding.firstName.setText(currentUser.getFname());
         binding.lastName.setText(currentUser.getLname());
@@ -191,6 +182,63 @@ public class EditProfileFragment extends Fragment {
         return false;
     }
 
+    private void uploadImageToFirebase() {
+
+        StorageReference storageReference = mFirebaseStorage.getReference("Users/ProfilePictures/" + currentUser.getID());
+
+        //Upload to storage
+        StorageReference fileReference = storageReference.child(System.currentTimeMillis()
+                + "." + getFileExtension(mFileUri));
+
+        UploadTask uploadTask = fileReference.putFile(mFileUri);
+
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+            if (taskSnapshot.getMetadata() != null) {
+                if (taskSnapshot.getMetadata().getReference() != null) {
+
+                    mFileUri = null;
+                    Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                    result.addOnSuccessListener(uri -> {
+
+                        String fileUrl = uri.toString();
+
+                        //Update the image
+
+                        Map<String, String> userMap = new HashMap<>();
+                        userMap.put("profilePic", fileUrl);
+
+                        viewModel.updateUserImage(userMap,currentUser.getID()).observe(getViewLifecycleOwner(),sekloResults -> {
+                            ProgressDialog.hideLoader();
+
+                            Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                            if(sekloResults.getResults().getCode()==1){
+                                getUser();
+                            }
+
+                        });
+
+                    });
+
+
+                }
+            }
+        }).addOnFailureListener(e -> {
+            //dismiss dialog
+            if (ProgressDialog.isShowing())
+                ProgressDialog.hideLoader();
+
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        });
+
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -199,56 +247,24 @@ public class EditProfileFragment extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mFileUri = data.getData();
 
+            ProgressDialog.showLoader(getActivity());
+
+            uploadImageToFirebase();
 //            Glide.with(this).load(mFileUri).into(binding.userImage);
 
 //            binding.userImage.setImageURI(mFileUri);
 
             //Convert image to base64
-            try {
-                final InputStream imageStream = getActivity().getContentResolver().openInputStream(mFileUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() , mFileUri);
-                String encodedImage = encodeImage(selectedImage);
-
-                //Set encoded image
-                byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                binding.userImage.setImageBitmap(decodedByte);
-
-
-                encodedImage = "data:image/png;base64," + encodedImage;
-
-                Log.v(TAG, encodedImage);
-
-
-                Map<String, String> userMap = new HashMap<>();
-                userMap.put("userPic", encodedImage);
-
-                viewModel.updateUserImage(userMap, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
-                    Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             //Open updating spinner
 
             //After its updated load the image
         } else {
-            Toast.makeText(getContext(), "Error chosing image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Error choosing image", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private String encodeImage(Bitmap bm) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
-
-        return encImage;
-    }
 
     public static String getMimeType(Context context, Uri uri) {
         String extension;
@@ -262,6 +278,14 @@ public class EditProfileFragment extends Fragment {
             extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
         }
         return extension;
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

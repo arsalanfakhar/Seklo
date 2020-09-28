@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "106043825378",
+    "firebase_url": "https://seklo-f6cd0.firebaseio.com",
+    "project_id": "seklo-f6cd0",
+    "storage_bucket": "seklo-f6cd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106043825378:android:14063352895bf7dcf892bb",
+        "android_client_info": {
+          "package_name": "com.trulyfuture.seklo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106043825378-jakmslguli8nfo9n1rbjthefogf7fgcv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trulyfuture.seklo",
+            "certificate_hash": "ed8c61aab18f26a8cefcb205d98c1e6dfaf6fad1"
+          }
+        },
+        {
+          "client_id": "106043825378-0f6uve5m24ma5mr2t51ksgm63foibmni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDceemu3AD4PuOr09aVgbNvu_E5C7LQnb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106043825378-0f6uve5m24ma5mr2t51ksgm63foibmni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

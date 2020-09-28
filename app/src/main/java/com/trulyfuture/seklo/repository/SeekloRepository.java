@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.models.CompanyHrResults;

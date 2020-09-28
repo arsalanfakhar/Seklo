@@ -111,12 +111,17 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
         Glide.with(popupBinding.getRoot()).asBitmap().load(hr.getProfilePic()).into(popupBinding.hrImage);
         popupBinding.hrName.setText(hr.getFullName());
         popupBinding.hrEmail.setText(hr.getEmail());
-        popupBinding.hrNumber.setText(hr.getNumber());
+//        popupBinding.hrNumber.setText(hr.getNumber());
         popupBinding.hrDescription.setText(hr.getOverview());
 
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
+
+        popupBinding.closeBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
     }
+
 
     @Override
     public void onHrClick(HrResults.Hr hr) {

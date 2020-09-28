@@ -51,7 +51,7 @@ public class Users {
     @Expose
     private String overview;
 
-    @SerializedName("userPic")
+    @SerializedName("profilePic")
     @Expose
     private String userImage;
 

@@ -146,6 +146,10 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
+        popupBinding.closeBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
         popupBinding.addExperienceBtn.setOnClickListener(view -> {
             if (!isFieldEmpty()) {
                 Map<String, Object> experienceMap = new HashMap<>();
