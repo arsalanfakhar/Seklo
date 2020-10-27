@@ -21,10 +21,12 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SeekloApiInterface {
 
@@ -87,6 +89,10 @@ public interface SeekloApiInterface {
     @POST("user-skill")
     Call<SekloResults> addUserSkill(@Body Map<String,Object> skillMap);
 
+    @DELETE("user-skill/{id}")
+    Call<SekloResults> deleteUserSkill(@Path("id") int skillId);
+
+
     @GET("jobs/company-jobs/{id}")
     Call<JobsResults> getCompanyJobs(@Path("id") int id);
 
@@ -120,5 +126,7 @@ public interface SeekloApiInterface {
     @POST("cover-letter")
     Call<SekloResults> addCoverLetter(@Body HRServices hrService);
 
+    @POST("forgot-password")
+    Call<SekloResults> resetPassword(@Body Map<String,Object> passMap);
 
 }

@@ -1,21 +1,32 @@
 package com.trulyfuture.seklo.screens.login;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
 import com.trulyfuture.seklo.MainActivity;
+import com.trulyfuture.seklo.databinding.ResetPasswordPopupBinding;
 import com.trulyfuture.seklo.screens.signup.SignupActivity;
 import com.trulyfuture.seklo.databinding.ActivityLoginBinding;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.screens.signup.LoginSignupViewModel;
 import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -29,6 +40,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(loginBinding.getRoot());
         viewModel = ViewModelProviders.of(this).get(LoginSignupViewModel.class);
 
+
+        loginBinding.forgetPassBtn.setOnClickListener(v -> {
+            showForgetPassPopup();
+        });
 
         loginBinding.loginBtn.setOnClickListener(view -> {
 
@@ -71,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
 
-        if(!isValidEmail(loginBinding.email.getText().toString())){
+        if (!isValidEmail(loginBinding.email.getText().toString())) {
             Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -83,10 +98,54 @@ public class LoginActivity extends AppCompatActivity {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    private void addToSharedPrefs(int userId){
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this,SharedPreferenceClass.UserDetails);
-        sharedPreferenceClass.SetIntegerEditor("userId",userId);
+    private void addToSharedPrefs(int userId) {
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        sharedPreferenceClass.SetIntegerEditor("userId", userId);
         sharedPreferenceClass.DoCommit();
     }
+
+    private void showForgetPassPopup() {
+        ResetPasswordPopupBinding popupBinding = ResetPasswordPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(popupBinding.getRoot());
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popupBinding.sendEmailBtn.setOnClickListener(v -> {
+            if(TextUtils.isEmpty(popupBinding.email.getText())){
+                Toast.makeText(this,"Fields are empty",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                if (isInternetAvailable()) {
+                    Map<String,Object> passMap=new HashMap<>();
+                    passMap.put("Email",popupBinding.email.getText().toString());
+
+                    viewModel.resetPassword(passMap).observe(this,sekloResults -> {
+                        if (sekloResults.getResults().getCode() == 1) {
+                            Toast.makeText(this,"Check your email to reset password",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(this,sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+
+                        dialog.dismiss();
+                    });
+                } else
+                    Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) this.
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

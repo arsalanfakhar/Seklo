@@ -128,6 +128,16 @@ public class ProfileSkillsFragment extends Fragment {
         return 0;
     }
 
+    private int getUserSkillId(String skillName){
+        for (SkillResults.Skills skill : userSkills) {
+            if (skill.getSkillName().equals(skillName)) {
+                return skill.getUserSkillId();
+            }
+        }
+        return 0;
+    }
+
+
     private void getUserSkills(){
         //Add user skills
         activityViewModel.getUserSkills(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), skillResults -> {
@@ -145,8 +155,13 @@ public class ProfileSkillsFragment extends Fragment {
             Chip chip = (Chip) this.getLayoutInflater().inflate(R.layout.skill_chips, null, false);
             chip.setText(skill.getSkillName());
 
+            //Delete user skills
             chip.setOnCloseIconClickListener(view -> {
-                Toast.makeText(getContext(), "Remove:"+chip.getText().toString(), Toast.LENGTH_SHORT).show();
+                viewModel.deleteUserSkill(getUserSkillId(chip.getText().toString())).observe(this,sekloResults -> {
+                    if(sekloResults.getResults().getCode()==1){
+                        getUserSkills();
+                    }
+                });
             });
 
             binding.skillChipGroup.addView(chip);

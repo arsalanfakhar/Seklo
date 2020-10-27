@@ -40,6 +40,8 @@ public class ProfileViewModel extends AndroidViewModel {
         return seekloRepository.addUserSkills(skillMap);
     }
 
-
+    public LiveData<SekloResults> deleteUserSkill(int skillId){
+        return seekloRepository.deleteUserSkill(skillId);
+    }
 
 }

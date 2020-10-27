@@ -431,6 +431,28 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> deleteUserSkill(int userSkillId){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall = apiInterface.deleteUserSkill(userSkillId);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    data.postValue(response.body());
+                else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
     public MutableLiveData<CompanyResults> getAllCompanies() {
 
@@ -673,6 +695,30 @@ public class SeekloRepository {
         MutableLiveData<SekloResults> data = new MutableLiveData<>();
 
         Call<SekloResults> sekloResultsCall = apiInterface.addCoverLetter(hrServices);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> resetPassword(Map<String,Object> passMap){
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> sekloResultsCall = apiInterface.resetPassword(passMap);
 
         sekloResultsCall.enqueue(new Callback<SekloResults>() {
             @Override

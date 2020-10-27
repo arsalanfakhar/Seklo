@@ -8,8 +8,11 @@ import androidx.lifecycle.LiveData;
 
 
 import com.trulyfuture.seklo.models.Results;
+import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.repository.SeekloRepository;
+
+import java.util.Map;
 
 public class LoginSignupViewModel extends AndroidViewModel {
 
@@ -27,5 +30,10 @@ public class LoginSignupViewModel extends AndroidViewModel {
     public LiveData<Results> authenticateUser(Users user){
         return seekloRepository.loginUser(user);
     }
+
+    public LiveData<SekloResults> resetPassword(Map<String,Object> passMap){
+        return seekloRepository.resetPassword(passMap);
+    }
+
 
 }
