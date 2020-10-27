@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.trulyfuture.seklo.MainActivityViewModel;
+import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.CompaniesAdapter;
 import com.trulyfuture.seklo.adapters.JobsAdapter;
 import com.trulyfuture.seklo.adapters.TalentTeamAdapter;
@@ -125,6 +127,9 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
 
     @Override
     public void onJobClick(JobsResults.Jobs job) {
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("jobDetails",job);
 
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_companyDetailFragment_to_jobDetailFragment,bundle);
     }
 }

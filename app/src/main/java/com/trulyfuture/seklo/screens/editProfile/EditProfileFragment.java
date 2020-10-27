@@ -39,7 +39,9 @@ import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
 import com.trulyfuture.seklo.models.Users;
+import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.utils.ProgressDialog;
+import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -107,6 +109,12 @@ public class EditProfileFragment extends Fragment {
 
         });
 
+        binding.signoutBtn.setOnClickListener(view -> {
+            addToSharedPrefs(-1);
+
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        });
 
         binding.saveBtn.setOnClickListener(view1 -> {
             if (!isFieldEmpty()) {
@@ -118,7 +126,7 @@ public class EditProfileFragment extends Fragment {
 
                 viewModel.updateUserDetails(user, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
-                        getUser();
+//                        getUser();
 
                         Toast.makeText(getContext(), "Details updated sucessfully", Toast.LENGTH_SHORT).show();
 
@@ -288,4 +296,9 @@ public class EditProfileFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private void addToSharedPrefs(int userId){
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(),SharedPreferenceClass.UserDetails);
+        sharedPreferenceClass.SetIntegerEditor("userId",userId);
+        sharedPreferenceClass.DoCommit();
+    }
 }

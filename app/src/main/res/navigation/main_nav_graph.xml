@@ -35,7 +35,11 @@
         android:id="@+id/companyDetailFragment"
         android:name="com.trulyfuture.seklo.screens.companyDetail.CompanyDetailFragment"
         android:label="fragment_company_detail"
-        tools:layout="@layout/fragment_company_detail" />
+        tools:layout="@layout/fragment_company_detail" >
+        <action
+            android:id="@+id/action_companyDetailFragment_to_jobDetailFragment"
+            app:destination="@id/jobDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.trulyfuture.seklo.screens.profile.ProfileFragment"

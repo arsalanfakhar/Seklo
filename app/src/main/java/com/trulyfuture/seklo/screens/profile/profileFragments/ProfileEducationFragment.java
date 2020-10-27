@@ -71,7 +71,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
 
-        educationAdapter = new NotificationsAdapter.EducationAdapter(getContext(),new ArrayList<>(),this);
+        educationAdapter = new NotificationsAdapter.EducationAdapter(getContext(), new ArrayList<>(), this);
         binding.educationRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.educationRv.setAdapter(educationAdapter);
 
@@ -104,15 +104,16 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
     }
 
 
-    private void getUserEducation(){
-        activityViewModel.getAllUserEducation(activityViewModel.getUserId()).observe(getViewLifecycleOwner(),educationResults -> {
-            if(educationResults.getResults()!=null){
+    private void getUserEducation() {
+        activityViewModel.getAllUserEducation(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), educationResults -> {
+            if (educationResults.getResults() != null) {
                 educationAdapter.setEducationModelArrayList((ArrayList<EducationResults.EducationModel>) educationResults.getResults());
             }
         });
 
 
     }
+
     private void showAddEducationPopup() {
         educationPopupBinding = AddEducationPopupBinding.inflate(getLayoutInflater());
 
@@ -153,6 +154,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         endYearList.remove(0);
         endYearList.add(0, "Till present");
 
+
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spinner_item_layout, endYearList
         );
@@ -163,6 +165,10 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         educationPopupBinding.startYear.setAdapter(startYearArrayAdapter);
         educationPopupBinding.endYear.setAdapter(endYearArrayAdapter);
 
+        //On start year click listener
+        educationPopupBinding.startYear.setOnItemClickListener((parent, view, position, id) -> {
+            setEndYear(Integer.valueOf(educationPopupBinding.startYear.getText().toString()));
+        });
 
         educationPopupBinding.degreeDropBtn.setOnClickListener(view -> {
             educationPopupBinding.degreeName.showDropDown();
@@ -181,25 +187,24 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         });
 
 
-
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
         educationPopupBinding.addEducationBtn.setOnClickListener(view -> {
-            if(!isFieldEmpty()){
+            if (!isFieldEmpty()) {
 
-                Map<String,Object> educationMap=new HashMap<>();
-                educationMap.put("userId",activityViewModel.getUserId());
-                educationMap.put("uniName",educationPopupBinding.schoolName.getText().toString());
-                educationMap.put("degreeId",getDegreeId(educationPopupBinding.degreeName.getText().toString()) );
-                educationMap.put("studyId",getStudyFieldId(educationPopupBinding.fieldOfStudy.getText().toString()) );
+                Map<String, Object> educationMap = new HashMap<>();
+                educationMap.put("userId", activityViewModel.getUserId());
+                educationMap.put("uniName", educationPopupBinding.schoolName.getText().toString());
+                educationMap.put("degreeId", getDegreeId(educationPopupBinding.degreeName.getText().toString()));
+                educationMap.put("studyId", getStudyFieldId(educationPopupBinding.fieldOfStudy.getText().toString()));
                 educationMap.put("startYear", educationPopupBinding.startYear.getText().toString());
-                educationMap.put("endYear",educationPopupBinding.endYear.getText().toString());
+                educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
 
-                viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(),sekloResults -> {
-                    if(sekloResults.getResults().getCode()==1){
+                viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
                         getUserEducation();
-                        Toast.makeText(getContext(),sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 });
@@ -221,24 +226,42 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
                 || TextUtils.isEmpty(educationPopupBinding.startYear.getText())
                 || TextUtils.isEmpty(educationPopupBinding.endYear.getText())) {
 
-            Toast.makeText(getContext(),"Please fill all fields",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
 
-    private int getDegreeId(String userDegree){
-        for(DegreeResults.Degrees degree:degreesList){
-            if(degree.getDegreeName().equals(userDegree)){
+    private void setEndYear(Integer startYear) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        currentYear=currentYear-1;
+        ArrayList<String> endYearList = new ArrayList<>();
+
+        for (int i = currentYear; i > startYear; i--) {
+            endYearList.add(String.valueOf(i));
+        }
+        endYearList.add(0, "Till present");
+
+        ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, endYearList
+        );
+
+        educationPopupBinding.endYear.setAdapter(endYearArrayAdapter);
+    }
+
+
+    private int getDegreeId(String userDegree) {
+        for (DegreeResults.Degrees degree : degreesList) {
+            if (degree.getDegreeName().equals(userDegree)) {
                 return degree.getDegreeId();
             }
         }
         return 0;
     }
 
-    private int getStudyFieldId(String userstudyField){
-        for(StudyFieldsResults.StudyFields studyField:studyFieldsList){
-            if(studyField.getStudyName().equals(userstudyField)){
+    private int getStudyFieldId(String userstudyField) {
+        for (StudyFieldsResults.StudyFields studyField : studyFieldsList) {
+            if (studyField.getStudyName().equals(userstudyField)) {
                 return studyField.getStudyId();
             }
         }

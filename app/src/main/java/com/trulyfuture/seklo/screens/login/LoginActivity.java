@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Toast;
 
 import com.trulyfuture.seklo.MainActivity;
@@ -69,9 +70,18 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please complete all fields to continue", Toast.LENGTH_SHORT).show();
             return true;
         }
+
+        if(!isValidEmail(loginBinding.email.getText().toString())){
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         return false;
     }
 
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
 
     private void addToSharedPrefs(int userId){
         SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this,SharedPreferenceClass.UserDetails);

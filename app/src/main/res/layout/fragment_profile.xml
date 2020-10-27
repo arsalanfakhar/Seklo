@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Edit Profile"
+            android:text="Settings"
             android:textAllCaps="false"
             app:backgroundTint="@color/profileBtnColor"
             app:cornerRadius="10dp"
@@ -197,21 +197,6 @@
             app:layout_constraintTop_toBottomOf="@+id/overviewBtnLine">
 
         </androidx.viewpager2.widget.ViewPager2>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/signoutBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:text="Sign out"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/profileBtnColor"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profileViewpager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

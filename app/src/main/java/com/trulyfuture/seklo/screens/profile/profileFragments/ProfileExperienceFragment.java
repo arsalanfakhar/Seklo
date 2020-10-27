@@ -129,6 +129,10 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
         popupBinding.startYear.setAdapter(startYearArrayAdapter);
         popupBinding.endYear.setAdapter(endYearArrayAdapter);
 
+        //On start year click listener
+        popupBinding.startYear.setOnItemClickListener((parent, view, position, id) -> {
+            setEndYear(Integer.valueOf(popupBinding.startYear.getText().toString()));
+        });
 
         popupBinding.startYearBtn.setOnClickListener(view -> {
             popupBinding.startYear.showDropDown();
@@ -195,6 +199,23 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
             }
         }
         return 0;
+    }
+
+    private void setEndYear(Integer startYear) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        currentYear=currentYear-1;
+        ArrayList<String> endYearList = new ArrayList<>();
+
+        for (int i = currentYear; i > startYear; i--) {
+            endYearList.add(String.valueOf(i));
+        }
+        endYearList.add(0, "Till present");
+
+        ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, endYearList
+        );
+
+        popupBinding.endYear.setAdapter(endYearArrayAdapter);
     }
 
     @Override

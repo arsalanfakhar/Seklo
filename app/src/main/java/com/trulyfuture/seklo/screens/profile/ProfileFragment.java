@@ -108,13 +108,6 @@ public class ProfileFragment extends Fragment {
             binding.profileViewpager.setCurrentItem(3);
         });
 
-
-        binding.signoutBtn.setOnClickListener(view -> {
-            addToSharedPrefs(-1);
-
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
-        });
     }
 
     private void changeViewPagerTabsSelection(int selected) {
