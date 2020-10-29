@@ -13,7 +13,7 @@ public class SharedPreferenceClass {
     public static String UserDetails = "UserDetails";
 
     public SharedPreferenceClass(Context context, String SharePref){
-        sharedPreferences = context.getSharedPreferences(SharePref,context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(SharePref, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 

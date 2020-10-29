@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 if (isInternetAvailable()) {
                     Map<String,Object> passMap=new HashMap<>();
-                    passMap.put("Email",popupBinding.email.getText().toString());
+                    passMap.put("Email",popupBinding.email.getText().toString().toLowerCase());
 
                     viewModel.resetPassword(passMap).observe(this,sekloResults -> {
                         if (sekloResults.getResults().getCode() == 1) {

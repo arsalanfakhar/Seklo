@@ -30,11 +30,10 @@ public class SplashActivity extends AppCompatActivity {
             if (userId == -1) {
                 //not logged in
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                finish();
             } else {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
             }
+            finish();
 
         }, SPLASH_TIMEOUT);
 

@@ -34,7 +34,7 @@ public class SignupActivity extends AppCompatActivity {
                 Users users=new Users();
                 users.setFname(signupBinding.fullName.getText().toString());
                 users.setLname(signupBinding.lastName.getText().toString());
-                users.setEmail(signupBinding.email.getText().toString());
+                users.setEmail(signupBinding.email.getText().toString().toLowerCase());
                 users.setPassword(signupBinding.password.getText().toString());
                 users.setNumber(signupBinding.number.getText().toString());
 

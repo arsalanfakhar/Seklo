@@ -3,9 +3,6 @@ package com.trulyfuture.seklo.screens.editProfile;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.gesture.GestureLibraries;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -14,20 +11,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.GenericLifecycleObserver;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
-import android.widget.Gallery;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -43,10 +34,7 @@ import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -110,7 +98,7 @@ public class EditProfileFragment extends Fragment {
         });
 
         binding.signoutBtn.setOnClickListener(view -> {
-            addToSharedPrefs(-1);
+            removeFromSharedPrefs();
 
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
@@ -296,9 +284,9 @@ public class EditProfileFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void addToSharedPrefs(int userId){
+    private void removeFromSharedPrefs(){
         SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(),SharedPreferenceClass.UserDetails);
-        sharedPreferenceClass.SetIntegerEditor("userId",userId);
+        sharedPreferenceClass.RemoveValue("userId");
         sharedPreferenceClass.DoCommit();
     }
 }
