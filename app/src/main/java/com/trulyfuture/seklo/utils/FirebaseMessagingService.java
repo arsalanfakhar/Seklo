@@ -57,9 +57,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             String message1 = remoteMessage.getNotification().getBody();
             String ClickAction = remoteMessage.getNotification().getClickAction();
             //    Toast.makeText(this, "title"+title1+","+"notify", Toast.LENGTH_SHORT).show();
-            Log.d("title1", title1);
-            Log.d("message", message1);
-            Log.d("ClickAction", ClickAction);
+//            Log.d("title1", title1);
+//            Log.d("message", message1);
+//            Log.d("ClickAction", ClickAction);
             createNotification(title1, message1, ClickAction, ID);
         }
 
@@ -97,10 +97,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
-                    "My Notifications", NotificationManager.IMPORTANCE_HIGH);
+                    "Job Notification", NotificationManager.IMPORTANCE_HIGH);
 
             // Configure the notification channel.
-            notificationChannel.setDescription("Channel description");
+            notificationChannel.setDescription("You will receive all job notifications here");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
@@ -115,8 +115,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.ic_app_logo)
-                .setTicker("Hearty365")
-                //     .setPriority(Notification.PRIORITY_MAX)
+                .setTicker(title)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentTitle(title)
                 .setContentText(messageBody)
                 .setContentInfo("Info")

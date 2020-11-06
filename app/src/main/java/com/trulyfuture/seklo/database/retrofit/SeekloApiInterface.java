@@ -2,12 +2,14 @@ package com.trulyfuture.seklo.database.retrofit;
 
 import com.trulyfuture.seklo.models.CompanyHrResults;
 import com.trulyfuture.seklo.models.CompanyResults;
+import com.trulyfuture.seklo.models.CvExistsResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.JobApply;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
@@ -26,7 +28,6 @@ import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface SeekloApiInterface {
 
@@ -92,7 +93,6 @@ public interface SeekloApiInterface {
     @DELETE("user-skill/{id}")
     Call<SekloResults> deleteUserSkill(@Path("id") int skillId);
 
-
     @GET("jobs/company-jobs/{id}")
     Call<JobsResults> getCompanyJobs(@Path("id") int id);
 
@@ -120,7 +120,7 @@ public interface SeekloApiInterface {
     @POST("resume-writing")
     Call<SekloResults> addResumeWriting(@Body HRServices hrService);
 
-    @POST("career")
+    @POST("career/android")
     Call<SekloResults> addCareer(@Body HRServices hrService);
 
     @POST("cover-letter")
@@ -129,4 +129,9 @@ public interface SeekloApiInterface {
     @POST("forgot-password")
     Call<SekloResults> resetPassword(@Body Map<String,Object> passMap);
 
+    @GET("resume-upload/if-exist/{id}")
+    Call<CvExistsResults> cvExists(@Path("id") int resumeId);
+
+    @POST("applied-jobs")
+    Call<SekloResults> applyJob(@Body JobApply jobApplyData);
 }

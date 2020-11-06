@@ -11,12 +11,14 @@ import com.trulyfuture.seklo.database.retrofit.RetrofitService;
 import com.trulyfuture.seklo.database.retrofit.SeekloApiInterface;
 import com.trulyfuture.seklo.models.CompanyHrResults;
 import com.trulyfuture.seklo.models.CompanyResults;
+import com.trulyfuture.seklo.models.CvExistsResults;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
+import com.trulyfuture.seklo.models.JobApply;
 import com.trulyfuture.seklo.models.JobsResults;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
@@ -779,6 +781,54 @@ public class SeekloRepository {
 
             @Override
             public void onFailure(Call<CompanyHrResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<CvExistsResults> checkCv(int userId) {
+
+        MutableLiveData<CvExistsResults> data = new MutableLiveData<>();
+
+        Call<CvExistsResults> call = apiInterface.cvExists(userId);
+
+        call.enqueue(new Callback<CvExistsResults>() {
+            @Override
+            public void onResponse(Call<CvExistsResults> call, Response<CvExistsResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CvExistsResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> applyForJob(JobApply jobApplyData) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> call = apiInterface.applyJob(jobApplyData);
+
+        call.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
                 Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
