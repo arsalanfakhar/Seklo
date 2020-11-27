@@ -154,7 +154,11 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else if(userResume==null){
+                Toast.makeText(this, "Submit your resume before proceeding", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 showResumeReviewPopup();
             }
 
@@ -210,9 +214,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
         });
 
-        activityViewModel.userResume.observe(this, resumeResults -> {
-            userResume = resumeResults.getResults().get(0);
-        });
+
 
         activityViewModel.allSevices.observe(this, servicesResults -> {
             servicesList = servicesResults.getResults();
@@ -223,6 +225,11 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     private void getUser() {
         activityViewModel.getCurrentUser().observe(this, userResults -> {
             currentUser = userResults.getUserResultList().get(0);
+        });
+
+        activityViewModel.userResume.observe(this, resumeResults -> {
+            if(!resumeResults.getResults().isEmpty())
+                userResume = resumeResults.getResults().get(0);
         });
 
     }
@@ -268,7 +275,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             resumeReviewPopupBinding.timeSlot.showDropDown();
         });
         resumeReviewPopupBinding.email.setText(currentUser.getEmail());
-        resumeReviewPopupBinding.resumeName.setText(userResume.getResumeName());
+
+        if(userResume!=null)
+            resumeReviewPopupBinding.resumeName.setText(userResume.getResumeName());
 
 
         AlertDialog dialog = alertBuilder.create();
