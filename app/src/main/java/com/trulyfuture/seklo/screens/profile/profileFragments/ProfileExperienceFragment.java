@@ -221,5 +221,12 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
     @Override
     public void onExperienceClick(ExperienceResults.Experience experience) {
 
+        viewModel.deleteExperience(experience.getExpId()).observe(getViewLifecycleOwner(),sekloResults -> {
+            if(sekloResults.getResults().getCode()==1){
+                getUserExperience();
+            }
+        });
+
+
     }
 }

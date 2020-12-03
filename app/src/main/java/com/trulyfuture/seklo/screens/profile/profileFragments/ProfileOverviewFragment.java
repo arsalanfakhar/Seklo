@@ -48,23 +48,6 @@ public class ProfileOverviewFragment extends Fragment {
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel=ViewModelProviders.of(this).get(ProfileViewModel.class);
 
-
-        binding.updateOverview.setOnClickListener(view -> {
-            if (!TextUtils.isEmpty(binding.overviewTxt.getText())) {
-
-
-                Users users = new Users();
-                users.setOverview(binding.overviewTxt.getText().toString().trim());
-                viewModel.updateUserOverView(users, activityViewModel.getUserId()).observe(getViewLifecycleOwner(),sekloResults -> {
-                    if(sekloResults.getResults().getCode()==1){
-                        Toast.makeText(getContext(),"Updated sucessfully",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-            }
-
-        });
     }
 
     private void setupObserver() {
@@ -82,6 +65,9 @@ public class ProfileOverviewFragment extends Fragment {
     private void loadUserdata() {
         if (!TextUtils.isEmpty(currentUser.getOverview())) {
             binding.overviewTxt.setText(currentUser.getOverview());
+        }
+        else {
+            binding.overviewTxt.setText("Not provided yet");
         }
     }
 

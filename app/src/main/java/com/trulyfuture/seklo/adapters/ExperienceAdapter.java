@@ -73,6 +73,12 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Ex
 
             String duration=experience.getStartDate()+" - "+experience.getEndDate();
             profileItemBinding.duration.setText(duration);
+
+            profileItemBinding.delete.setOnClickListener(view -> {
+                onExperienceClickListener.onExperienceClick(experienceArrayList.get(getAdapterPosition()));
+            });
+
+
         }
 
     }

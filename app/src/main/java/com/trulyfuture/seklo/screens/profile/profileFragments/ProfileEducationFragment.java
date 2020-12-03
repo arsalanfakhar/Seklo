@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.screens.profile.profileFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,11 +13,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
+import com.trulyfuture.seklo.adapters.EducationAdapter;
 import com.trulyfuture.seklo.adapters.NotificationsAdapter;
 import com.trulyfuture.seklo.databinding.AddEducationPopupBinding;
 import com.trulyfuture.seklo.databinding.FragmentProfileEducationBinding;
@@ -32,10 +36,10 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ProfileEducationFragment extends Fragment implements NotificationsAdapter.EducationAdapter.OnEducationClickListener {
+public class ProfileEducationFragment extends Fragment implements  EducationAdapter.OnEducationClickListener {
 
     private FragmentProfileEducationBinding binding;
-    private NotificationsAdapter.EducationAdapter educationAdapter;
+    private EducationAdapter educationAdapter;
     private MainActivityViewModel activityViewModel;
     private ProfileViewModel viewModel;
 
@@ -71,7 +75,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
 
-        educationAdapter = new NotificationsAdapter.EducationAdapter(getContext(), new ArrayList<>(), this);
+        educationAdapter = new EducationAdapter(getContext(), new ArrayList<>(), this);
         binding.educationRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.educationRv.setAdapter(educationAdapter);
 
@@ -234,7 +238,7 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
 
     private void setEndYear(Integer startYear) {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        currentYear=currentYear-1;
+        currentYear = currentYear - 1;
         ArrayList<String> endYearList = new ArrayList<>();
 
         for (int i = currentYear; i > startYear; i--) {
@@ -268,8 +272,29 @@ public class ProfileEducationFragment extends Fragment implements NotificationsA
         return 0;
     }
 
+
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)
+                    getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(imm != null){
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        } catch (Exception var2) {
+        }
+    }
+
     @Override
     public void onEducationClick(EducationResults.EducationModel educationModel) {
+
+        viewModel.deleteEducation(educationModel.getEdId()).observe(getViewLifecycleOwner(),sekloResults -> {
+            if(sekloResults.getResults().getCode()==1){
+                getUserEducation();
+            }
+        });
+
+
 
     }
 }

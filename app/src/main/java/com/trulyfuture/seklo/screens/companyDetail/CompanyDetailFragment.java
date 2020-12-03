@@ -122,7 +122,12 @@ public class CompanyDetailFragment extends Fragment implements JobsAdapter.OnJob
         binding.companyFoundingDate.setText(mCompany.getFounded());
         binding.companyEmployeesNo.setText(mCompany.getNumOfEmlpyees());
 
-        Glide.with(this).load(mCompany.getProfilePic()).into(binding.companyProfilePic);
+        if(mCompany.getProfilePic()!=null){
+            Glide.with(this).load(mCompany.getProfilePic()).into(binding.companyProfilePic);
+        }
+
+
+
     }
 
     @Override

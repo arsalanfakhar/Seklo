@@ -23,10 +23,6 @@ public class ProfileViewModel extends AndroidViewModel {
         seekloRepository = new SeekloRepository(application);
     }
 
-    public LiveData<SekloResults> updateUserOverView(Users users, int userId) {
-        return seekloRepository.updateUserDetails(users, userId);
-    }
-
 
     public LiveData<SekloResults> addUserEducation(Map<String, Object> educationMap) {
         return seekloRepository.addUserEducation(educationMap);
@@ -42,6 +38,14 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public LiveData<SekloResults> deleteUserSkill(int skillId){
         return seekloRepository.deleteUserSkill(skillId);
+    }
+
+    public LiveData<SekloResults> deleteEducation(int edId){
+        return seekloRepository.removeEducation(edId);
+    }
+
+    public LiveData<SekloResults> deleteExperience(int expId){
+        return seekloRepository.removeExperience(expId);
     }
 
 }

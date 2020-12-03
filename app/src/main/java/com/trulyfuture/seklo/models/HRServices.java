@@ -34,9 +34,11 @@ public class HRServices {
         @SerializedName("User_Email")
         @Expose
         private String userEmail;
+
         @SerializedName("HR_Email")
         @Expose
         private String hREmail;
+
         @SerializedName("User_Name")
         @Expose
         private String userName;

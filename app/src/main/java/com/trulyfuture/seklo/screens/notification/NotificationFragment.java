@@ -20,7 +20,10 @@ import com.trulyfuture.seklo.databinding.FragmentNotificationBinding;
  */
 public class NotificationFragment extends Fragment {
     private FragmentNotificationBinding binding;
+
     private NotificationsAdapter notificationsAdapter;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,8 +36,8 @@ public class NotificationFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        notificationsAdapter=new NotificationsAdapter(getContext());
-        binding.notificationRV.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.notificationRV.setAdapter(notificationsAdapter);
+//        notificationsAdapter=new NotificationsAdapter(getContext());
+//        binding.notificationRV.setLayoutManager(new LinearLayoutManager(getContext()));
+//        binding.notificationRV.setAdapter(notificationsAdapter);
     }
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
@@ -100,9 +101,34 @@ public class EditProfileFragment extends Fragment {
         binding.signoutBtn.setOnClickListener(view -> {
             removeFromSharedPrefs();
 
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+
+
+
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
+
+
+
+
         });
+
+        binding.updateOverviewBtn.setOnClickListener(view -> {
+
+            if (!TextUtils.isEmpty(binding.overviewTxt.getText())) {
+                Users users = new Users();
+                users.setOverview(binding.overviewTxt.getText().toString().trim());
+                viewModel.updateUserOverView(users, activityViewModel.getUserId()).observe(getViewLifecycleOwner(),sekloResults -> {
+                    if(sekloResults.getResults().getCode()==1){
+                        getUser();
+                        Toast.makeText(getContext(),"Updated sucessfully",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+            }
+        });
+
 
         binding.saveBtn.setOnClickListener(view1 -> {
             if (!isFieldEmpty()) {
@@ -165,6 +191,12 @@ public class EditProfileFragment extends Fragment {
         binding.lastName.setText(currentUser.getLname());
         binding.email.setText(currentUser.getEmail());
         binding.mobileNumber.setText(currentUser.getNumber());
+
+        if (currentUser.getOverview() != null) {
+            if (!currentUser.getOverview().isEmpty())
+                binding.overviewTxt.setText(currentUser.getOverview());
+        }
+
     }
 
     private boolean isFieldEmpty() {
@@ -204,11 +236,11 @@ public class EditProfileFragment extends Fragment {
                         Map<String, String> userMap = new HashMap<>();
                         userMap.put("profilePic", fileUrl);
 
-                        viewModel.updateUserImage(userMap,currentUser.getID()).observe(getViewLifecycleOwner(),sekloResults -> {
+                        viewModel.updateUserImage(userMap, currentUser.getID()).observe(getViewLifecycleOwner(), sekloResults -> {
                             ProgressDialog.hideLoader();
 
                             Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
-                            if(sekloResults.getResults().getCode()==1){
+                            if (sekloResults.getResults().getCode() == 1) {
                                 getUser();
                             }
 
@@ -284,8 +316,8 @@ public class EditProfileFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void removeFromSharedPrefs(){
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(),SharedPreferenceClass.UserDetails);
+    private void removeFromSharedPrefs() {
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(), SharedPreferenceClass.UserDetails);
         sharedPreferenceClass.RemoveValue("userId");
         sharedPreferenceClass.DoCommit();
     }

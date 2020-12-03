@@ -1,6 +1,8 @@
 package com.trulyfuture.seklo.database.retrofit;
 
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,6 +16,7 @@ public class RetrofitService {
 
     public static OkHttpClient client=new OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .callTimeout(15, TimeUnit.SECONDS)
             .build();
 
     private static final Retrofit retrofit = new Retrofit.Builder()

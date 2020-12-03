@@ -836,6 +836,53 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> removeEducation(int edId) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> call = apiInterface.removeUserEducation(edId);
+
+        call.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> removeExperience(int expId) {
+
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> call = apiInterface.removeUserExperience(expId);
+
+        call.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
 
 }
 

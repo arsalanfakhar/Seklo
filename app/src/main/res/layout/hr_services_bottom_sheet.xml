@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toStartOf="@+id/frameLayout"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servicesHrRV">
+            app:layout_constraintTop_toBottomOf="@+id/selectServicesBtn">
 
             <ImageView
                 android:id="@+id/resumeReview"
@@ -91,12 +91,12 @@
 
             <TextView
                 android:id="@+id/textView19"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
                 android:text="Resume Review"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
         </FrameLayout>
 
         <FrameLayout
@@ -131,7 +131,9 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:background="#343434"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/frameLayout"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,14 +146,15 @@
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_hr_appoint" />
+
             <TextView
                 android:id="@+id/textView21"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="8dp"
                 android:text="Resume Writing"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
         </FrameLayout>
 
         <FrameLayout
@@ -182,33 +185,6 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
         </FrameLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/personalityTestBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Take a personality test"
-            android:textAllCaps="false"
-            app:backgroundTint="#343434"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/frameLayout4"
-            app:layout_constraintStart_toStartOf="@+id/frameLayout3"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tipsTrickBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#0A0A0A"
-            android:text="@string/tips_tricks"
-            android:textAllCaps="false"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/personalityTestBtn"
-            app:layout_constraintStart_toStartOf="@+id/personalityTestBtn"
-            app:layout_constraintTop_toBottomOf="@+id/personalityTestBtn" />
 
 
         <ImageView
@@ -221,5 +197,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_close_24" />
+
+        <TextView
+            android:id="@+id/selectServicesBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Choose from one of the available services:"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/servicesHrRV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

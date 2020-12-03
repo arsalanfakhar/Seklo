@@ -64,28 +64,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/profile_pic" />
+                android:src="@drawable/ic_company" />
+
 
             <TextView
                 android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                android:textColor="#707070"
+                android:textColor="@color/white"
                 android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="@+id/companyProfilePic"
-                app:layout_constraintStart_toStartOf="@+id/companyProfilePic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/companyProfilePic"
                 tools:text="Pizza Hut" />
 
             <ImageView
                 android:id="@+id/imageView10"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="64dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/ic_hr_profile"
+                android:src="@drawable/ic_company_founded"
                 app:layout_constraintEnd_toStartOf="@+id/imageView11"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -94,11 +97,12 @@
 
             <ImageView
                 android:id="@+id/imageView11"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="64dp"
-                android:src="@drawable/ic_hr_profile"
+                android:src="@drawable/ic_company_employee"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView10"
@@ -108,7 +112,6 @@
                 android:id="@+id/companyFoundingDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="1920"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="#707070"
@@ -120,7 +123,6 @@
                 android:id="@+id/companyEmployeesNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="200"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="#707070"
@@ -136,7 +138,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Overview"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="#707070"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/companyFoundingDate" />
 
@@ -147,7 +149,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="#707070"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15"
@@ -160,7 +162,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Jobs Posted"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="#707070"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/companyOverview"
                 app:layout_constraintTop_toBottomOf="@+id/companyOverview" />
 
@@ -181,7 +183,7 @@
                 android:layout_marginTop="8dp"
                 android:text="Talent Team"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textColor="#707070"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toBottomOf="@+id/jobsRV" />
 
@@ -206,6 +208,7 @@
                 android:text="No job posted yet"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:visibility="invisible"
+                android:textColor="#707070"
                 app:layout_constraintBottom_toBottomOf="@+id/jobsRV"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -218,6 +221,7 @@
                 android:text="No talent team present"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:visibility="invisible"
+                android:textColor="#707070"
                 app:layout_constraintBottom_toBottomOf="@+id/talent_teamRV"
                 app:layout_constraintEnd_toEndOf="@+id/talent_teamRV"
                 app:layout_constraintStart_toStartOf="@+id/talent_teamRV"

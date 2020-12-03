@@ -80,6 +80,12 @@ public interface SeekloApiInterface {
     @GET("user-exp/{id}")
     Call<ExperienceResults> getUserExperience(@Path("id") int userId);
 
+    @DELETE("user-ed/{id}")
+    Call<SekloResults> removeUserEducation(@Path("id") int edId);
+
+    @DELETE("user-exp/{id}")
+    Call<SekloResults> removeUserExperience(@Path("id") int expId);
+
 
     @GET("list-skills")
     Call<SkillResults> getAllSkills();

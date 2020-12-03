@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_DRAGGING) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    binding.bottomNavigationView.setVisibility(View.VISIBLE);
+                    binding.hrServiceBtn.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -132,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         binding.hrServiceBtn.setOnClickListener(view -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            binding.bottomNavigationView.setVisibility(View.GONE);
+            binding.hrServiceBtn.setVisibility(View.GONE);
         });
 
         //Setup adaptergi
@@ -147,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         hrServicesBottomSheetBinding.closeServicesBtn.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            binding.bottomNavigationView.setVisibility(View.VISIBLE);
+            binding.hrServiceBtn.setVisibility(View.VISIBLE);
         });
 
         hrServicesBottomSheetBinding.resumeReview.setOnClickListener(v -> {
@@ -197,13 +204,6 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         });
 
-        hrServicesBottomSheetBinding.personalityTestBtn.setOnClickListener(view -> {
-            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
-        });
-
-        hrServicesBottomSheetBinding.tipsTrickBtn.setOnClickListener(view -> {
-            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
-        });
     }
 
     private void setupObservers() {
@@ -630,7 +630,16 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
     @Override
     public void onHrSelected(HrResults.Hr selectedHr) {
-
-        this.selectedHr = selectedHr;
+        //if same then deselect it
+        if(this.selectedHr==selectedHr){
+            this.selectedHr=null;
+            hrServicesBottomSheetBinding.selectServicesBtn.setVisibility(View.GONE);
+        }
+        else{
+            this.selectedHr = selectedHr;
+            hrServicesBottomSheetBinding.selectServicesBtn.setVisibility(View.VISIBLE);
+        }
     }
+
+
 }

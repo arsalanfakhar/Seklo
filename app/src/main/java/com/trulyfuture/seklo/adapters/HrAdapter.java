@@ -2,6 +2,7 @@ package com.trulyfuture.seklo.adapters;
 
 import android.content.Context;
 import android.gesture.GestureLibraries;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.trulyfuture.seklo.R;
@@ -44,8 +46,18 @@ public class HrAdapter extends RecyclerView.Adapter<HrAdapter.HrAdapterViewHolde
         HrResults.Hr currentHr = hrArrayList.get(position);
         holder.name.setText(currentHr.getFullName());
 
+        //Progress Drawable
+        CircularProgressDrawable progressDrawable=new CircularProgressDrawable(mContext);
+        progressDrawable.setStrokeWidth(5f);
+        progressDrawable.setCenterRadius(30f);
+        progressDrawable.setColorSchemeColors(Color.WHITE);
+        progressDrawable.setBackgroundColor(Color.WHITE);
+        progressDrawable.start();
+
+
         Glide.with(mContext).asBitmap()
                 .load(currentHr.getProfilePic())
+                .placeholder(progressDrawable)
                 .into(holder.image);
     }
 

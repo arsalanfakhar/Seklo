@@ -31,5 +31,9 @@ public class EditProfileViewModel extends AndroidViewModel {
         return seekloRepository.updateUserImage(userMap,userId);
     }
 
+    public LiveData<SekloResults> updateUserOverView(Users users, int userId) {
+        return seekloRepository.updateUserDetails(users, userId);
+    }
+
 
 }
