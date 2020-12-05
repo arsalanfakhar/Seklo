@@ -32,7 +32,7 @@ public class SharedPreferenceClass {
     }
 
     public Boolean getBoolean(String Field){
-        return sharedPreferences.getBoolean(Field,false);
+        return sharedPreferences.getBoolean(Field,true);
     }
 
     public String getString(String Field){

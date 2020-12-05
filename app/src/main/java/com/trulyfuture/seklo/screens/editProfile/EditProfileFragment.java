@@ -30,6 +30,7 @@ import com.google.firebase.storage.UploadTask;
 import com.trulyfuture.seklo.MainActivityViewModel;
 import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentEditProfileBinding;
+import com.trulyfuture.seklo.databinding.PopoutLogoutBinding;
 import com.trulyfuture.seklo.models.Users;
 import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.utils.ProgressDialog;
@@ -99,14 +100,8 @@ public class EditProfileFragment extends Fragment {
         });
 
         binding.signoutBtn.setOnClickListener(view -> {
-            removeFromSharedPrefs();
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-
-
-
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
+            openLogoutPopup();
 
 
 
@@ -321,4 +316,27 @@ public class EditProfileFragment extends Fragment {
         sharedPreferenceClass.RemoveValue("userId");
         sharedPreferenceClass.DoCommit();
     }
+
+    private void openLogoutPopup(){
+        PopoutLogoutBinding popoutLogoutBinding=PopoutLogoutBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setView(popoutLogoutBinding.getRoot());
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popoutLogoutBinding.logoutYesBtn.setOnClickListener(view -> {
+            removeFromSharedPrefs();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+
+        });
+
+        popoutLogoutBinding.logoutNoBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
+    }
+
 }

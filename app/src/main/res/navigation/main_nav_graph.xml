@@ -21,7 +21,11 @@
         android:id="@+id/notificationFragment"
         android:name="com.trulyfuture.seklo.screens.notification.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_notificationDetailFragment"
+            app:destination="@id/notificationDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/companyFragment"
         android:name="com.trulyfuture.seklo.screens.companies.CompanyFragment"
@@ -80,5 +84,10 @@
         android:name="com.trulyfuture.seklo.screens.jobDetail.JobDetailFragment"
         android:label="fragment_job_detail"
         tools:layout="@layout/fragment_job_detail" />
+    <fragment
+        android:id="@+id/notificationDetailFragment"
+        android:name="com.trulyfuture.seklo.NotificationDetailFragment"
+        android:label="fragment_notification_detail"
+        tools:layout="@layout/fragment_notification_detail" />
 
 </navigation>

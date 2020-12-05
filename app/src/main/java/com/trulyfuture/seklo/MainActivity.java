@@ -32,6 +32,7 @@ import com.trulyfuture.seklo.databinding.ActivityMainBinding;
 import com.trulyfuture.seklo.databinding.CareerCounselingPopupBinding;
 import com.trulyfuture.seklo.databinding.CoverLetterPopupBinding;
 import com.trulyfuture.seklo.databinding.HrServicesBottomSheetBinding;
+import com.trulyfuture.seklo.databinding.InstructionsPopupBinding;
 import com.trulyfuture.seklo.databinding.ResumeReviewPopupBinding;
 import com.trulyfuture.seklo.databinding.ResumeWritingPopupBinding;
 import com.trulyfuture.seklo.models.HRServices;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     private List<ServicesResults.Services> servicesList;
 
     private int userId;
+    private boolean firstTime;
     private static final String TAG = "MainActivity";
 
     private HrResults.Hr selectedHr;
@@ -78,12 +80,14 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        userId = sharedPreferenceClass.getInteger("userId");
+        firstTime = sharedPreferenceClass.getBoolean("firstTime");
+
+
         setupViews();
         setupObservers();
 
-
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
-        userId = sharedPreferenceClass.getInteger("userId");
 
     }
 
@@ -137,6 +141,11 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
             binding.bottomNavigationView.setVisibility(View.GONE);
             binding.hrServiceBtn.setVisibility(View.GONE);
+
+            if (firstTime) {
+                openInstructionPopup();
+                addToSharedPrefs();
+            }
         });
 
         //Setup adaptergi
@@ -161,11 +170,9 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
-            }
-            else if(userResume==null){
+            } else if (userResume == null) {
                 Toast.makeText(this, "Submit your resume before proceeding", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 showResumeReviewPopup();
             }
 
@@ -215,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
 
-
         activityViewModel.allSevices.observe(this, servicesResults -> {
             servicesList = servicesResults.getResults();
         });
@@ -228,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
 
         activityViewModel.userResume.observe(this, resumeResults -> {
-            if(!resumeResults.getResults().isEmpty())
+            if (!resumeResults.getResults().isEmpty())
                 userResume = resumeResults.getResults().get(0);
         });
 
@@ -276,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         });
         resumeReviewPopupBinding.email.setText(currentUser.getEmail());
 
-        if(userResume!=null)
+        if (userResume != null)
             resumeReviewPopupBinding.resumeName.setText(userResume.getResumeName());
 
 
@@ -631,14 +637,37 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     @Override
     public void onHrSelected(HrResults.Hr selectedHr) {
         //if same then deselect it
-        if(this.selectedHr==selectedHr){
-            this.selectedHr=null;
+        if (this.selectedHr == selectedHr) {
+            this.selectedHr = null;
             hrServicesBottomSheetBinding.selectServicesBtn.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             this.selectedHr = selectedHr;
             hrServicesBottomSheetBinding.selectServicesBtn.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    public void openInstructionPopup() {
+        InstructionsPopupBinding popupBinding = InstructionsPopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setView(popupBinding.getRoot());
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        dialog.setCancelable(false);
+
+        popupBinding.continueBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
+    }
+
+    private void addToSharedPrefs() {
+        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+        sharedPreferenceClass.SetBooleanEditor("firstTime",false);
+        sharedPreferenceClass.DoCommit();
     }
 
 

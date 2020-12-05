@@ -178,10 +178,6 @@ public class ProfileFragment extends Fragment {
         binding.profileViewpager.unregisterOnPageChangeCallback(viewpagerCallback);
     }
 
-    private void addToSharedPrefs(int userId){
-        SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(getContext(),SharedPreferenceClass.UserDetails);
-        sharedPreferenceClass.SetIntegerEditor("userId",userId);
-        sharedPreferenceClass.DoCommit();
-    }
+
 
 }

@@ -62,10 +62,8 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         setupViews();
         setupObservers();
-
 
     }
 
@@ -74,11 +72,11 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
         activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
 
-
         educationAdapter = new EducationAdapter(getContext(), new ArrayList<>(), this);
         binding.educationRv.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.educationRv.setAdapter(educationAdapter);
 
+        getUserEducation();
 
         binding.addEducationBtn.setOnClickListener(view -> {
             showAddEducationPopup();
@@ -87,24 +85,20 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
     }
 
     private void setupObservers() {
+
         activityViewModel.degreeResults.observe(getViewLifecycleOwner(), degreeResults -> {
             if (degreeResults.getResults() != null) {
                 degreesList = degreeResults.getResults();
 
             }
-
-
         });
 
         activityViewModel.studyFieldsResults.observe(getViewLifecycleOwner(), studyFieldsResults -> {
-
             if (studyFieldsResults.getResults() != null) {
                 studyFieldsList = studyFieldsResults.getResults();
             }
-
-
         });
-        getUserEducation();
+
     }
 
 
@@ -114,7 +108,6 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
                 educationAdapter.setEducationModelArrayList((ArrayList<EducationResults.EducationModel>) educationResults.getResults());
             }
         });
-
 
     }
 
@@ -297,4 +290,6 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
 
 
     }
+
+
 }

@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="HR Panelists"
+            android:text="Select a HR panelist :"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
@@ -203,7 +203,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Choose from one of the available services:"
+            android:text="Now choose from one of the available services:"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

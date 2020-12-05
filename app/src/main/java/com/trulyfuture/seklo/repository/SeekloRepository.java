@@ -20,6 +20,7 @@ import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobApply;
 import com.trulyfuture.seklo.models.JobsResults;
+import com.trulyfuture.seklo.models.NotificationModel;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.Results;
@@ -877,6 +878,52 @@ public class SeekloRepository {
 
             @Override
             public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<NotificationModel> getAllNotifications(int userId){
+        MutableLiveData<NotificationModel> data = new MutableLiveData<>();
+
+        Call<NotificationModel> call = apiInterface.getAllNotifications(userId);
+
+        call.enqueue(new Callback<NotificationModel>() {
+            @Override
+            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<NotificationModel> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<NotificationModel> getNotificationDetail(int notificationId){
+        MutableLiveData<NotificationModel> data = new MutableLiveData<>();
+
+        Call<NotificationModel> call = apiInterface.getAllNotifications(notificationId);
+
+        call.enqueue(new Callback<NotificationModel>() {
+            @Override
+            public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<NotificationModel> call, Throwable t) {
                 Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

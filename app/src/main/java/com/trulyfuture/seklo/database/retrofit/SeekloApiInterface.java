@@ -11,6 +11,7 @@ import com.trulyfuture.seklo.models.HRServices;
 import com.trulyfuture.seklo.models.HrResults;
 import com.trulyfuture.seklo.models.JobApply;
 import com.trulyfuture.seklo.models.JobsResults;
+import com.trulyfuture.seklo.models.NotificationModel;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.models.SekloResults;
 import com.trulyfuture.seklo.models.ServicesResults;
@@ -140,4 +141,11 @@ public interface SeekloApiInterface {
 
     @POST("applied-jobs")
     Call<SekloResults> applyJob(@Body JobApply jobApplyData);
+
+    @GET("notifications/{id}")
+    Call<NotificationModel> getAllNotifications(@Path("id") int userId) ;
+
+    @GET("notifications/detail/{id}")
+    Call<NotificationModel> getNotificationDetail(@Path("id") int notificationId);
+
 }

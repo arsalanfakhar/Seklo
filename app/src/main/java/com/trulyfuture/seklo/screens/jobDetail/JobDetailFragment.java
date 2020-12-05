@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,8 +103,11 @@ public class JobDetailFragment extends Fragment {
 
         jobDetailBinding.companyName.setText(currentJob.getCompanyName());
         jobDetailBinding.jobTitle.setText(currentJob.getJobTitle());
-        jobDetailBinding.jobDescription.setText(currentJob.getJobDescription());
-        jobDetailBinding.jobRequirements.setText(currentJob.getJobRequirements());
+
+
+        jobDetailBinding.jobDescription.setText(Html.fromHtml(currentJob.getJobDescription()).toString());
+        jobDetailBinding.jobRequirements.setText(Html.fromHtml(currentJob.getJobRequirements()).toString());
+
         jobDetailBinding.jobPostedOn.setText(currentJob.getPostDate().substring(0, 10));
         jobDetailBinding.jobExpiryOn.setText(currentJob.getExpiresDate());
         jobDetailBinding.jobMinimumPay.setText(currentJob.getMinPay());
@@ -113,7 +117,6 @@ public class JobDetailFragment extends Fragment {
         jobDetailBinding.jobLocation.setText(currentJob.getLocation());
         jobDetailBinding.jobType.setText(currentJob.getJobType());
         jobDetailBinding.jobCategory.setText(currentJob.getCategory());
-
 
     }
 

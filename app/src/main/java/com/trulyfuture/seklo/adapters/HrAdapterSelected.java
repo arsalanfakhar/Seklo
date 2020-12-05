@@ -2,6 +2,7 @@ package com.trulyfuture.seklo.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,7 @@ public class HrAdapterSelected extends RecyclerView.Adapter<HrAdapterSelected.Hr
         CircularProgressDrawable progressDrawable=new CircularProgressDrawable(mContext);
         progressDrawable.setStrokeWidth(5f);
         progressDrawable.setCenterRadius(30f);
-        progressDrawable.setColorSchemeColors(Color.WHITE);
-        progressDrawable.setBackgroundColor(Color.WHITE);
+        progressDrawable.setTint(mContext.getResources().getColor(R.color.white));
         progressDrawable.start();
 
         Glide.with(mContext).asBitmap()

@@ -62,8 +62,8 @@ public class CompanyFragment extends Fragment implements CompaniesAdapter.OnComp
 
     private void setupViews() {
         companiesAdapter = new CompaniesAdapter(getContext(), this, new ArrayList<>());
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
-        gridLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         binding.companiesRV.setLayoutManager(gridLayoutManager);
         binding.companiesRV.setAdapter(companiesAdapter);
     }

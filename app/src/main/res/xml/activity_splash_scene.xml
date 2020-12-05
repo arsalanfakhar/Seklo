@@ -4,21 +4,29 @@
     xmlns:motion="http://schemas.android.com/tools">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/imageView"
-            android:layout_height="wrap_content"
+        <Constraint
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.42000002" />
         <Constraint
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        <Constraint
+            android:id="@+id/textView63"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            android:id="@+id/textView"
-            android:layout_marginTop="0dp" />
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -26,30 +34,40 @@
     </ConstraintSet>
 
     <Transition
+        app:autoTransition="animateToEnd"
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@+id/start"
         app:duration="1000"
         app:motionInterpolator="linear"
-        motion:autoTransition="animateToEnd"
-        app:autoTransition="animateToEnd">
-        <KeyFrameSet >
+        motion:autoTransition="animateToEnd">
+        <KeyFrameSet>
             <KeyAttribute
-                app:motionTarget="@+id/imageView"
+                android:alpha="0"
                 app:framePosition="0"
-                android:alpha="0" />
+                app:motionTarget="@+id/imageView" />
 
             <KeyAttribute
-                app:motionTarget="@+id/imageView"
+                android:alpha="0"
                 app:framePosition="12"
-                android:alpha="0" />
+                app:motionTarget="@+id/imageView" />
             <KeyAttribute
-                app:motionTarget="@+id/textView"
+                android:alpha="0"
                 app:framePosition="0"
-                android:alpha="0" />
+                app:motionTarget="@+id/textView" />
             <KeyAttribute
-                app:motionTarget="@+id/textView"
+                android:alpha="0"
                 app:framePosition="12"
-                android:alpha="0" />
+                app:motionTarget="@+id/textView" />
+
+            <KeyAttribute
+                android:alpha="0"
+                app:framePosition="0"
+                app:motionTarget="@+id/textView63" />
+            <KeyAttribute
+                android:alpha="0"
+                app:framePosition="12"
+                app:motionTarget="@+id/textView63" />
+
         </KeyFrameSet>
     </Transition>
 </MotionScene>
