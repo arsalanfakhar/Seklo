@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Change your resume"
+        android:text="Upload CV"
         android:textAllCaps="false"
         app:backgroundTint="@color/profileBtnColor"
         app:cornerRadius="10dp"

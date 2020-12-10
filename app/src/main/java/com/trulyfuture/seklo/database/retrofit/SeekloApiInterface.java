@@ -38,6 +38,9 @@ public interface SeekloApiInterface {
     @POST("users/login")
     Call<SekloResults> loginUser(@Body Users user);
 
+    @POST("users/f-login")
+    Call<SekloResults> facebookLoginUser(@Body Map<String,Object> fbUserMap);
+
     @GET("users/{id}")
     Call<UserResults> getUserById(@Path("id") int userId);
 
@@ -114,6 +117,13 @@ public interface SeekloApiInterface {
 
     @GET("resume-upload/{userId}")
     Call<ResumeResults> getResumeById(@Path("userId") int userId);
+
+    @POST("resume-upload")
+    Call<SekloResults> addUserResume(@Body Map<String,Object> resumeMap);
+
+    @PATCH("resume-upload/{userId}")
+    Call<SekloResults> updateUserResume(@Path("userId") int userId,@Body Map<String,Object> resumeMap);
+
 
     @GET("service-data")
     Call<ServicesResults> getAllServices();

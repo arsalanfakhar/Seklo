@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.screens.login;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,6 +15,12 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
 import com.trulyfuture.seklo.MainActivity;
 import com.trulyfuture.seklo.databinding.ResetPasswordPopupBinding;
 import com.trulyfuture.seklo.screens.signup.SignupActivity;
@@ -23,8 +30,12 @@ import com.trulyfuture.seklo.screens.signup.LoginSignupViewModel;
 import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding loginBinding;
     private LoginSignupViewModel viewModel;
 
+    private CallbackManager callbackManager;
+    private static final String EMAIL = "email";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +54,86 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(LoginSignupViewModel.class);
 
 
+        //Forget Password
         loginBinding.forgetPassBtn.setOnClickListener(v -> {
             showForgetPassPopup();
         });
 
+        //Login facebook button
+        callbackManager = CallbackManager.Factory.create();
+
+
+        loginBinding.loginButtonFacebook.setPermissions(Arrays.asList("email", "public_profile", "user_friends"));
+        loginBinding.loginButtonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                ProgressDialog.showLoader(LoginActivity.this);
+
+
+                GraphRequest graphRequest=GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                    String id = null;
+                    try {
+                        id = object.getString("id");
+                        String first_name = object.getString("first_name");
+                        String last_name = object.getString("last_name");
+                        String gender = object.getString("gender");
+                        String birthday = object.getString("birthday");
+                        String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
+                        String email;
+                        if (object.has("email")) {
+                            email = object.getString("email");
+                        }
+
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("Fname",first_name);
+                        userMap.put("Lname",last_name);
+                        userMap.put("profilePic",image_url);
+                        userMap.put("password","noPassword");
+                        userMap.put("Number","");
+
+                        viewModel.facebookLogin(userMap).observe(LoginActivity.this,sekloResults -> {
+                            if(ProgressDialog.isShowing())
+                                ProgressDialog.hideLoader();
+
+                            if (sekloResults.getResults().getCode() == 1) {
+                                addToSharedPrefs(sekloResults.getResults().getId());
+                                Toast.makeText(LoginActivity.this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            } else {
+                                Toast.makeText(LoginActivity.this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if(ProgressDialog.isShowing())
+                            ProgressDialog.hideLoader();
+                    }
+
+
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LoginActivity.this,"Cancelled",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //Login button password
         loginBinding.loginBtn.setOnClickListener(view -> {
 
             if (!isFieldsEmpty()) {
@@ -147,5 +236,10 @@ public class LoginActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
 }

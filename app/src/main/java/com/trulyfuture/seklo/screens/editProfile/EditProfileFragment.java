@@ -210,8 +210,7 @@ public class EditProfileFragment extends Fragment {
         StorageReference storageReference = mFirebaseStorage.getReference("Users/ProfilePictures/" + currentUser.getID());
 
         //Upload to storage
-        StorageReference fileReference = storageReference.child(System.currentTimeMillis()
-                + "." + getFileExtension(mFileUri));
+        StorageReference fileReference = storageReference.child("userImg");
 
         UploadTask uploadTask = fileReference.putFile(mFileUri);
 

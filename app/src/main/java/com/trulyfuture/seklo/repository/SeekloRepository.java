@@ -99,6 +99,30 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> facebookLoginUser(Map<String,Object> fbUserMap){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+
+        Call<SekloResults> resultsCall = apiInterface.facebookLoginUser(fbUserMap);
+
+        resultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else {
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
     public MutableLiveData<UserResults> getUserById(int id) {
         MutableLiveData<UserResults> data = new MutableLiveData<>();
 
@@ -924,6 +948,50 @@ public class SeekloRepository {
 
             @Override
             public void onFailure(Call<NotificationModel> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> addUserResume(Map<String,Object> resumeMap){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+        Call<SekloResults> sekloResultsCall= apiInterface.addUserResume(resumeMap);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> updateResume(Map<String,Object> resumeMap,int userId){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+        Call<SekloResults> sekloResultsCall= apiInterface.updateUserResume(userId,resumeMap);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
                 Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

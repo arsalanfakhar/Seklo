@@ -1,6 +1,8 @@
 package com.trulyfuture.seklo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     private List<ServicesResults.Services> servicesList;
 
     private int userId;
-    private boolean firstTime;
     private static final String TAG = "MainActivity";
 
     private HrResults.Hr selectedHr;
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
         userId = sharedPreferenceClass.getInteger("userId");
-        firstTime = sharedPreferenceClass.getBoolean("firstTime");
 
 
         setupViews();
@@ -137,6 +137,10 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
 
         binding.hrServiceBtn.setOnClickListener(view -> {
+            SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
+
+            boolean firstTime = sharedPreferenceClass.getBoolean("firstTime");
+
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
             binding.bottomNavigationView.setVisibility(View.GONE);
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             binding.hrServiceBtn.setVisibility(View.VISIBLE);
         });
 
-        hrServicesBottomSheetBinding.resumeReview.setOnClickListener(v -> {
+        hrServicesBottomSheetBinding.resumeReviewframeLayout.setOnClickListener(v -> {
 
             getUser();
             if (selectedHr == null) {
@@ -178,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         });
 
-        hrServicesBottomSheetBinding.careerCounseling.setOnClickListener(v -> {
+        hrServicesBottomSheetBinding.careerCounselingFrameLayout.setOnClickListener(v -> {
             getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
@@ -189,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         });
 
-        hrServicesBottomSheetBinding.resumeWriting.setOnClickListener(v -> {
+        hrServicesBottomSheetBinding.resumeWritingFrameLayout.setOnClickListener(v -> {
             getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         });
 
-        hrServicesBottomSheetBinding.coverLetter.setOnClickListener(v -> {
+        hrServicesBottomSheetBinding.coverLetterFrameLayout.setOnClickListener(v -> {
             getUser();
             if (selectedHr == null) {
                 Toast.makeText(this, "Select a HR before proceeding", Toast.LENGTH_SHORT).show();
@@ -252,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         List<String> daysList = new ArrayList<>();
 
         for (ServicesResults.Services service : sublist) {
-            daysList.add("Days: " + service.getDays());
+            daysList.add("" + service.getDays());
         }
 //        daysList.add("Days: 2");
 //        daysList.add("Days: 4");
@@ -266,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         //To change cost on click
         resumeReviewPopupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day = resumeReviewPopupBinding.timeSlot.getText().toString().substring(6);
+            String day = resumeReviewPopupBinding.timeSlot.getText().toString();
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
@@ -304,6 +308,8 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
             } else {
 
+                //Open Payment Page
+
                 HRServices hrServices = new HRServices();
 
                 HRServices.DBObj dbObj = new HRServices.DBObj();
@@ -314,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
                 dbObj.setPayment(Integer.valueOf(costStr));
                 dbObj.setCurrency("PKR");
-                dbObj.setDays(Integer.valueOf(resumeReviewPopupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setDays(Integer.valueOf(resumeReviewPopupBinding.timeSlot.getText().toString()));
 
                 HRServices.EmailObj emailObj = new HRServices.EmailObj();
                 emailObj.setUserEmail(currentUser.getEmail());
@@ -324,12 +330,26 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 hrServices.setdBObj(dbObj);
                 hrServices.setEmailObj(emailObj);
 
-                activityViewModel.addResumeReview(hrServices).observe(this, sekloResults -> {
-                    if (sekloResults.getResults().getCode() == 1) {
-                        startActivity(new Intent(this, PaymentActivity.class));
+                Intent intent = new Intent(this, WebviewActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("serviceName", WebviewActivity.ServicesName.ResumeReview.stringValue);
+                mBundle.putSerializable("servicesData", hrServices);
+                intent.putExtras(mBundle);
 
-                    }
-                });
+                startActivity(intent);
+
+//                activityViewModel.addResumeReview(hrServices).observe(this, sekloResults -> {
+//                    if (sekloResults.getResults().getCode() == 1) {
+//                        Intent intent=new Intent(this, WebviewActivity.class);
+//                        Bundle mBundle=new Bundle();
+//
+//                        mBundle.putSerializable("servicesData",hrServices);
+//                        intent.putExtras(mBundle);
+//
+//                        startActivity(intent);
+//
+//                    }
+//                });
 
             }
 
@@ -351,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         List<String> daysList = new ArrayList<>();
 
         for (ServicesResults.Services service : sublist) {
-            daysList.add("Days: " + service.getDays());
+            daysList.add("" + service.getDays());
         }
 
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
@@ -361,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day = popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString();
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
@@ -407,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 dbObj.setPayment(Integer.valueOf(costStr));
 
                 dbObj.setCurrency("PKR");
-                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString()));
                 dbObj.setTimeHours("45 minuts");
 
                 HRServices.EmailObj emailObj = new HRServices.EmailObj();
@@ -418,12 +438,21 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 hrServices.setdBObj(dbObj);
                 hrServices.setEmailObj(emailObj);
 
-                activityViewModel.addCareerCounselling(hrServices).observe(this, sekloResults -> {
-                    if (sekloResults.getResults().getCode() == 1) {
-                        startActivity(new Intent(this, PaymentActivity.class));
+                Intent intent = new Intent(this, WebviewActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("serviceName", WebviewActivity.ServicesName.CareerCounseling.stringValue);
+                mBundle.putSerializable("servicesData", hrServices);
+                intent.putExtras(mBundle);
 
-                    }
-                });
+                startActivity(intent);
+
+
+//                activityViewModel.addCareerCounselling(hrServices).observe(this, sekloResults -> {
+//                    if (sekloResults.getResults().getCode() == 1) {
+//                        startActivity(new Intent(this, PaymentActivity.class));
+//
+//                    }
+//                });
 
             }
 
@@ -442,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         List<String> daysList = new ArrayList<>();
 
         for (ServicesResults.Services service : sublist) {
-            daysList.add("Days: " + service.getDays());
+            daysList.add("" + service.getDays());
         }
 
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
@@ -452,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day = popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString();
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
@@ -506,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 dbObj.setPayment(Integer.valueOf(costStr));
 
                 dbObj.setCurrency("PKR");
-                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString()));
                 dbObj.setResumeType(popupBinding.choiceTxt.getText().toString());
 
 
@@ -518,11 +547,19 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 hrServices.setdBObj(dbObj);
                 hrServices.setEmailObj(emailObj);
 
-                activityViewModel.addResumeWriting(hrServices).observe(this, sekloResults -> {
-                    if (sekloResults.getResults().getCode() == 1) {
-                        startActivity(new Intent(this, PaymentActivity.class));
-                    }
-                });
+                Intent intent = new Intent(this, WebviewActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("serviceName", WebviewActivity.ServicesName.ResumeWriting.stringValue);
+                mBundle.putSerializable("servicesData", hrServices);
+                intent.putExtras(mBundle);
+
+                startActivity(intent);
+
+//                activityViewModel.addResumeWriting(hrServices).observe(this, sekloResults -> {
+//                    if (sekloResults.getResults().getCode() == 1) {
+//                        startActivity(new Intent(this, PaymentActivity.class));
+//                    }
+//                });
 
             }
 
@@ -541,7 +578,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         List<String> daysList = new ArrayList<>();
 
         for (ServicesResults.Services service : sublist) {
-            daysList.add("Days: " + service.getDays());
+            daysList.add("" + service.getDays());
         }
 
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
@@ -551,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
         //To change cost on click
         popupBinding.timeSlot.setOnItemClickListener((adapterView, view, i, l) -> {
 
-            String day = popupBinding.timeSlot.getText().toString().substring(6);
+            String day = popupBinding.timeSlot.getText().toString();
 
             for (ServicesResults.Services service : sublist) {
                 if (service.getDays().toString().equals(day)) {
@@ -597,7 +634,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 dbObj.setPayment(Integer.valueOf(costStr));
 
                 dbObj.setCurrency("PKR");
-                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString().substring(6)));
+                dbObj.setDays(Integer.valueOf(popupBinding.timeSlot.getText().toString()));
                 dbObj.setCompanyName(popupBinding.companyName.getText().toString());
                 dbObj.setJobName(popupBinding.jobTitle.getText().toString());
 
@@ -610,12 +647,20 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
                 hrServices.setdBObj(dbObj);
                 hrServices.setEmailObj(emailObj);
 
-                activityViewModel.addCoverLetter(hrServices).observe(this, sekloResults -> {
-                    if (sekloResults.getResults().getCode() == 1) {
-                        startActivity(new Intent(this, PaymentActivity.class));
+                Intent intent = new Intent(this, WebviewActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putString("serviceName", WebviewActivity.ServicesName.CoverLetter.stringValue);
+                mBundle.putSerializable("servicesData", hrServices);
+                intent.putExtras(mBundle);
 
-                    }
-                });
+                startActivity(intent);
+
+//                activityViewModel.addCoverLetter(hrServices).observe(this, sekloResults -> {
+//                    if (sekloResults.getResults().getCode() == 1) {
+//                        startActivity(new Intent(this, PaymentActivity.class));
+//
+//                    }
+//                });
 
             }
 
@@ -666,9 +711,18 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
     private void addToSharedPrefs() {
         SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
-        sharedPreferenceClass.SetBooleanEditor("firstTime",false);
+        sharedPreferenceClass.SetBooleanEditor("firstTime", false);
         sharedPreferenceClass.DoCommit();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED ||
+                bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            binding.bottomNavigationView.setVisibility(View.VISIBLE);
+            binding.hrServiceBtn.setVisibility(View.VISIBLE);
+        } else
+            super.onBackPressed();
+    }
 }

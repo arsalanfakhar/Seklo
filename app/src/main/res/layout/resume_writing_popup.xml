@@ -91,6 +91,7 @@
         <EditText
             android:id="@+id/email"
             android:enabled="false"
+            android:textColor="@color/black"
             android:layout_width ="match_parent"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress" />
@@ -122,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:enabled="false"
+            android:textColor="@color/black"
             android:hint="Please select one"
             android:inputType="text"
             android:padding="13dp" />

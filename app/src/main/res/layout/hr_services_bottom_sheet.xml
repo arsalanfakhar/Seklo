@@ -71,12 +71,12 @@
             tools:listitem="@layout/hr_rv_item_layout" />
 
         <FrameLayout
-            android:id="@+id/hrBookframeLayout"
+            android:id="@+id/resumeReviewframeLayout"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="16dp"
             android:background="#0A0A0A"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+            app:layout_constraintEnd_toStartOf="@+id/careerCounselingFrameLayout"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/selectServicesBtn">
@@ -100,14 +100,14 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/frameLayout"
+            android:id="@+id/careerCounselingFrameLayout"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="#343434"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/hrBookframeLayout"
-            app:layout_constraintTop_toTopOf="@+id/hrBookframeLayout">
+            app:layout_constraintStart_toEndOf="@+id/resumeReviewframeLayout"
+            app:layout_constraintTop_toTopOf="@+id/resumeReviewframeLayout">
 
             <ImageView
                 android:id="@+id/careerCounseling"
@@ -127,17 +127,17 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/frameLayout3"
+            android:id="@+id/resumeWritingFrameLayout"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:background="#343434"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+            app:layout_constraintEnd_toStartOf="@+id/careerCounselingFrameLayout"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hrBookframeLayout">
+            app:layout_constraintTop_toBottomOf="@+id/resumeReviewframeLayout">
 
             <ImageView
                 android:id="@+id/resumeWriting"
@@ -158,14 +158,14 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/frameLayout4"
+            android:id="@+id/coverLetterFrameLayout"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="#0A0A0A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/frameLayout3"
-            app:layout_constraintTop_toTopOf="@+id/frameLayout3">
+            app:layout_constraintStart_toEndOf="@+id/resumeWritingFrameLayout"
+            app:layout_constraintTop_toTopOf="@+id/resumeWritingFrameLayout">
 
             <ImageView
                 android:id="@+id/coverLetter"

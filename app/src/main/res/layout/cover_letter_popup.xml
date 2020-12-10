@@ -91,6 +91,7 @@
 
         <EditText
             android:id="@+id/email"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:enabled="false"
@@ -130,6 +131,7 @@
         <EditText
             android:id="@+id/companyName"
             android:inputType="text"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Enter company name" />
@@ -194,6 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
+            android:textColor="@color/black"
             android:hint="Enter company title"
              />
 

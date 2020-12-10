@@ -3,7 +3,9 @@ package com.trulyfuture.seklo.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HRServices {
+import java.io.Serializable;
+
+public class HRServices implements Serializable{
 
     @SerializedName("DBObj")
     @Expose
@@ -29,7 +31,7 @@ public class HRServices {
         this.emailObj = emailObj;
     }
 
-    public static class EmailObj {
+    public static class EmailObj implements Serializable {
 
         @SerializedName("User_Email")
         @Expose
@@ -68,7 +70,7 @@ public class HRServices {
         }
     }
 
-    public static class DBObj {
+    public static class DBObj implements Serializable {
 
         @SerializedName("HR_ID")
         @Expose

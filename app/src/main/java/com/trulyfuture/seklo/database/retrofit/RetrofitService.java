@@ -10,13 +10,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
 
-    private static final String BASE_URL = "https://seklo.herokuapp.com/";
+    private static final String BASE_URL = "https://sekloinc.herokuapp.com/";
 
     public static HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     public static OkHttpClient client=new OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .callTimeout(15, TimeUnit.SECONDS)
+            .callTimeout(25, TimeUnit.SECONDS)
             .build();
 
     private static final Retrofit retrofit = new Retrofit.Builder()

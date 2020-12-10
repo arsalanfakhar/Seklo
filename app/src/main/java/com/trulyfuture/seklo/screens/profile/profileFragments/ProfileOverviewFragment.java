@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -63,12 +64,24 @@ public class ProfileOverviewFragment extends Fragment {
     }
 
     private void loadUserdata() {
+
         if (!TextUtils.isEmpty(currentUser.getOverview())) {
             binding.overviewTxt.setText(currentUser.getOverview());
+            binding.overviewAddUpdateBtn.setText("Update Overview");
+
+            binding.overviewAddUpdateBtn.setOnClickListener(view -> {
+
+            });
         }
         else {
             binding.overviewTxt.setText("Not provided yet");
+            binding.overviewAddUpdateBtn.setText("Add Overview");
+
+            binding.overviewAddUpdateBtn.setOnClickListener(view -> {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_editProfileFragment);
+            });
         }
+
     }
 
 

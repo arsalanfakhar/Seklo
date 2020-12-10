@@ -87,9 +87,8 @@ public class ProfileFragment extends Fragment {
 
         binding.uploadCvBtn.setOnClickListener(view -> {
 
-            Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
-
-//            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_uploadCVFragment);
+//            Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_profileFragment_to_uploadCVFragment);
         });
 
         binding.overviewBtn.setOnClickListener(view -> {

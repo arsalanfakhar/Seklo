@@ -35,5 +35,7 @@ public class LoginSignupViewModel extends AndroidViewModel {
         return seekloRepository.resetPassword(passMap);
     }
 
-
+    public LiveData<SekloResults> facebookLogin(Map<String,Object> fbUserMap){
+        return seekloRepository.facebookLoginUser(fbUserMap);
+    }
 }
