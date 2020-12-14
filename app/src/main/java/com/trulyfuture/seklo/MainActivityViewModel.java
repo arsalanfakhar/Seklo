@@ -44,7 +44,6 @@ public class MainActivityViewModel extends AndroidViewModel {
     public LiveData<JobsResults> allJobs = new MutableLiveData<>();
     public LiveData<JobsResults> homePageJobs = new MutableLiveData<>();
 
-    public LiveData<ResumeResults> userResume = new MutableLiveData<>();
 
     public LiveData<ServicesResults> allSevices = new MutableLiveData<>();
 
@@ -70,7 +69,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         getAllCompanies();
         getAllJobs(userId);
         getHomeJobs();
-        getUserResume(userId);
         getAllServices();
     }
 
@@ -128,8 +126,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         homePageJobs = seekloRepository.getHomePageJobs();
     }
 
-    private void getUserResume(int id) {
-        userResume = seekloRepository.getUserResume(id);
+    public LiveData<ResumeResults> getUserResume(int id) {
+        return seekloRepository.getUserResume(id);
     }
 
     private void getAllServices() {

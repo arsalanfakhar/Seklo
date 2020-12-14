@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
             currentUser = userResults.getUserResultList().get(0);
         });
 
-        activityViewModel.userResume.observe(this, resumeResults -> {
+        activityViewModel.getUserResume(activityViewModel.getUserId()).observe(this, resumeResults -> {
             if (!resumeResults.getResults().isEmpty())
                 userResume = resumeResults.getResults().get(0);
         });

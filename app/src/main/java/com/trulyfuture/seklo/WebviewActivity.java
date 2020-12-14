@@ -91,13 +91,13 @@ public class WebviewActivity extends AppCompatActivity {
 
         binding.servicesWebview.loadUrl(queryUrl);
 
-//        Log.v(TAG, Objects.requireNonNull(binding.servicesWebview.getUrl()));
+        Log.v(TAG, Objects.requireNonNull(binding.servicesWebview.getUrl()));
 
 //        binding.servicesWebview.addJavascriptInterface(new Object() {
 //            public void performClick() {
 //                // Deal with a click on the OK button
 //            }
-//        }, "ok");
+//        }, "ok");-
     }
 
     //Methods

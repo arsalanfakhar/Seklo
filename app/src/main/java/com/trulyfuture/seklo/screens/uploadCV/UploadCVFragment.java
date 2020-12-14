@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,13 +24,11 @@ import android.widget.Toast;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
-import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.trulyfuture.seklo.MainActivityViewModel;
-import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.databinding.FragmentUploadCVBinding;
 import com.trulyfuture.seklo.models.ResumeResults;
 import com.trulyfuture.seklo.utils.ProgressDialog;
@@ -41,9 +38,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -102,7 +100,8 @@ public class UploadCVFragment extends Fragment {
                 Toast.makeText(getContext(),"No CV selected",Toast.LENGTH_SHORT).show();
             } else {
                 ProgressDialog.showLoader(getActivity());
-                uploadCVToFirebase();
+//                uploadCVToFirebase();
+                convertPdfToBytesAndUpload();
             }
         });
     }
@@ -117,7 +116,7 @@ public class UploadCVFragment extends Fragment {
     private void loadCV() {
         ProgressDialog.showLoader(getActivity());
 
-        activityViewModel.userResume.observe(getViewLifecycleOwner(), resumeResults -> {
+        activityViewModel.getUserResume(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), resumeResults -> {
             if (!resumeResults.getResults().isEmpty()) {
 
                 //Change button
@@ -125,7 +124,11 @@ public class UploadCVFragment extends Fragment {
 
                 userResume = resumeResults.getResults().get(0);
 
-                binding.pdfView.fromFile(null).load();
+//                binding.pdfView.fromFile(null).load();
+//                binding.pdfView.recycle();
+//                binding.pdfView.setVisibility(View.INVISIBLE);
+
+//                binding.pdfView.recycle();
                 if (userResume.getResume().contains("data")) {
                     loadCvFromBase64();
                 } else {
@@ -145,7 +148,7 @@ public class UploadCVFragment extends Fragment {
         String resumeBase64 = userResume.getResume().substring((index + 7));
 //        Toast.makeText(getContext(),"index"+resumeBase64,Toast.LENGTH_SHORT).show();
 
-        Log.v(TAG, resumeBase64);
+//        Log.v(TAG, resumeBase64);
 //
 //
         byte[] pdfAsBytes = Base64.decode(resumeBase64, 0);
@@ -194,6 +197,8 @@ public class UploadCVFragment extends Fragment {
             // Get the Uri of the selected file
             mFileUri = data.getData();
 
+
+
             String uriString = mFileUri.toString();
             File myFile = new File(uriString);
             String path = myFile.getAbsolutePath();
@@ -227,6 +232,63 @@ public class UploadCVFragment extends Fragment {
 //            binding.pdfView.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    private void convertPdfToBytesAndUpload(){
+
+        try {
+            InputStream inputStream=getActivity().getContentResolver().openInputStream(mFileUri);
+            byte[] pdfInBytes=new byte[Objects.requireNonNull(inputStream).available()];
+            inputStream.read(pdfInBytes);
+            String encodedPdf=Base64.encodeToString(pdfInBytes,Base64.DEFAULT);
+
+            encodedPdf="data:application/pdf;base64,"+encodedPdf;
+
+            //Update the image
+            Map<String, Object> resumeMap = new HashMap<>();
+            resumeMap.put("User_ID", activityViewModel.getUserId());
+            resumeMap.put("Resume_Name", displayName);
+            resumeMap.put("Resume_Size", pdfInBytes.length);
+            resumeMap.put("Resume_Type", "application/pdf");
+            resumeMap.put("Resume", encodedPdf);
+
+            mFileUri = null;
+            displayName = null;
+
+            if(userResume==null){
+                uploadCVViewModel.addUserResume(resumeMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (ProgressDialog.isShowing())
+                        ProgressDialog.hideLoader();
+
+                    if (sekloResults.getResults().getCode() == 1) {
+                        Toast.makeText(getContext(), "Sucessfully uploaded", Toast.LENGTH_SHORT).show();
+                        binding.pdfView.setVisibility(View.INVISIBLE);
+                        loadCV();
+
+                    }
+                });
+
+            }
+            else {
+                uploadCVViewModel.updateUserResume(resumeMap,userResume.getResumeID()).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (ProgressDialog.isShowing())
+                        ProgressDialog.hideLoader();
+
+                    if (sekloResults.getResults().getCode() == 1) {
+                        Toast.makeText(getContext(), "Sucessfully updated", Toast.LENGTH_SHORT).show();
+                        binding.pdfView.setVisibility(View.INVISIBLE);
+                        loadCV();
+                    }
+                });
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void uploadCVToFirebase() {

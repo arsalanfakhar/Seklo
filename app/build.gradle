@@ -9,8 +9,8 @@ android {
         applicationId "com.trulyfuture.seklo"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 6
-        versionName "6"
+        versionCode 7
+        versionName "7"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -73,7 +73,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //PDF Viewer
-    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
 
     //Rounded image view
     implementation 'com.makeramen:roundedimageview:2.3.0'
