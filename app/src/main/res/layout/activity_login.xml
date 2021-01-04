@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:isScrollContainer="true"
+    android:windowSoftInputMode="adjustResize"
     tools:context=".screens.login.LoginActivity">
 
 
@@ -70,7 +72,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -99,7 +101,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -112,31 +114,17 @@
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout1"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout1" />
 
-    <TextView
-        android:id="@+id/signupHintTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Dont have an account. Sign up ?"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgetPassBtn" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:clickable="true"
-        app:backgroundTint="@color/white"
-        app:fabSize="mini"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout1"
-        app:layout_constraintTop_toBottomOf="@+id/signupHintTxt"
-        app:srcCompat="@drawable/ic_next_arrow" />
-
+        android:text="Login"
+        app:backgroundTint="@color/profileBtnColor"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/login_button_facebook"
+        app:layout_constraintStart_toStartOf="@+id/login_button_facebook"
+        app:layout_constraintTop_toBottomOf="@+id/forgetPassBtn" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button_facebook"
@@ -145,8 +133,33 @@
         android:layout_gravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@+id/signupHintTxt"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgetPassBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+
+    <TextView
+        android:id="@+id/signupHintTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dont have an account. Sign up ?"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_button_facebook" />
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/loginBtn"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="24dp"-->
+    <!--        android:clickable="true"-->
+    <!--        app:backgroundTint="@color/white"-->
+    <!--        app:fabSize="mini"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/textInputLayout1"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/signupHintTxt"-->
+    <!--        app:srcCompat="@drawable/ic_next_arrow" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,6 +80,7 @@
         <AutoCompleteTextView
             android:id="@+id/degreeName"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="match_parent"
             android:enabled="false"
             android:hint="Select Degree"
@@ -111,6 +112,7 @@
             android:id="@+id/fieldOfStudy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/black"
             android:enabled="false"
             android:hint="Select field of study"
             android:padding="13dp" />
@@ -144,6 +146,7 @@
             android:layout_height="match_parent"
             android:enabled="false"
             android:hint="Select year"
+            android:textColor="@color/black"
             android:dropDownHeight="350dp"
             android:padding="13dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -166,6 +169,7 @@
             android:layout_height="match_parent"
             android:dropDownHeight="350dp"
             android:enabled="false"
+            android:textColor="@color/black"
             android:hint="Select year"
             android:padding="13dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -223,13 +227,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Add"
         app:backgroundTint="@color/profileBtnColor"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteEducationBtn"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/deleteEducationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Delete"
+        android:visibility="gone"
+        app:backgroundTint="@color/profileBtnColor"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout14"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout14"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/closeBtn"

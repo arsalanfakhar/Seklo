@@ -1,6 +1,7 @@
 package com.trulyfuture.seklo.screens.profile.profileFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.trulyfuture.seklo.MainActivityViewModel;
@@ -24,9 +26,11 @@ import com.trulyfuture.seklo.adapters.EducationAdapter;
 import com.trulyfuture.seklo.adapters.NotificationsAdapter;
 import com.trulyfuture.seklo.databinding.AddEducationPopupBinding;
 import com.trulyfuture.seklo.databinding.FragmentProfileEducationBinding;
+import com.trulyfuture.seklo.databinding.PopoutLogoutBinding;
 import com.trulyfuture.seklo.models.DegreeResults;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.StudyFieldsResults;
+import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.screens.profile.ProfileViewModel;
 
 import java.util.ArrayList;
@@ -215,6 +219,131 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
 
     }
 
+    private void showEditEducationPopup(EducationResults.EducationModel educationModel) {
+        educationPopupBinding = AddEducationPopupBinding.inflate(getLayoutInflater());
+
+//        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+//
+//        View view = layoutInflaterAndroid.inflate(R.layout.add_education_popup, null);
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setView(educationPopupBinding.getRoot());
+
+        //Initialize popup data
+
+        ArrayAdapter<DegreeResults.Degrees> degreesArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, degreesList
+        );
+
+
+        ArrayAdapter<StudyFieldsResults.StudyFields> studyFieldsArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, studyFieldsList
+        );
+
+        //Getting last 60 years
+        ArrayList<String> startYearList = new ArrayList<>();
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int tillYear = currentYear - 60;
+
+        //last 60 years from current date
+        for (int i = currentYear; i >= tillYear; i--) {
+            startYearList.add(String.valueOf(i));
+        }
+
+        ArrayAdapter<String> startYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, startYearList
+        );
+
+        ArrayList<String> endYearList = new ArrayList<>(startYearList);
+        endYearList.remove(0);
+        endYearList.add(0, "Till present");
+
+
+        ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, endYearList
+        );
+
+
+        educationPopupBinding.fieldOfStudy.setAdapter(studyFieldsArrayAdapter);
+        educationPopupBinding.degreeName.setAdapter(degreesArrayAdapter);
+        educationPopupBinding.startYear.setAdapter(startYearArrayAdapter);
+        educationPopupBinding.endYear.setAdapter(endYearArrayAdapter);
+
+        //Initialize data
+        educationPopupBinding.schoolName.setText(educationModel.getUniName());
+        educationPopupBinding.degreeName.setText(educationModel.getDegreeName(),false);
+        educationPopupBinding.fieldOfStudy.setText(educationModel.getStudyName(),false);
+        educationPopupBinding.startYear.setText(educationModel.getStartYear(),false);
+
+        if(educationModel.getEndYear().contains("Till")){
+            educationPopupBinding.endYear.setText("Till present",false);
+        }
+        else {
+            educationPopupBinding.endYear.setText(educationModel.getEndYear(),false);
+        }
+
+
+        educationPopupBinding.addEducationBtn.setText("Update");
+        educationPopupBinding.deleteEducationBtn.setVisibility(View.VISIBLE);
+
+
+        //On start year click listener
+        educationPopupBinding.startYear.setOnItemClickListener((parent, view, position, id) -> {
+            setEndYear(Integer.valueOf(educationPopupBinding.startYear.getText().toString()));
+        });
+
+        educationPopupBinding.degreeDropBtn.setOnClickListener(view -> {
+            educationPopupBinding.degreeName.showDropDown();
+        });
+
+        educationPopupBinding.studyDropBtn.setOnClickListener(view -> {
+            educationPopupBinding.fieldOfStudy.showDropDown();
+        });
+
+        educationPopupBinding.startYearBtn.setOnClickListener(view -> {
+            educationPopupBinding.startYear.showDropDown();
+        });
+
+        educationPopupBinding.endYearBtn.setOnClickListener(view -> {
+            educationPopupBinding.endYear.showDropDown();
+        });
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        educationPopupBinding.addEducationBtn.setOnClickListener(view -> {
+            if (!isFieldEmpty()) {
+
+                Map<String, Object> educationMap = new HashMap<>();
+                educationMap.put("userId", activityViewModel.getUserId());
+                educationMap.put("uniName", educationPopupBinding.schoolName.getText().toString());
+                educationMap.put("degreeId", getDegreeId(educationPopupBinding.degreeName.getText().toString()));
+                educationMap.put("studyId", getStudyFieldId(educationPopupBinding.fieldOfStudy.getText().toString()));
+                educationMap.put("startYear", educationPopupBinding.startYear.getText().toString());
+                educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
+
+                viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        getUserEducation();
+                        Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+        educationPopupBinding.deleteEducationBtn.setOnClickListener(view -> {
+            openDeleteCofirmationPopup(educationModel.getEdId());
+        });
+        educationPopupBinding.closeBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+    }
+
 
     private boolean isFieldEmpty() {
         if (TextUtils.isEmpty(educationPopupBinding.schoolName.getText())
@@ -281,15 +410,37 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
     @Override
     public void onEducationClick(EducationResults.EducationModel educationModel) {
 
-        viewModel.deleteEducation(educationModel.getEdId()).observe(getViewLifecycleOwner(),sekloResults -> {
-            if(sekloResults.getResults().getCode()==1){
-                getUserEducation();
-            }
-        });
-
-
+        showEditEducationPopup(educationModel);
+//        openDeleteCofirmationPopup(educationModel.getEdId());
 
     }
 
+    private void openDeleteCofirmationPopup(int educationId){
+        PopoutLogoutBinding popoutLogoutBinding = PopoutLogoutBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setView(popoutLogoutBinding.getRoot());
+
+        popoutLogoutBinding.confirmationMessage.setText("Do you want to delete this education ?");
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popoutLogoutBinding.logoutYesBtn.setOnClickListener(view -> {
+            viewModel.deleteEducation(educationId).observe(getViewLifecycleOwner(),sekloResults -> {
+                if(sekloResults.getResults().getCode()==1){
+                    getUserEducation();
+                    dialog.dismiss();
+                }
+            });
+
+        });
+
+        popoutLogoutBinding.logoutNoBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
+    }
 
 }

@@ -142,6 +142,7 @@ public class ProfileSkillsFragment extends Fragment {
         //Add user skills
         activityViewModel.getUserSkills(activityViewModel.getUserId()).observe(getViewLifecycleOwner(), skillResults -> {
             userSkills = skillResults.getResults();
+
             addUserSkillChips();
         });
 

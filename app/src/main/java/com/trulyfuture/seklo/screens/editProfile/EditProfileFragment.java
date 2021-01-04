@@ -3,9 +3,11 @@ package com.trulyfuture.seklo.screens.editProfile;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +39,14 @@ import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
+import org.jibble.simpleftp.SimpleFTP;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,6 +61,7 @@ public class EditProfileFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri mFileUri = null;
+    private String mFilePath = "";
 
     private FirebaseStorage mFirebaseStorage;
     private static final String TAG = "EditProfileFragment";
@@ -104,8 +113,6 @@ public class EditProfileFragment extends Fragment {
             openLogoutPopup();
 
 
-
-
         });
 
         binding.updateOverviewBtn.setOnClickListener(view -> {
@@ -113,10 +120,10 @@ public class EditProfileFragment extends Fragment {
             if (!TextUtils.isEmpty(binding.overviewTxt.getText())) {
                 Users users = new Users();
                 users.setOverview(binding.overviewTxt.getText().toString().trim());
-                viewModel.updateUserOverView(users, activityViewModel.getUserId()).observe(getViewLifecycleOwner(),sekloResults -> {
-                    if(sekloResults.getResults().getCode()==1){
+                viewModel.updateUserOverView(users, activityViewModel.getUserId()).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
                         getUser();
-                        Toast.makeText(getContext(),"Updated sucessfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Updated sucessfully", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -241,8 +248,6 @@ public class EditProfileFragment extends Fragment {
                         });
 
                     });
-
-
                 }
             }
         }).addOnFailureListener(e -> {
@@ -271,7 +276,12 @@ public class EditProfileFragment extends Fragment {
 
             ProgressDialog.showLoader(getActivity());
 
+
             uploadImageToFirebase();
+
+//            mFilePath = getPath(mFileUri);
+//            uploadImageToFTP();
+
 //            Glide.with(this).load(mFileUri).into(binding.userImage);
 
 //            binding.userImage.setImageURI(mFileUri);
@@ -316,8 +326,8 @@ public class EditProfileFragment extends Fragment {
         sharedPreferenceClass.DoCommit();
     }
 
-    private void openLogoutPopup(){
-        PopoutLogoutBinding popoutLogoutBinding=PopoutLogoutBinding.inflate(getLayoutInflater());
+    private void openLogoutPopup() {
+        PopoutLogoutBinding popoutLogoutBinding = PopoutLogoutBinding.inflate(getLayoutInflater());
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
         alertBuilder.setView(popoutLogoutBinding.getRoot());
@@ -336,6 +346,39 @@ public class EditProfileFragment extends Fragment {
             dialog.dismiss();
         });
 
+
     }
 
+    private String getPath(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = requireActivity().getContentResolver().query(uri, projection, null, null, null);
+        assert cursor != null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
+    }
+
+    private void uploadImageToFTP(){
+        SimpleFTP ftp=new SimpleFTP();
+        try {
+            ftp.connect("51.81.11.220",3306,"uploadfiles@seklo.pk","34ez%KwTVO7.");
+            ftp.bin();
+            ftp.stor(new FileInputStream(new File(mFilePath)),"userImg"+activityViewModel.getUserId()+".jpg");
+            ftp.disconnect();
+
+            if(ProgressDialog.isShowing())
+                ProgressDialog.hideLoader();
+
+            Toast.makeText(getContext(),"FTP sucess..",Toast.LENGTH_SHORT).show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            if(ProgressDialog.isShowing())
+                ProgressDialog.hideLoader();
+            Toast.makeText(getContext(),"Something Went Wrong..",Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment implements JobsAdapter.OnJobClickList
     }
 
     private void setupObservers() {
-        activityViewModel.hrResults.observe(getViewLifecycleOwner(), hrResults -> {
+        activityViewModel.getAllHr().observe(getViewLifecycleOwner(), hrResults -> {
             if (hrResults.getHrList() != null)
                 hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
         });

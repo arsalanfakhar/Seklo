@@ -16,7 +16,7 @@ public class RetrofitService {
 
     public static OkHttpClient client=new OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .callTimeout(25, TimeUnit.SECONDS)
+            .callTimeout(40, TimeUnit.SECONDS)
             .build();
 
     private static final Retrofit retrofit = new Retrofit.Builder()

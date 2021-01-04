@@ -203,6 +203,10 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog dialog = alertBuilder.create();
         dialog.show();
 
+        popupBinding.closeBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
         popupBinding.sendEmailBtn.setOnClickListener(v -> {
             if(TextUtils.isEmpty(popupBinding.email.getText())){
                 Toast.makeText(this,"Fields are empty",Toast.LENGTH_SHORT).show();

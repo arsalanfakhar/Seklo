@@ -1,5 +1,6 @@
 package com.trulyfuture.seklo.screens.profile.profileFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.trulyfuture.seklo.R;
 import com.trulyfuture.seklo.adapters.ExperienceAdapter;
 import com.trulyfuture.seklo.databinding.AddExperiencePopupBinding;
 import com.trulyfuture.seklo.databinding.FragmentProfileExperienceBinding;
+import com.trulyfuture.seklo.databinding.PopoutLogoutBinding;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
 import com.trulyfuture.seklo.screens.profile.ProfileViewModel;
@@ -178,6 +181,115 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
 
     }
 
+    private void showEditExperiencePopup(ExperienceResults.Experience experience) {
+        popupBinding = AddExperiencePopupBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setView(popupBinding.getRoot());
+
+        //Initialize popup data
+        ArrayAdapter<EmploymentResults.EmploymentType> employmentTypeArrayAdapter = new ArrayAdapter<>(
+                getContext(),
+                R.layout.spinner_item_layout,
+                employmentTypeList
+        );
+
+        //Getting last 60 years
+        ArrayList<String> startYearList = new ArrayList<>();
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int tillYear = currentYear - 60;
+
+        //last 60 years from current date
+        for (int i = currentYear; i >= tillYear; i--) {
+            startYearList.add(String.valueOf(i));
+        }
+
+        ArrayAdapter<String> startYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, startYearList
+        );
+
+        ArrayList<String> endYearList = new ArrayList<>(startYearList);
+        endYearList.remove(0);
+        endYearList.add(0, "Till present");
+
+        ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
+                getContext(), R.layout.spinner_item_layout, endYearList
+        );
+
+        popupBinding.employmentType.setAdapter(employmentTypeArrayAdapter);
+        popupBinding.startYear.setAdapter(startYearArrayAdapter);
+        popupBinding.endYear.setAdapter(endYearArrayAdapter);
+
+        //Initialize values
+
+        popupBinding.jobTitle.setText(experience.getTitle());
+        popupBinding.employmentType.setText(experience.getEmpDes(),false);
+        popupBinding.companyName.setText(experience.getCompany());
+        popupBinding.startYear.setText(String.valueOf(experience.getStartDate()),false);
+
+        if(experience.getEndDate().toString().contains("Till")){
+            popupBinding.endYear.setText("Till present",false);
+        }
+        else {
+            popupBinding.endYear.setText(String.valueOf(experience.getEndDate()),false);
+        }
+
+
+
+        //On start year click listener
+        popupBinding.startYear.setOnItemClickListener((parent, view, position, id) -> {
+            setEndYear(Integer.valueOf(popupBinding.startYear.getText().toString()));
+        });
+
+        popupBinding.startYearBtn.setOnClickListener(view -> {
+            popupBinding.startYear.showDropDown();
+        });
+
+        popupBinding.endYearBtn.setOnClickListener(view -> {
+            popupBinding.endYear.showDropDown();
+        });
+
+        popupBinding.employmentTypeDropBtn.setOnClickListener(view -> {
+            popupBinding.employmentType.showDropDown();
+        });
+
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popupBinding.closeBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        popupBinding.addExperienceBtn.setOnClickListener(view -> {
+            if (!isFieldEmpty()) {
+                Map<String, Object> experienceMap = new HashMap<>();
+                experienceMap.put("userId", activityViewModel.getUserId());
+                experienceMap.put("Title", popupBinding.jobTitle.getText().toString());
+                experienceMap.put("company", popupBinding.companyName.getText().toString());
+                experienceMap.put("empType", getEmploymentTypeId(popupBinding.employmentType.getText().toString()));
+                experienceMap.put("startDate", popupBinding.startYear.getText().toString());
+                experienceMap.put("endDate", popupBinding.endYear.getText().toString());
+
+                viewModel.addUserExperience(experienceMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                    if (sekloResults.getResults().getCode() == 1) {
+                        getUserExperience();
+                        Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+
+        });
+
+        popupBinding.deleteExperienceBtn.setOnClickListener(view -> {
+            openExperienceDeleteConfirmationPopup(experience.getExpId());
+        });
+
+    }
+
     private boolean isFieldEmpty() {
         if (TextUtils.isEmpty(popupBinding.jobTitle.getText())
                 || TextUtils.isEmpty(popupBinding.employmentType.getText())
@@ -220,13 +332,32 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
 
     @Override
     public void onExperienceClick(ExperienceResults.Experience experience) {
+        showEditExperiencePopup(experience);
+    }
 
-        viewModel.deleteExperience(experience.getExpId()).observe(getViewLifecycleOwner(),sekloResults -> {
-            if(sekloResults.getResults().getCode()==1){
-                getUserExperience();
-            }
+    private void openExperienceDeleteConfirmationPopup(int experienceId){
+        PopoutLogoutBinding popoutLogoutBinding = PopoutLogoutBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+        alertBuilder.setView(popoutLogoutBinding.getRoot());
+
+        popoutLogoutBinding.confirmationMessage.setText("Do you want to delete this experience ?");
+
+        AlertDialog dialog = alertBuilder.create();
+        dialog.show();
+
+        popoutLogoutBinding.logoutYesBtn.setOnClickListener(view -> {
+            viewModel.deleteExperience(experienceId).observe(getViewLifecycleOwner(),sekloResults -> {
+                if(sekloResults.getResults().getCode()==1){
+                    getUserExperience();
+                }
+            });
+
         });
 
+        popoutLogoutBinding.logoutNoBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
 
     }
 }

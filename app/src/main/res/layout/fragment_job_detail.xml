@@ -118,12 +118,12 @@
 
         <TextView
             android:id="@+id/jobDescription"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="24dp"
-            style="@style/JobDetailText"
             android:text="Assist in the implementation of human resources policies, programs, and procedures. "
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
             style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView41"
@@ -236,89 +236,105 @@
 
         <TextView
             android:id="@+id/jobExpiryOn"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView43"
-            app:layout_constraintEnd_toEndOf="@+id/jobPostedOn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView43"
             app:layout_constraintTop_toTopOf="@+id/textView43" />
 
         <TextView
             android:id="@+id/jobMinimumPay"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView44"
-            app:layout_constraintEnd_toEndOf="@+id/jobExpiryOn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView44"
             app:layout_constraintTop_toTopOf="@+id/textView44" />
 
         <TextView
             android:id="@+id/jobMaximumPay"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView45"
-            app:layout_constraintEnd_toEndOf="@+id/jobMinimumPay"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView45"
             app:layout_constraintTop_toTopOf="@+id/textView45" />
 
         <TextView
             android:id="@+id/jobCompanyName"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView46"
-            app:layout_constraintEnd_toEndOf="@+id/jobMinimumPay"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView46"
             app:layout_constraintTop_toTopOf="@+id/textView46" />
 
         <TextView
             android:id="@+id/jobCompanyEmail"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView47"
-            app:layout_constraintEnd_toEndOf="@+id/jobMaximumPay"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView47"
             app:layout_constraintTop_toTopOf="@+id/textView47" />
 
         <TextView
             android:id="@+id/jobLocation"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView48"
-            app:layout_constraintEnd_toEndOf="@+id/jobCompanyEmail"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView48"
             app:layout_constraintTop_toTopOf="@+id/textView48" />
 
         <TextView
             android:id="@+id/jobType"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView49"
-            app:layout_constraintEnd_toEndOf="@+id/jobLocation"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView49"
             app:layout_constraintTop_toTopOf="@+id/textView49" />
 
         <TextView
             android:id="@+id/jobCategory"
+            style="@style/JobDetailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="@+id/textView50"
-            app:layout_constraintEnd_toEndOf="@+id/jobType"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView50"
             app:layout_constraintTop_toTopOf="@+id/textView50" />
 

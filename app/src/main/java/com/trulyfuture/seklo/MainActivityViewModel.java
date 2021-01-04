@@ -82,8 +82,8 @@ public class MainActivityViewModel extends AndroidViewModel {
 //        return seekloRepository.getUserById(id);
     }
 
-    private void getAllHr() {
-        hrResults = seekloRepository.getAllHr();
+    public LiveData<HrResults> getAllHr() {
+        return hrResults = seekloRepository.getAllHr();
     }
 
     private void getAllDegrees() {

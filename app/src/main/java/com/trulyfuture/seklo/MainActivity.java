@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
 
         binding.hrServiceBtn.setOnClickListener(view -> {
+            getHr();
             SharedPreferenceClass sharedPreferenceClass = new SharedPreferenceClass(this, SharedPreferenceClass.UserDetails);
 
             boolean firstTime = sharedPreferenceClass.getBoolean("firstTime");
@@ -220,16 +221,18 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
     private void setupObservers() {
 
         getUser();
-        activityViewModel.hrResults.observe(this, hrResults -> {
-            if (hrResults.getHrList() != null)
-                hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
-        });
-
-
+        getHr();
         activityViewModel.allSevices.observe(this, servicesResults -> {
             servicesList = servicesResults.getResults();
         });
 
+    }
+
+    private void getHr(){
+        activityViewModel.getAllHr().observe(this, hrResults -> {
+            if (hrResults.getHrList() != null)
+                hrAdapter.setHrArrayList((ArrayList<HrResults.Hr>) hrResults.getHrList());
+        });
     }
 
     private void getUser() {

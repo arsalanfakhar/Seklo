@@ -36,6 +36,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ProfileViewPagerAdapter viewPagerAdapter;
 
+
     private ViewPager2.OnPageChangeCallback viewpagerCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
@@ -48,6 +49,7 @@ public class ProfileFragment extends Fragment {
     private Users currentUser;
 
     private static final String TAG = "ProfileFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,17 +62,16 @@ public class ProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        activityViewModel= ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        activityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         ProgressDialog.showLoader(getActivity());
 
-        activityViewModel.getCurrentUser().observe(getViewLifecycleOwner(),userResults -> {
-            if(userResults.getCode()==1){
-                currentUser=userResults.getUserResultList().get(0);
+        activityViewModel.getCurrentUser().observe(getViewLifecycleOwner(), userResults -> {
+            if (userResults.getCode() == 1) {
+                currentUser = userResults.getUserResultList().get(0);
                 loadUserdata();
                 ProgressDialog.hideLoader();
-            }
-            else {
+            } else {
                 //TODO Handle error on user
             }
 
@@ -126,14 +127,14 @@ public class ProfileFragment extends Fragment {
                 binding.skillsBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
             }
             break;
-            case 2:{
+            case 2: {
                 binding.overviewBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
                 binding.educationBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
                 binding.experienceBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
                 binding.skillsBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
             }
             break;
-            case 3:{
+            case 3: {
                 binding.overviewBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
                 binding.educationBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
                 binding.experienceBtnLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));
@@ -143,14 +144,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void loadUserdata(){
-        if(TextUtils.isEmpty(currentUser.getUserImage())){
+    private void loadUserdata() {
+        if (TextUtils.isEmpty(currentUser.getUserImage())) {
             //TODO Load dummy image
             Glide.with(this)
                     .load(R.drawable.nouser)
                     .into(binding.userImage);
-        }
-        else {
+        } else {
             Glide.with(this).asBitmap()
                     .load(currentUser.getUserImage())
                     .into(binding.userImage);
@@ -174,9 +174,16 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         binding.profileViewpager.unregisterOnPageChangeCallback(viewpagerCallback);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.v(TAG,"onResume");
+        binding.profileViewpager.setAdapter(new ProfileViewPagerAdapter(getActivity()));
+    }
 
 
 }

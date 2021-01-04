@@ -65,7 +65,7 @@ public  class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.Edu
             String duration=educationModel.getStartYear()+" - "+educationModel.getEndYear();
             profileItemBinding.duration.setText(duration);
 
-            profileItemBinding.delete.setOnClickListener(view -> {
+            profileItemBinding.edit.setOnClickListener(view -> {
                 mOnEducationClickListener.onEducationClick(educationModelArrayList.get(getAdapterPosition()));
             });
         }
