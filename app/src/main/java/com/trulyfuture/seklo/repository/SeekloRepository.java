@@ -999,5 +999,52 @@ public class SeekloRepository {
         return data;
     }
 
+    public MutableLiveData<SekloResults> updateEducation(int eduId,Map<String,Object> educationMap){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+        Call<SekloResults> sekloResultsCall= apiInterface.updateUserEducation(eduId,educationMap);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<SekloResults> updateExperience(int expId,Map<String,Object> experienceMap){
+        MutableLiveData<SekloResults> data = new MutableLiveData<>();
+        Call<SekloResults> sekloResultsCall= apiInterface.updateUserExperience(expId,experienceMap);
+
+        sekloResultsCall.enqueue(new Callback<SekloResults>() {
+            @Override
+            public void onResponse(Call<SekloResults> call, Response<SekloResults> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    data.postValue(response.body());
+                } else
+                    Toast.makeText(application.getApplicationContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<SekloResults> call, Throwable t) {
+                Toast.makeText(application.getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return data;
+    }
+
+
+
+
 }
 

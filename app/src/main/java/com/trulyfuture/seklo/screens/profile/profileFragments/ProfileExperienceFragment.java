@@ -122,7 +122,7 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
 
         ArrayList<String> endYearList = new ArrayList<>(startYearList);
         endYearList.remove(0);
-        endYearList.add(0, "Till present");
+        endYearList.add(0, ProfileEducationFragment.till_present_string);
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spinner_item_layout, endYearList
@@ -165,7 +165,12 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
                 experienceMap.put("company", popupBinding.companyName.getText().toString());
                 experienceMap.put("empType", getEmploymentTypeId(popupBinding.employmentType.getText().toString()));
                 experienceMap.put("startDate", popupBinding.startYear.getText().toString());
-                experienceMap.put("endDate", popupBinding.endYear.getText().toString());
+
+                if(popupBinding.endYear.getText().toString().equals(ProfileEducationFragment.till_present_string)){
+                    experienceMap.put("endDate", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+                }
+                else
+                    experienceMap.put("endDate", popupBinding.endYear.getText().toString());
 
                 viewModel.addUserExperience(experienceMap).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
@@ -211,7 +216,7 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
 
         ArrayList<String> endYearList = new ArrayList<>(startYearList);
         endYearList.remove(0);
-        endYearList.add(0, "Till present");
+        endYearList.add(0, ProfileEducationFragment.till_present_string);
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spinner_item_layout, endYearList
@@ -228,8 +233,8 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
         popupBinding.companyName.setText(experience.getCompany());
         popupBinding.startYear.setText(String.valueOf(experience.getStartDate()),false);
 
-        if(experience.getEndDate().toString().contains("Till")){
-            popupBinding.endYear.setText("Till present",false);
+        if(experience.getEndDate()==Calendar.getInstance().get(Calendar.YEAR)){
+            popupBinding.endYear.setText(ProfileEducationFragment.till_present_string,false);
         }
         else {
             popupBinding.endYear.setText(String.valueOf(experience.getEndDate()),false);
@@ -270,9 +275,14 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
                 experienceMap.put("company", popupBinding.companyName.getText().toString());
                 experienceMap.put("empType", getEmploymentTypeId(popupBinding.employmentType.getText().toString()));
                 experienceMap.put("startDate", popupBinding.startYear.getText().toString());
-                experienceMap.put("endDate", popupBinding.endYear.getText().toString());
 
-                viewModel.addUserExperience(experienceMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                if(popupBinding.endYear.getText().toString().equals(ProfileEducationFragment.till_present_string)){
+                    experienceMap.put("endDate", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+                }
+                else
+                    experienceMap.put("endDate", popupBinding.endYear.getText().toString());
+
+                viewModel.updateExperience(experience.getExpId(),experienceMap).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
                         getUserExperience();
                         Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
@@ -321,7 +331,7 @@ public class ProfileExperienceFragment extends Fragment implements ExperienceAda
         for (int i = currentYear; i > startYear; i--) {
             endYearList.add(String.valueOf(i));
         }
-        endYearList.add(0, "Till present");
+        endYearList.add(0, ProfileEducationFragment.till_present_string);
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spinner_item_layout, endYearList

@@ -9,14 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.trulyfuture.seklo.databinding.ProfileItemBinding;
 import com.trulyfuture.seklo.models.EducationResults;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileEducationFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public  class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.EducationViewHolder> {
+public class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.EducationViewHolder> {
 
     private Context mContext;
     private ArrayList<EducationResults.EducationModel> educationModelArrayList;
     private OnEducationClickListener mOnEducationClickListener;
+    private String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 
     public EducationAdapter(Context mContext, ArrayList<EducationResults.EducationModel> educationModelArrayList, OnEducationClickListener mOnEducationClickListener) {
         this.mContext = mContext;
@@ -59,10 +62,16 @@ public  class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.Edu
         public void bind(EducationResults.EducationModel educationModel) {
             profileItemBinding.title.setText(educationModel.getUniName());
 
-            String subtitle= educationModel.getStudyName()+" , "+educationModel.getDegreeName();
+            String subtitle = educationModel.getStudyName() + " , " + educationModel.getDegreeName();
             profileItemBinding.subtitle.setText(subtitle);
 
-            String duration=educationModel.getStartYear()+" - "+educationModel.getEndYear();
+            String duration = "";
+
+            if (educationModel.getEndYear().equals(currentYear)) {
+                duration = educationModel.getStartYear() + " - " + ProfileEducationFragment.till_present_string;
+            } else
+                duration = educationModel.getStartYear() + " - " + educationModel.getEndYear();
+
             profileItemBinding.duration.setText(duration);
 
             profileItemBinding.edit.setOnClickListener(view -> {

@@ -154,15 +154,15 @@
             app:layout_constraintStart_toEndOf="@+id/textView41"
             app:layout_constraintTop_toTopOf="@+id/textView41" />
 
-        <TextView
-            android:id="@+id/textView43"
-            style="@style/JobDetailHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Expiring on :"
-            app:layout_constraintStart_toStartOf="@+id/textView41"
-            app:layout_constraintTop_toBottomOf="@+id/textView41" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView43"-->
+<!--            style="@style/JobDetailHeading"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:text="Expiring on :"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textView41"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textView41" />-->
 
         <TextView
             android:id="@+id/textView44"
@@ -171,8 +171,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Minimum Pay :"
-            app:layout_constraintStart_toStartOf="@+id/textView43"
-            app:layout_constraintTop_toBottomOf="@+id/textView43" />
+            app:layout_constraintStart_toStartOf="@+id/textView41"
+            app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
         <TextView
             android:id="@+id/textView45"
@@ -234,18 +234,18 @@
             app:layout_constraintStart_toStartOf="@+id/textView49"
             app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
-        <TextView
-            android:id="@+id/jobExpiryOn"
-            style="@style/JobDetailText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="@+id/textView43"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView43"
-            app:layout_constraintTop_toTopOf="@+id/textView43" />
+<!--        <TextView-->
+<!--            android:id="@+id/jobExpiryOn"-->
+<!--            style="@style/JobDetailText"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="24dp"-->
+<!--            android:text="TextView"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/textView43"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/textView43"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/textView43" />-->
 
         <TextView
             android:id="@+id/jobMinimumPay"

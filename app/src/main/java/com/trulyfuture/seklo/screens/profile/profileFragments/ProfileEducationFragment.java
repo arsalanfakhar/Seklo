@@ -54,6 +54,8 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
 
     private AddEducationPopupBinding educationPopupBinding;
 
+    public static final String till_present_string="Till present";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -153,7 +155,7 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
 
         ArrayList<String> endYearList = new ArrayList<>(startYearList);
         endYearList.remove(0);
-        endYearList.add(0, "Till present");
+        endYearList.add(0, till_present_string);
 
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
@@ -200,7 +202,12 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
                 educationMap.put("degreeId", getDegreeId(educationPopupBinding.degreeName.getText().toString()));
                 educationMap.put("studyId", getStudyFieldId(educationPopupBinding.fieldOfStudy.getText().toString()));
                 educationMap.put("startYear", educationPopupBinding.startYear.getText().toString());
-                educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
+
+                if(educationPopupBinding.endYear.getText().toString().equals(till_present_string)){
+                    educationMap.put("endYear", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+                }
+                else
+                    educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
 
                 viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
@@ -257,7 +264,7 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
 
         ArrayList<String> endYearList = new ArrayList<>(startYearList);
         endYearList.remove(0);
-        endYearList.add(0, "Till present");
+        endYearList.add(0, till_present_string);
 
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
@@ -276,8 +283,8 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
         educationPopupBinding.fieldOfStudy.setText(educationModel.getStudyName(),false);
         educationPopupBinding.startYear.setText(educationModel.getStartYear(),false);
 
-        if(educationModel.getEndYear().contains("Till")){
-            educationPopupBinding.endYear.setText("Till present",false);
+        if(educationModel.getEndYear().equals(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))){
+            educationPopupBinding.endYear.setText(till_present_string,false);
         }
         else {
             educationPopupBinding.endYear.setText(educationModel.getEndYear(),false);
@@ -322,9 +329,15 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
                 educationMap.put("degreeId", getDegreeId(educationPopupBinding.degreeName.getText().toString()));
                 educationMap.put("studyId", getStudyFieldId(educationPopupBinding.fieldOfStudy.getText().toString()));
                 educationMap.put("startYear", educationPopupBinding.startYear.getText().toString());
-                educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
 
-                viewModel.addUserEducation(educationMap).observe(getViewLifecycleOwner(), sekloResults -> {
+                if(educationPopupBinding.endYear.getText().toString().equals(till_present_string)){
+                    educationMap.put("endYear", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+                }
+                else
+                    educationMap.put("endYear", educationPopupBinding.endYear.getText().toString());
+
+
+                viewModel.updateEducation(educationModel.getEdId(),educationMap).observe(getViewLifecycleOwner(), sekloResults -> {
                     if (sekloResults.getResults().getCode() == 1) {
                         getUserEducation();
                         Toast.makeText(getContext(), sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
@@ -366,7 +379,7 @@ public class ProfileEducationFragment extends Fragment implements  EducationAdap
         for (int i = currentYear; i > startYear; i--) {
             endYearList.add(String.valueOf(i));
         }
-        endYearList.add(0, "Till present");
+        endYearList.add(0, till_present_string);
 
         ArrayAdapter<String> endYearArrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spinner_item_layout, endYearList

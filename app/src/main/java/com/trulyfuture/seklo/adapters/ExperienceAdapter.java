@@ -13,14 +13,17 @@ import com.trulyfuture.seklo.databinding.ProfileItemBinding;
 import com.trulyfuture.seklo.models.EducationResults;
 import com.trulyfuture.seklo.models.EmploymentResults;
 import com.trulyfuture.seklo.models.ExperienceResults;
+import com.trulyfuture.seklo.screens.profile.profileFragments.ProfileEducationFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.ExperienceViewHolder> {
 
     private Context mContext;
     private ArrayList<ExperienceResults.Experience> experienceArrayList;
     private onExperienceClickListener onExperienceClickListener;
+    private int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
     public ExperienceAdapter(Context mContext, ArrayList<ExperienceResults.Experience> experienceArrayList, ExperienceAdapter.onExperienceClickListener onExperienceClickListener) {
         this.mContext = mContext;
@@ -71,7 +74,14 @@ public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.Ex
             String subtitle=experience.getCompany()+" - "+experience.getEmpDes();
             profileItemBinding.subtitle.setText(subtitle);
 
-            String duration=experience.getStartDate()+" - "+experience.getEndDate();
+
+            String duration = "";
+
+            if (experience.getEndDate()==currentYear) {
+                duration=experience.getStartDate()+" - "+ProfileEducationFragment.till_present_string;
+            } else
+                duration=experience.getStartDate()+" - "+experience.getEndDate();
+
             profileItemBinding.duration.setText(duration);
 
             profileItemBinding.edit.setOnClickListener(view -> {

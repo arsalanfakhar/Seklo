@@ -109,7 +109,6 @@ public class JobDetailFragment extends Fragment {
         jobDetailBinding.jobRequirements.setText(Html.fromHtml(currentJob.getJobRequirements()).toString());
 
         jobDetailBinding.jobPostedOn.setText(currentJob.getPostDate().substring(0, 10));
-        jobDetailBinding.jobExpiryOn.setText(currentJob.getExpiresDate());
         jobDetailBinding.jobMinimumPay.setText(currentJob.getMinPay());
         jobDetailBinding.jobMaximumPay.setText(currentJob.getMaxPay());
         jobDetailBinding.jobCompanyName.setText(currentJob.getCompanyName());

@@ -48,4 +48,14 @@ public class ProfileViewModel extends AndroidViewModel {
         return seekloRepository.removeExperience(expId);
     }
 
+    public LiveData<SekloResults> updateEducation(int edId,Map<String, Object> educationMap){
+        return seekloRepository.updateEducation(edId,educationMap);
+    }
+
+    public LiveData<SekloResults> updateExperience(int expId,Map<String, Object> experienceMap){
+        return seekloRepository.updateExperience(expId, experienceMap);
+    }
+
+
+
 }

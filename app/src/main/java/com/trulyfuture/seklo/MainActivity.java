@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements HrAdapterSelected
 
         try {
             FirebaseMessaging.getInstance().subscribeToTopic("general");
-            String TOKEN = FirebaseInstanceId.getInstance().getToken();
+//            String TOKEN = FirebaseInstanceId.getInstance().getToken();
 
 
         } catch (Exception e) {

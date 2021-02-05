@@ -75,6 +75,12 @@ public interface SeekloApiInterface {
     @POST("user-ed")
     Call<SekloResults> addUserEducation(@Body Map<String,Object> educationMap);
 
+    @PATCH("user-ed/{id}")
+    Call<SekloResults> updateUserEducation(@Path("id") int edId,@Body Map<String,Object> educationMap);
+
+    @DELETE("user-ed/{id}")
+    Call<SekloResults> removeUserEducation(@Path("id") int edId);
+
     @GET("listdata/list-type/1")
     Call<EmploymentResults> getAllEmploymentType();
 
@@ -84,8 +90,8 @@ public interface SeekloApiInterface {
     @GET("user-exp/{id}")
     Call<ExperienceResults> getUserExperience(@Path("id") int userId);
 
-    @DELETE("user-ed/{id}")
-    Call<SekloResults> removeUserEducation(@Path("id") int edId);
+    @PATCH("user-exp/{id}")
+    Call<SekloResults> updateUserExperience(@Path("id") int expId,@Body Map<String,Object> experienceMap);
 
     @DELETE("user-exp/{id}")
     Call<SekloResults> removeUserExperience(@Path("id") int expId);

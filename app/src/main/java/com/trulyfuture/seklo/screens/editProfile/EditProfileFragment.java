@@ -26,6 +26,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +41,6 @@ import com.trulyfuture.seklo.screens.login.LoginActivity;
 import com.trulyfuture.seklo.utils.ProgressDialog;
 import com.trulyfuture.seklo.utils.SharedPreferenceClass;
 
-import org.jibble.simpleftp.SimpleFTP;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -336,6 +337,12 @@ public class EditProfileFragment extends Fragment {
         dialog.show();
 
         popoutLogoutBinding.logoutYesBtn.setOnClickListener(view -> {
+
+            //means logged in from facebook
+            if (AccessToken.getCurrentAccessToken() != null) {
+                LoginManager.getInstance().logOut();
+            }
+
             removeFromSharedPrefs();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
@@ -360,25 +367,25 @@ public class EditProfileFragment extends Fragment {
         return path;
     }
 
-    private void uploadImageToFTP(){
-        SimpleFTP ftp=new SimpleFTP();
-        try {
-            ftp.connect("51.81.11.220",3306,"uploadfiles@seklo.pk","34ez%KwTVO7.");
-            ftp.bin();
-            ftp.stor(new FileInputStream(new File(mFilePath)),"userImg"+activityViewModel.getUserId()+".jpg");
-            ftp.disconnect();
-
-            if(ProgressDialog.isShowing())
-                ProgressDialog.hideLoader();
-
-            Toast.makeText(getContext(),"FTP sucess..",Toast.LENGTH_SHORT).show();
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            if(ProgressDialog.isShowing())
-                ProgressDialog.hideLoader();
-            Toast.makeText(getContext(),"Something Went Wrong..",Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void uploadImageToFTP(){
+//        SimpleFTP ftp=new SimpleFTP();
+//        try {
+//            ftp.connect("51.81.11.220",3306,"uploadfiles@seklo.pk","34ez%KwTVO7.");
+//            ftp.bin();
+//            ftp.stor(new FileInputStream(new File(mFilePath)),"userImg"+activityViewModel.getUserId()+".jpg");
+//            ftp.disconnect();
+//
+//            if(ProgressDialog.isShowing())
+//                ProgressDialog.hideLoader();
+//
+//            Toast.makeText(getContext(),"FTP sucess..",Toast.LENGTH_SHORT).show();
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            if(ProgressDialog.isShowing())
+//                ProgressDialog.hideLoader();
+//            Toast.makeText(getContext(),"Something Went Wrong..",Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }

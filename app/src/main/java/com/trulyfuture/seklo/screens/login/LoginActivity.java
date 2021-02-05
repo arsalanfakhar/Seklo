@@ -15,11 +15,13 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.trulyfuture.seklo.MainActivity;
 import com.trulyfuture.seklo.databinding.ResetPasswordPopupBinding;
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private static final String EMAIL = "email";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
 
-        loginBinding.loginButtonFacebook.setPermissions(Arrays.asList("email", "public_profile", "user_friends"));
+        loginBinding.loginButtonFacebook.setPermissions(Arrays.asList("email", "public_profile"));
         loginBinding.loginButtonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -71,52 +74,78 @@ public class LoginActivity extends AppCompatActivity {
                 ProgressDialog.showLoader(LoginActivity.this);
 
 
-                GraphRequest graphRequest=GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+//                Toast.makeText(LoginActivity.this,"facebook token"+loginResult.getAccessToken().getToken(),Toast.LENGTH_SHORT).show();
+//
+//                Toast.makeText(LoginActivity.this,"permissions"+loginResult.getRecentlyGrantedPermissions(),Toast.LENGTH_SHORT).show();
+//
+//                Toast.makeText(LoginActivity.this,"userId"+loginResult.getAccessToken().getUserId(),Toast.LENGTH_SHORT).show();
+
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
                     String id = null;
                     try {
+//                        AccessToken.setCurrentAccessToken(loginResult.getAccessToken());
+
+
                         id = object.getString("id");
                         String first_name = object.getString("first_name");
                         String last_name = object.getString("last_name");
-                        String gender = object.getString("gender");
-                        String birthday = object.getString("birthday");
+//                        String gender = object.getString("gender");
+//                        String birthday = object.getString("birthday");
                         String image_url = "http://graph.facebook.com/" + id + "/picture?type=large";
-                        String email;
+                        String email = "";
                         if (object.has("email")) {
                             email = object.getString("email");
                         }
 
-                        Map<String, Object> userMap = new HashMap<>();
-                        userMap.put("Fname",first_name);
-                        userMap.put("Lname",last_name);
-                        userMap.put("profilePic",image_url);
-                        userMap.put("password","noPassword");
-                        userMap.put("Number","");
+//                        String graphData="Fbdata"+first_name+"\n"+last_name+"\n"+image_url+"\n"+email;
+//                        Toast.makeText(LoginActivity.this, "fbEmail:" + email, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LoginActivity.this,"facebook token"+loginResult.getAccessToken(),Toast.LENGTH_SHORT).show();
 
-                        viewModel.facebookLogin(userMap).observe(LoginActivity.this,sekloResults -> {
-                            if(ProgressDialog.isShowing())
-                                ProgressDialog.hideLoader();
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("Email", email);
+                        userMap.put("Fname", first_name);
+                        userMap.put("Lname", last_name);
+                        userMap.put("profilePic", image_url);
+                        userMap.put("password", "noPassword");
+                        userMap.put("Number", "");
+
+//                        Toast.makeText(LoginActivity.this,"Graph API sucess",Toast.LENGTH_SHORT).show();
+
+                        viewModel.facebookLogin(userMap).observe(LoginActivity.this, sekloResults -> {
+
+                            ProgressDialog.hideLoader();
 
                             if (sekloResults.getResults().getCode() == 1) {
                                 addToSharedPrefs(sekloResults.getResults().getId());
                                 Toast.makeText(LoginActivity.this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             } else {
-                                Toast.makeText(LoginActivity.this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                                LoginManager.getInstance().logOut();
+
+                                //Then Login using Login API
+                                if (sekloResults.getResults().getMessage().contains("already exist")) {
+                                    Users user = new Users();
+                                    user.setStr(String.valueOf(userMap.get("Email")));
+                                    user.setPassword("noPassword");
+                                    loginUser(user);
+                                } else {
+                                    Toast.makeText(LoginActivity.this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         });
 
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        if(ProgressDialog.isShowing())
+                        Toast.makeText(LoginActivity.this, "Graph APi error", Toast.LENGTH_SHORT).show();
+                        if (ProgressDialog.isShowing())
                             ProgressDialog.hideLoader();
                     }
-
-
                 });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name,last_name,email,gender,birthday"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
+                parameters.putString("fields", "id,first_name,last_name,email"); // id,first_name,last_name,email,gender,birthday,cover,picture.type(large)
                 graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
 
@@ -124,18 +153,17 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this,"Cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
         //Login button password
         loginBinding.loginBtn.setOnClickListener(view -> {
-
             if (!isFieldsEmpty()) {
 
                 ProgressDialog.showLoader(this);
@@ -143,23 +171,8 @@ public class LoginActivity extends AppCompatActivity {
                 Users user = new Users();
                 user.setStr(loginBinding.email.getText().toString());
                 user.setPassword(loginBinding.password.getText().toString());
-                viewModel.
-                        authenticateUser(user)
-                        .observe(this, results -> {
-                            ProgressDialog.hideLoader();
-                            if (results.getCode() == 1) {
-                                addToSharedPrefs(results.getId());
-                                Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
-
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            } else {
-                                Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
+                loginUser(user);
             }
-
-
         });
 
         loginBinding.signupHintTxt.setOnClickListener(view -> {
@@ -208,20 +221,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         popupBinding.sendEmailBtn.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(popupBinding.email.getText())){
-                Toast.makeText(this,"Fields are empty",Toast.LENGTH_SHORT).show();
-            }
-            else {
+            if (TextUtils.isEmpty(popupBinding.email.getText())) {
+                Toast.makeText(this, "Fields are empty", Toast.LENGTH_SHORT).show();
+            } else {
                 if (isInternetAvailable()) {
-                    Map<String,Object> passMap=new HashMap<>();
-                    passMap.put("Email",popupBinding.email.getText().toString().toLowerCase());
+                    Map<String, Object> passMap = new HashMap<>();
+                    passMap.put("Email", popupBinding.email.getText().toString().toLowerCase());
 
-                    viewModel.resetPassword(passMap).observe(this,sekloResults -> {
+                    viewModel.resetPassword(passMap).observe(this, sekloResults -> {
                         if (sekloResults.getResults().getCode() == 1) {
-                            Toast.makeText(this,"Check your email to reset password",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            Toast.makeText(this,sekloResults.getResults().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Check your email to reset password", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(this, sekloResults.getResults().getMessage(), Toast.LENGTH_SHORT).show();
 
                         dialog.dismiss();
                     });
@@ -229,6 +240,27 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+
+    private void loginUser(Users user) {
+        viewModel.
+                authenticateUser(user)
+                .observe(this, results -> {
+
+                    if (ProgressDialog.isShowing())
+                        ProgressDialog.hideLoader();
+
+                    if (results.getCode() == 1) {
+                        addToSharedPrefs(results.getId());
+                        Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    } else {
+                        Toast.makeText(this, results.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -244,6 +276,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }
